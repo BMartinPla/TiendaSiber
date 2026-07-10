@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, Plus, X, Save, Trash2, RefreshCw, Package, ShieldOff, Upload } from 'lucide-react'
+import { ArrowLeft, Plus, X, Save, Trash2, RefreshCw, Package, ShieldOff, Upload, ChevronDown, ChevronRight } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import {
   getProducts,
@@ -439,7 +439,7 @@ export default function AdminDashboard() {
                     onClick={() => cat.active && toggleExpandCat(cat.id)}
                   >
                     <div className="flex items-center gap-2">
-                      <span className="text-xs">{expandedCat === cat.id ? '🔽' : '▶️'}</span>
+                      {expandedCat === cat.id ? <ChevronDown className="w-4 h-4 text-gray-400" /> : <ChevronRight className="w-4 h-4 text-gray-400" />}
                       <span className="font-semibold text-gray-900 dark:text-white">{cat.name}</span>
                       <span className="text-xs text-gray-400 dark:text-gray-500">({cat._count?.products || 0})</span>
                       {!cat.active && <span className="text-xs text-red-500 font-medium">Suspendida</span>}
