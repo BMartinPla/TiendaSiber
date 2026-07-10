@@ -15,6 +15,8 @@ import {
   suspendCategory,
   restoreCategory,
   deleteCategory,
+  getUsers,
+  updateUserRole,
 } from '../services/api'
 
 export default function AdminDashboard() {
@@ -43,9 +45,14 @@ export default function AdminDashboard() {
     name: '', description: '', precioBase: '', precioMayorista: '', stock: '', imageUrl: '', categoryId: '',
   })
 
+  const [users, setUsers] = useState([])
+  const [usersLoading, setUsersLoading] = useState(false)
+  const [userSearch, setUserSearch] = useState('')
+
   useEffect(() => {
     loadProducts()
     loadCategories()
+    loadUsers()
   }, [])
 
   useEffect(() => {
@@ -64,6 +71,27 @@ export default function AdminDashboard() {
     setLoading(true)
     try { setProducts(await getProducts()) } catch { setError('Error al cargar productos') }
     finally { setLoading(false) }
+  }
+
+  async function loadUsers(search = '') {
+    setUsersLoading(true)
+    try { setUsers(await getUsers(search)) } catch {}
+    finally { setUsersLoading(false) }
+  }
+
+  function handleUserSearch(value) {
+    setUserSearch(value)
+    loadUsers(value)
+  }
+
+  async function handleRoleChange(userId, newRole) {
+    try {
+      await updateUserRole(userId, newRole)
+      showMsg('Rol actualizado exitosamente')
+      loadUsers(userSearch)
+    } catch (err) {
+      showMsg(err.response?.data?.error || 'Error al actualizar rol', true)
+    }
   }
 
   function showMsg(msg, isError = false) {
@@ -475,6 +503,73 @@ export default function AdminDashboard() {
               </tbody>
             </table>
           </div>
+        </div>
+
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+          <h2 className="text-base font-bold text-gray-900 mb-4">Usuarios</h2>
+
+          <div className="mb-4">
+            <input
+              type="text"
+              placeholder="Buscar por nombre o email..."
+              value={userSearch}
+              onChange={(e) => handleUserSearch(e.target.value)}
+              className="w-full max-w-xs px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50"
+            />
+          </div>
+
+          {usersLoading ? (
+            <div className="text-sm text-gray-400 py-4">Cargando usuarios...</div>
+          ) : users.length === 0 ? (
+            <div className="text-sm text-gray-400 py-4">Sin resultados</div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="bg-gray-50 border-b border-gray-100">
+                    <th className="text-left px-4 py-3 font-semibold text-gray-500 text-xs uppercase tracking-wider">Nombre</th>
+                    <th className="text-left px-4 py-3 font-semibold text-gray-500 text-xs uppercase tracking-wider">Email</th>
+                    <th className="text-left px-4 py-3 font-semibold text-gray-500 text-xs uppercase tracking-wider">Rol</th>
+                    <th className="text-left px-4 py-3 font-semibold text-gray-500 text-xs uppercase tracking-wider">Estado</th>
+                    <th className="text-left px-4 py-3 font-semibold text-gray-500 text-xs uppercase tracking-wider">Cambiar Rol</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {users.map((u) => (
+                    <tr key={u.id} className="border-t border-gray-50 hover:bg-gray-50/50 transition-colors">
+                      <td className="px-4 py-3 font-medium text-gray-900">{u.name}</td>
+                      <td className="px-4 py-3 text-gray-600">{u.email}</td>
+                      <td className="px-4 py-3">
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                          u.role === 'ADMIN' ? 'bg-purple-100 text-purple-700' :
+                          u.role === 'WHOLESALE' ? 'bg-emerald-100 text-emerald-700' :
+                          'bg-blue-100 text-blue-700'
+                        }`}>
+                          {u.role === 'ADMIN' ? 'Admin' : u.role === 'WHOLESALE' ? 'Mayorista' : 'Minorista'}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${u.active ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-700'}`}>
+                          {u.active ? 'Activo' : 'Suspendido'}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3">
+                        <select
+                          value={u.role}
+                          onChange={(e) => handleRoleChange(u.id, e.target.value)}
+                          className="px-3 py-1.5 border border-gray-200 rounded-lg text-xs font-medium focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-white"
+                        >
+                          <option value="RETAIL">Minorista</option>
+                          <option value="WHOLESALE">Mayorista</option>
+                          <option value="ADMIN">Admin</option>
+                        </select>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       </div>
 

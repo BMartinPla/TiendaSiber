@@ -129,4 +129,12 @@ export function deleteCategory(id) {
   return api.delete(`/categories/${id}`).then((res) => res.data)
 }
 
+export function getUsers(search = '') {
+  return api.get(`/users${search ? `?search=${encodeURIComponent(search)}` : ''}`).then((res) => res.data)
+}
+
+export function updateUserRole(id, role) {
+  return api.patch(`/users/${id}/role`, { role }).then((res) => res.data)
+}
+
 export default api

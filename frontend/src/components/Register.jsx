@@ -5,7 +5,7 @@ import { register } from '../services/api'
 import { useAuth } from '../contexts/AuthContext'
 
 export default function Register() {
-  const [form, setForm] = useState({ name: '', email: '', password: '', role: 'RETAIL', phone: '' })
+  const [form, setForm] = useState({ name: '', email: '', password: '', phone: '' })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const { loginUser } = useAuth()
@@ -20,7 +20,7 @@ export default function Register() {
     setError('')
     setLoading(true)
     try {
-      const data = await register(form)
+      const data = await register({ ...form, role: 'RETAIL' })
       loginUser(data.user, data.token)
       navigate('/')
     } catch (err) {
@@ -71,14 +71,7 @@ export default function Register() {
                 className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50" />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Tipo de cuenta</label>
-              <select name="role" value={form.role} onChange={handleChange}
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50">
-                <option value="RETAIL">Minorista</option>
-                <option value="WHOLESALE">Mayorista</option>
-              </select>
-            </div>
+            <p className="text-xs text-gray-400 text-center">Todos los registros se crean como Minorista por defecto.</p>
 
             <button type="submit" disabled={loading}
               className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 transition-colors">
