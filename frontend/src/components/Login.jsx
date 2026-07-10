@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { LogIn, Package } from 'lucide-react'
+import { LogIn } from 'lucide-react'
 import { login } from '../services/api'
 import { useAuth } from '../contexts/AuthContext'
 
@@ -28,43 +28,43 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <Package className="w-10 h-10 text-emerald-600 mx-auto" />
-          <h1 className="text-2xl font-bold text-gray-900 mt-3">Quince Gear SN</h1>
-          <p className="text-sm text-gray-500 mt-1">Inicia sesión para continuar</p>
+          <img src="/logo.png" alt="Logo" className="w-12 h-12 mx-auto" />
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mt-3">Quince Gear SN</h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Inicia sesión para continuar</p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 sm:p-8">
           {error && (
-            <div className="mb-5 bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl">
+            <div className="mb-5 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl">
               {error}
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Email</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Email</label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="tu@email.com"
                 required
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50"
+                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Contraseña</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Contraseña</label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 required
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50"
+                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
               />
             </div>
 
@@ -78,19 +78,19 @@ export default function Login() {
             </button>
           </form>
 
-          <p className="text-center text-sm text-gray-500 mt-6">
+          <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-6">
             ¿No tienes cuenta?{' '}
             <Link to="/register" className="text-emerald-600 hover:text-emerald-700 font-medium">
               Regístrate
             </Link>
           </p>
 
-          <div className="mt-6 pt-5 border-t border-gray-100">
-            <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-2">Credenciales de prueba</p>
-            <div className="space-y-1 text-xs text-gray-500">
-              <p><span className="font-medium text-gray-600">Admin:</span> admin@tiendasiper.com / admin123</p>
-              <p><span className="font-medium text-gray-600">Cliente:</span> cliente@tiendasiper.com / admin123</p>
-              <p><span className="font-medium text-gray-600">Mayorista:</span> mayorista@tiendasiper.com / admin123</p>
+          <div className="mt-6 pt-5 border-t border-gray-100 dark:border-gray-700">
+            <p className="text-xs font-medium text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-2">Credenciales de prueba</p>
+            <div className="space-y-1 text-xs text-gray-500 dark:text-gray-400">
+              <p><span className="font-medium text-gray-600 dark:text-gray-300">Admin:</span> admin@tiendasiper.com / admin123</p>
+              <p><span className="font-medium text-gray-600 dark:text-gray-300">Cliente:</span> cliente@tiendasiper.com / admin123</p>
+              <p><span className="font-medium text-gray-600 dark:text-gray-300">Mayorista:</span> mayorista@tiendasiper.com / admin123</p>
             </div>
           </div>
         </div>

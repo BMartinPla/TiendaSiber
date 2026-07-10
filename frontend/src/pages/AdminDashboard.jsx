@@ -310,27 +310,27 @@ export default function AdminDashboard() {
   }
 
   if (loading) return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <div className="text-gray-400 text-sm">Cargando panel...</div>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex items-center justify-center">
+      <div className="text-gray-400 dark:text-gray-500 text-sm">Cargando panel...</div>
     </div>
   )
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="bg-white border-b border-gray-200 shadow-sm">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
+      <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-600 dark:border-gray-700 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Link to="/" className="text-gray-400 hover:text-gray-600 transition-colors">
+              <Link to="/" className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:text-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:text-gray-400 transition-colors">
                 <ArrowLeft className="w-5 h-5" />
               </Link>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">Panel de Administración</h1>
-                <p className="text-xs text-gray-500 mt-0.5">Gestiona productos, categorías y precios</p>
+                <h1 className="text-xl font-bold text-gray-900 dark:text-white dark:text-white">Panel de Administración</h1>
+                <p className="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500 mt-0.5">Gestiona productos, categorías y precios</p>
               </div>
             </div>
             <button onClick={() => setShowCreate(!showCreate)}
-              className="flex items-center gap-2 bg-gray-900 text-white px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-gray-800 transition-colors shadow-sm">
+              className="flex items-center gap-2 bg-gray-900 dark:bg-emerald-600 text-white px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-gray-800 dark:hover:bg-emerald-700 transition-colors shadow-sm">
               <Plus className="w-4 h-4" />
               {showCreate ? 'Cancelar' : 'Nuevo Producto'}
             </button>
@@ -340,40 +340,40 @@ export default function AdminDashboard() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl">{error}</div>
+          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl">{error}</div>
         )}
         {success && (
-          <div className="bg-emerald-50 border border-emerald-200 text-emerald-600 text-sm px-4 py-3 rounded-xl">{success}</div>
+          <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 text-emerald-600 dark:text-emerald-400 text-sm px-4 py-3 rounded-xl">{success}</div>
         )}
 
         {showCreate && (
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-            <h2 className="text-base font-bold text-gray-900 mb-4">Nuevo Producto</h2>
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 dark:border-gray-700 p-6">
+            <h2 className="text-base font-bold text-gray-900 dark:text-white mb-4">Nuevo Producto</h2>
             <form onSubmit={handleCreate} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="sm:col-span-2">
                 <input placeholder="Nombre *" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50" />
+                  className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
               </div>
               <div className="sm:col-span-2">
                 <textarea placeholder="Descripción" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={2}
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50" />
+                  className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
               </div>
               <div>
                 <input type="number" step="0.01" placeholder="Precio Base *" value={form.precioBase} onChange={(e) => setForm({ ...form, precioBase: e.target.value })} required
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50" />
+                  className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
               </div>
               <div>
                 <input type="number" step="0.01" placeholder="Precio Mayorista *" value={form.precioMayorista} onChange={(e) => setForm({ ...form, precioMayorista: e.target.value })} required
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50" />
+                  className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
               </div>
               <div>
                 <input type="number" placeholder="Stock" value={form.stock} onChange={(e) => setForm({ ...form, stock: e.target.value })}
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50" />
+                  className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
               </div>
               <div className="sm:col-span-2">
-                <label className="block text-xs font-medium text-gray-500 mb-1">Imagen</label>
+                <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 dark:text-gray-500 mb-1">Imagen</label>
                 <div className="flex items-center gap-3">
-                  <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2.5 border border-gray-200 rounded-xl text-sm bg-gray-50 hover:bg-gray-100 transition-colors">
+                  <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-700 transition-colors">
                     <Upload size={16} />
                     {uploadingImage ? 'Subiendo...' : 'Subir imagen'}
                     <input type="file" accept="image/*" className="hidden" disabled={uploadingImage}
@@ -390,7 +390,7 @@ export default function AdminDashboard() {
               </div>
               <div>
                 <select value={form.categoryId} onChange={(e) => setForm({ ...form, categoryId: e.target.value })}
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50">
+                  className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                   <option value="">Sin categoría</option>
                   {categories.filter((c) => c.active).map((c) => (
                     <option key={c.id} value={c.id}>{c.name}</option>
@@ -407,9 +407,9 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 dark:border-gray-700 p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-base font-bold text-gray-900">Categorías</h2>
+            <h2 className="text-base font-bold text-gray-900 dark:text-white">Categorías</h2>
             <button onClick={() => setShowCategoryForm(!showCategoryForm)}
               className="flex items-center gap-2 bg-gray-900 text-white px-3 py-2 rounded-xl text-xs font-semibold hover:bg-gray-800 transition-colors">
               <Plus className="w-3.5 h-3.5" />
@@ -420,9 +420,9 @@ export default function AdminDashboard() {
           {showCategoryForm && (
             <form onSubmit={handleCatCreate} className="flex gap-3 mb-4">
               <input placeholder="Nombre *" value={catForm.name} onChange={(e) => setCatForm({ ...catForm, name: e.target.value })} required
-                className="flex-1 px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50" />
+                className="flex-1 px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
               <input placeholder="Descripción" value={catForm.description} onChange={(e) => setCatForm({ ...catForm, description: e.target.value })}
-                className="flex-1 px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50" />
+                className="flex-1 px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
               <button type="submit"
                 className="px-4 py-2.5 bg-gray-900 text-white rounded-xl text-sm font-semibold hover:bg-gray-800 transition-colors">Crear</button>
             </form>
@@ -430,18 +430,18 @@ export default function AdminDashboard() {
 
           <div className="space-y-2">
             {categories.length === 0 ? (
-              <p className="text-sm text-gray-400">Sin categorías</p>
+              <p className="text-sm text-gray-400 dark:text-gray-500">Sin categorías</p>
             ) : (
               categories.map((cat) => (
                 <div key={cat.id}>
                   <div
-                    className={`flex items-center justify-between px-4 py-3 bg-gray-50 rounded-xl text-sm cursor-pointer transition-colors hover:bg-gray-100 ${cat.active ? 'opacity-100' : 'opacity-50'}`}
+                    className={`flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl text-sm cursor-pointer transition-colors hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-700 ${cat.active ? 'opacity-100' : 'opacity-50'}`}
                     onClick={() => cat.active && toggleExpandCat(cat.id)}
                   >
                     <div className="flex items-center gap-2">
                       <span className="text-xs">{expandedCat === cat.id ? '🔽' : '▶️'}</span>
-                      <span className="font-semibold text-gray-900">{cat.name}</span>
-                      <span className="text-xs text-gray-400">({cat._count?.products || 0})</span>
+                      <span className="font-semibold text-gray-900 dark:text-white">{cat.name}</span>
+                      <span className="text-xs text-gray-400 dark:text-gray-500">({cat._count?.products || 0})</span>
                       {!cat.active && <span className="text-xs text-red-500 font-medium">Suspendida</span>}
                     </div>
                     <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
@@ -457,30 +457,30 @@ export default function AdminDashboard() {
                   </div>
 
                   {expandedCat === cat.id && (
-                    <div className="ml-6 mt-2 bg-white border border-gray-100 rounded-xl overflow-hidden">
+                    <div className="ml-6 mt-2 bg-white border border-gray-100 dark:border-gray-700 rounded-xl overflow-hidden">
                       {catProductsLoading ? (
-                        <div className="p-4 text-sm text-gray-400">Cargando...</div>
+                        <div className="p-4 text-sm text-gray-400 dark:text-gray-500">Cargando...</div>
                       ) : catProducts.length === 0 ? (
-                        <div className="p-4 text-sm text-gray-400">Sin productos</div>
+                        <div className="p-4 text-sm text-gray-400 dark:text-gray-500">Sin productos</div>
                       ) : (
                         <table className="w-full text-xs">
                           <thead>
-                            <tr className="bg-gray-50">
-                              <th className="text-left px-4 py-2 font-semibold text-gray-500">Producto</th>
-                              <th className="text-left px-4 py-2 font-semibold text-gray-500">P. Base</th>
-                              <th className="text-left px-4 py-2 font-semibold text-gray-500">P. May.</th>
-                              <th className="text-left px-4 py-2 font-semibold text-gray-500">Stock</th>
-                              <th className="text-left px-4 py-2 font-semibold text-gray-500">Estado</th>
-                              <th className="text-left px-4 py-2 font-semibold text-gray-500">Acción</th>
+                            <tr className="bg-gray-50 dark:bg-gray-800/50">
+                              <th className="text-left px-4 py-2 font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500">Producto</th>
+                              <th className="text-left px-4 py-2 font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500">P. Base</th>
+                              <th className="text-left px-4 py-2 font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500">P. May.</th>
+                              <th className="text-left px-4 py-2 font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500">Stock</th>
+                              <th className="text-left px-4 py-2 font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500">Estado</th>
+                              <th className="text-left px-4 py-2 font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500">Acción</th>
                             </tr>
                           </thead>
                           <tbody>
                             {catProducts.map((p) => (
                               <tr key={p.id} className={`border-t border-gray-50 ${p.active ? 'opacity-100' : 'opacity-50'}`}>
-                                <td className="px-4 py-2 font-medium text-gray-900">{p.name}</td>
-                                <td className="px-4 py-2 text-gray-600">${p.precioBase.toLocaleString('es-CL')}</td>
-                                <td className="px-4 py-2 text-gray-600">${p.precioMayorista.toLocaleString('es-CL')}</td>
-                                <td className="px-4 py-2 text-gray-600">{p.stock}</td>
+                                <td className="px-4 py-2 font-medium text-gray-900 dark:text-white">{p.name}</td>
+                                <td className="px-4 py-2 text-gray-600 dark:text-gray-300 dark:text-gray-400">${p.precioBase.toLocaleString('es-CL')}</td>
+                                <td className="px-4 py-2 text-gray-600 dark:text-gray-300 dark:text-gray-400">${p.precioMayorista.toLocaleString('es-CL')}</td>
+                                <td className="px-4 py-2 text-gray-600 dark:text-gray-300 dark:text-gray-400">{p.stock}</td>
                                 <td className="px-4 py-2">
                                   <span className={`text-xs font-medium ${p.active ? 'text-emerald-600' : 'text-red-500'}`}>
                                     {p.active ? 'Activo' : 'Suspendido'}
@@ -513,13 +513,13 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-          <h2 className="text-base font-bold text-gray-900 mb-1">Actualización Masiva de Precios</h2>
-          <p className="text-xs text-gray-400 mb-4">Selecciona productos abajo, ingresa un % y aplica el cambio.</p>
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 dark:border-gray-700 p-6">
+          <h2 className="text-base font-bold text-gray-900 dark:text-white mb-1">Actualización Masiva de Precios</h2>
+          <p className="text-xs text-gray-400 dark:text-gray-500 mb-4">Selecciona productos abajo, ingresa un % y aplica el cambio.</p>
           <div className="flex gap-3">
             <input type="number" placeholder="Ej: 10 para +10%, -15 para -15%"
               value={bulkPercentage} onChange={(e) => setBulkPercentage(e.target.value)}
-              className="flex-1 px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50" />
+              className="flex-1 px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
             <button onClick={handleBulkUpdate} disabled={selectedIds.length === 0}
               className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
               <RefreshCw className="w-4 h-4" />
@@ -528,10 +528,10 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 dark:border-gray-700 overflow-hidden">
           {selectedIds.length > 0 && (
-            <div className="flex items-center gap-2 px-5 py-3 bg-gray-50 border-b border-gray-100">
-              <span className="text-xs text-gray-500 font-medium">{selectedIds.length} seleccionado(s)</span>
+            <div className="flex items-center gap-2 px-5 py-3 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-700">
+              <span className="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500 font-medium">{selectedIds.length} seleccionado(s)</span>
               <button onClick={() => { handleBulkAction('suspend') }}
                 className="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-amber-500 hover:bg-amber-600 transition-colors">
                 Suspender
@@ -549,37 +549,37 @@ export default function AdminDashboard() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-gray-50 border-b border-gray-100">
+                <tr className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-700">
                   <th className="text-left px-4 py-3">
                     <input type="checkbox" checked={selectAll} onChange={() => setSelectAll(!selectAll)}
                       className="rounded border-gray-300 text-emerald-600 focus:ring-emerald-500" />
                   </th>
-                  <th className="text-left px-4 py-3 font-semibold text-gray-500 text-xs uppercase tracking-wider">ID</th>
-                  <th className="text-left px-4 py-3 font-semibold text-gray-500 text-xs uppercase tracking-wider">Nombre</th>
-                  <th className="text-left px-4 py-3 font-semibold text-gray-500 text-xs uppercase tracking-wider">P. Base</th>
-                  <th className="text-left px-4 py-3 font-semibold text-gray-500 text-xs uppercase tracking-wider">P. May.</th>
-                  <th className="text-left px-4 py-3 font-semibold text-gray-500 text-xs uppercase tracking-wider">Stock</th>
-                  <th className="text-left px-4 py-3 font-semibold text-gray-500 text-xs uppercase tracking-wider">Estado</th>
-                  <th className="text-left px-4 py-3 font-semibold text-gray-500 text-xs uppercase tracking-wider">Acciones</th>
+                  <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500 text-xs uppercase tracking-wider">ID</th>
+                  <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500 text-xs uppercase tracking-wider">Nombre</th>
+                  <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500 text-xs uppercase tracking-wider">P. Base</th>
+                  <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500 text-xs uppercase tracking-wider">P. May.</th>
+                  <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500 text-xs uppercase tracking-wider">Stock</th>
+                  <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500 text-xs uppercase tracking-wider">Estado</th>
+                  <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500 text-xs uppercase tracking-wider">Acciones</th>
                 </tr>
               </thead>
               <tbody>
                 {products.length === 0 ? (
-                  <tr><td colSpan={8} className="text-center px-4 py-10 text-gray-400">No hay productos</td></tr>
+                  <tr><td colSpan={8} className="text-center px-4 py-10 text-gray-400 dark:text-gray-500">No hay productos</td></tr>
                 ) : (
                   products.map((p) => (
-                    <tr key={p.id} className={`border-t border-gray-50 hover:bg-gray-50/50 transition-colors ${p.active ? 'opacity-100' : 'opacity-50'}`}>
+                    <tr key={p.id} className={`border-t border-gray-50 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors ${p.active ? 'opacity-100' : 'opacity-50'}`}>
                       <td className="px-4 py-3">
                         <input type="checkbox" checked={selectedIds.includes(p.id)} onChange={() => toggleSelect(p.id)}
                           className="rounded border-gray-300 text-emerald-600 focus:ring-emerald-500" />
                       </td>
-                      <td className="px-4 py-3 text-gray-500 text-xs">{p.id}</td>
-                      <td className="px-4 py-3 font-medium text-gray-900">{p.name}</td>
-                      <td className="px-4 py-3 text-gray-700">${p.precioBase.toLocaleString('es-CL')}</td>
-                      <td className="px-4 py-3 text-gray-700">${p.precioMayorista.toLocaleString('es-CL')}</td>
-                      <td className="px-4 py-3 text-gray-700">{p.stock}</td>
+                      <td className="px-4 py-3 text-gray-500 dark:text-gray-400 dark:text-gray-500 text-xs">{p.id}</td>
+                      <td className="px-4 py-3 font-medium text-gray-900 dark:text-white">{p.name}</td>
+                      <td className="px-4 py-3 text-gray-700 dark:text-gray-200">${p.precioBase.toLocaleString('es-CL')}</td>
+                      <td className="px-4 py-3 text-gray-700 dark:text-gray-200">${p.precioMayorista.toLocaleString('es-CL')}</td>
+                      <td className="px-4 py-3 text-gray-700 dark:text-gray-200">{p.stock}</td>
                       <td className="px-4 py-3">
-                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${p.active ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-700'}`}>
+                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${p.active ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300' : 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300'}`}>
                           {p.active ? 'Activo' : 'Suspendido'}
                         </span>
                       </td>
@@ -605,8 +605,8 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-          <h2 className="text-base font-bold text-gray-900 mb-4">Usuarios</h2>
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 dark:border-gray-700 p-6">
+          <h2 className="text-base font-bold text-gray-900 dark:text-white mb-4">Usuarios</h2>
 
           <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
             <input
@@ -614,15 +614,15 @@ export default function AdminDashboard() {
               placeholder="Buscar por nombre o email..."
               value={userSearch}
               onChange={(e) => handleUserSearch(e.target.value)}
-              className="w-full sm:max-w-xs px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50"
+              className="w-full sm:max-w-xs px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
             />
             {selectedUserIds.length > 0 && (
               <div className="flex items-center gap-2">
-                <span className="text-xs text-gray-500 font-medium">{selectedUserIds.length} seleccionado(s)</span>
+                <span className="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500 font-medium">{selectedUserIds.length} seleccionado(s)</span>
                 <select
                   value={bulkUserRole}
                   onChange={(e) => setBulkUserRole(e.target.value)}
-                  className="px-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-white"
+                  className="px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 >
                   <option value="RETAIL">Minorista</option>
                   <option value="WHOLESALE">Mayorista</option>
@@ -639,36 +639,36 @@ export default function AdminDashboard() {
           </div>
 
           {usersLoading ? (
-            <div className="text-sm text-gray-400 py-4">Cargando usuarios...</div>
+            <div className="text-sm text-gray-400 dark:text-gray-500 py-4">Cargando usuarios...</div>
           ) : users.length === 0 ? (
-            <div className="text-sm text-gray-400 py-4">Sin resultados</div>
+            <div className="text-sm text-gray-400 dark:text-gray-500 py-4">Sin resultados</div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="bg-gray-50 border-b border-gray-100">
+                  <tr className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-700">
                     <th className="text-left px-4 py-3">
                       <input type="checkbox" checked={selectAllUsers} onChange={() => setSelectAllUsers(!selectAllUsers)}
                         className="rounded border-gray-300 text-emerald-600 focus:ring-emerald-500" />
                     </th>
-                    <th className="text-left px-4 py-3 font-semibold text-gray-500 text-xs uppercase tracking-wider">Nombre</th>
-                    <th className="text-left px-4 py-3 font-semibold text-gray-500 text-xs uppercase tracking-wider">Email</th>
-                    <th className="text-left px-4 py-3 font-semibold text-gray-500 text-xs uppercase tracking-wider">Rol</th>
-                    <th className="text-left px-4 py-3 font-semibold text-gray-500 text-xs uppercase tracking-wider">Estado</th>
-                    <th className="text-left px-4 py-3 font-semibold text-gray-500 text-xs uppercase tracking-wider">Cambiar Rol</th>
+                    <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500 text-xs uppercase tracking-wider">Nombre</th>
+                    <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500 text-xs uppercase tracking-wider">Email</th>
+                    <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500 text-xs uppercase tracking-wider">Rol</th>
+                    <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500 text-xs uppercase tracking-wider">Estado</th>
+                    <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500 text-xs uppercase tracking-wider">Cambiar Rol</th>
                   </tr>
                 </thead>
                 <tbody>
                   {users.map((u) => {
                     const isSelf = u.id === currentUser?.id
                     return (
-                    <tr key={u.id} className={`border-t border-gray-50 hover:bg-gray-50/50 transition-colors ${u.active ? '' : 'opacity-50'}`}>
+                    <tr key={u.id} className={`border-t border-gray-50 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors ${u.active ? '' : 'opacity-50'}`}>
                       <td className="px-4 py-3">
                         <input type="checkbox" checked={selectedUserIds.includes(u.id)} onChange={() => toggleUserSelect(u.id)} disabled={isSelf}
                           className="rounded border-gray-300 text-emerald-600 focus:ring-emerald-500 disabled:opacity-30" />
                       </td>
-                      <td className="px-4 py-3 font-medium text-gray-900">{u.name}{isSelf && <span className="text-xs text-gray-400 ml-1">(tú)</span>}</td>
-                      <td className="px-4 py-3 text-gray-600">{u.email}</td>
+                      <td className="px-4 py-3 font-medium text-gray-900 dark:text-white">{u.name}{isSelf && <span className="text-xs text-gray-400 dark:text-gray-500 ml-1">(tú)</span>}</td>
+                      <td className="px-4 py-3 text-gray-600 dark:text-gray-300 dark:text-gray-400">{u.email}</td>
                       <td className="px-4 py-3">
                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                           u.role === 'ADMIN' ? 'bg-purple-100 text-purple-700' :
@@ -679,13 +679,13 @@ export default function AdminDashboard() {
                         </span>
                       </td>
                       <td className="px-4 py-3">
-                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${u.active ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-700'}`}>
+                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${u.active ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300' : 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300'}`}>
                           {u.active ? 'Activo' : 'Suspendido'}
                         </span>
                       </td>
                       <td className="px-4 py-3">
                         {isSelf ? (
-                          <div className="flex items-center gap-1.5 text-gray-400 text-xs">
+                          <div className="flex items-center gap-1.5 text-gray-400 dark:text-gray-500 text-xs">
                             <ShieldOff className="w-3.5 h-3.5" />
                             Sin cambios
                           </div>
@@ -693,7 +693,7 @@ export default function AdminDashboard() {
                         <select
                           value={u.role}
                           onChange={(e) => handleRoleChange(u.id, e.target.value)}
-                          className="px-3 py-1.5 border border-gray-200 rounded-lg text-xs font-medium focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-white"
+                          className="px-3 py-1.5 border border-gray-200 dark:border-gray-600 rounded-lg text-xs font-medium focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                         >
                           <option value="RETAIL">Minorista</option>
                           <option value="WHOLESALE">Mayorista</option>
@@ -713,32 +713,32 @@ export default function AdminDashboard() {
 
       {editProduct && (
         <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4" onClick={closeEdit}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto p-6" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto p-6" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-bold text-gray-900">Editar: {editProduct.name}</h2>
-              <button onClick={closeEdit} className="p-1.5 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100 transition-colors">
+              <h2 className="text-lg font-bold text-gray-900 dark:text-white">Editar: {editProduct.name}</h2>
+              <button onClick={closeEdit} className="p-1.5 text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                 <X className="w-5 h-5" />
               </button>
             </div>
             <form onSubmit={handleEditSave} className="space-y-4">
               <input placeholder="Nombre *" value={editForm.name} onChange={(e) => setEditForm({ ...editForm, name: e.target.value })} required
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50" />
+                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
               <textarea placeholder="Descripción" value={editForm.description} onChange={(e) => setEditForm({ ...editForm, description: e.target.value })} rows={2}
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50" />
+                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
               <div className="grid grid-cols-2 gap-4">
                 <input type="number" step="0.01" placeholder="Precio Base *" value={editForm.precioBase} onChange={(e) => setEditForm({ ...editForm, precioBase: e.target.value })} required
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50" />
+                  className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                 <input type="number" step="0.01" placeholder="Precio Mayorista *" value={editForm.precioMayorista} onChange={(e) => setEditForm({ ...editForm, precioMayorista: e.target.value })} required
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50" />
+                  className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <input type="number" placeholder="Stock" value={editForm.stock} onChange={(e) => setEditForm({ ...editForm, stock: e.target.value })}
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50" />
+                  className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">Imagen</label>
+                <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 dark:text-gray-500 mb-1">Imagen</label>
                 <div className="flex items-center gap-3">
-                  <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2.5 border border-gray-200 rounded-xl text-sm bg-gray-50 hover:bg-gray-100 transition-colors">
+                  <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-700 transition-colors">
                     <Upload size={16} />
                     {uploadingImage ? 'Subiendo...' : 'Subir imagen'}
                     <input type="file" accept="image/*" className="hidden" disabled={uploadingImage}
@@ -754,7 +754,7 @@ export default function AdminDashboard() {
                 )}
               </div>
               <select value={editForm.categoryId} onChange={(e) => setEditForm({ ...editForm, categoryId: e.target.value })}
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50">
+                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                 <option value="">Sin categoría</option>
                 {categories.filter((c) => c.active).map((c) => (
                   <option key={c.id} value={c.id}>{c.name}</option>
@@ -766,7 +766,7 @@ export default function AdminDashboard() {
                   <Save className="w-4 h-4" /> Guardar Cambios
                 </button>
                 <button type="button" onClick={closeEdit}
-                  className="px-6 py-3 rounded-xl text-sm font-semibold text-gray-600 bg-gray-100 hover:bg-gray-200 transition-colors">
+                  className="px-6 py-3 rounded-xl text-sm font-semibold text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
                   Cancelar
                 </button>
               </div>

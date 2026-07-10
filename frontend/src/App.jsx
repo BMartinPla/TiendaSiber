@@ -2,6 +2,7 @@ import React from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
 import { CartProvider } from './contexts/CartContext'
+import { DarkModeProvider } from './contexts/DarkModeContext'
 import Login from './components/Login'
 import Register from './components/Register'
 import Home from './pages/Home'
@@ -35,10 +36,12 @@ function AppRoutes() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <CartProvider>
-        <AppRoutes />
-      </CartProvider>
-    </AuthProvider>
+    <DarkModeProvider>
+      <AuthProvider>
+        <CartProvider>
+          <AppRoutes />
+        </CartProvider>
+      </AuthProvider>
+    </DarkModeProvider>
   )
 }

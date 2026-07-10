@@ -1,12 +1,14 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { ShoppingCart, Search, LogOut, User, Package } from 'lucide-react'
+import { ShoppingCart, Search, LogOut, User, Moon, Sun } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import { useCart } from '../contexts/CartContext'
+import { useDarkMode } from '../contexts/DarkModeContext'
 
 export default function Navbar({ onCartClick, search, onSearch }) {
   const { user, logout, isAdmin } = useAuth()
   const { itemCount } = useCart()
+  const { dark, toggleDark } = useDarkMode()
   const navigate = useNavigate()
 
   function handleLogout() {
@@ -15,9 +17,9 @@ export default function Navbar({ onCartClick, search, onSearch }) {
   }
 
   const roleColors = {
-    ADMIN: 'bg-purple-100 text-purple-700',
-    WHOLESALE: 'bg-emerald-100 text-emerald-700',
-    RETAIL: 'bg-blue-100 text-blue-700',
+    ADMIN: 'bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300',
+    WHOLESALE: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300',
+    RETAIL: 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300',
   }
 
   const roleLabels = {
@@ -27,12 +29,12 @@ export default function Navbar({ onCartClick, search, onSearch }) {
   }
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 gap-4">
           <Link to="/" className="flex items-center gap-2 shrink-0">
-            <Package className="w-7 h-7 text-emerald-600" />
-            <span className="text-xl font-bold text-gray-900 hidden sm:block">Quince Gear SN</span>
+            <img src="/logo.png" alt="Logo" className="h-8 w-auto" />
+            <span className="text-xl font-bold text-gray-900 dark:text-white hidden sm:block">Quince Gear SN</span>
           </Link>
 
           <div className="flex-1 max-w-md hidden sm:block">
@@ -43,12 +45,16 @@ export default function Navbar({ onCartClick, search, onSearch }) {
                 placeholder="Buscar productos..."
                 value={search}
                 onChange={(e) => onSearch(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50"
+                className="w-full pl-10 pr-4 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100"
               />
             </div>
           </div>
 
           <div className="flex items-center gap-3">
+            <button onClick={toggleDark} className="p-2 text-gray-500 dark:text-gray-400 hover:text-amber-500 dark:hover:text-amber-400 transition-colors" title={dark ? 'Modo claro' : 'Modo oscuro'}>
+              {dark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
+
             {user && (
               <span className={`hidden sm:inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold ${roleColors[user.role] || roleColors.RETAIL}`}>
                 <User className="w-3 h-3" />
@@ -57,12 +63,12 @@ export default function Navbar({ onCartClick, search, onSearch }) {
             )}
 
             {isAdmin && (
-              <Link to="/admin" className="text-sm text-gray-500 hover:text-gray-700 font-medium">
+              <Link to="/admin" className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 font-medium">
                 Panel
               </Link>
             )}
 
-            <button onClick={onCartClick} className="relative p-2 text-gray-600 hover:text-emerald-600 transition-colors">
+            <button onClick={onCartClick} className="relative p-2 text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
               <ShoppingCart className="w-6 h-6" />
               {itemCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-emerald-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
@@ -71,7 +77,7 @@ export default function Navbar({ onCartClick, search, onSearch }) {
               )}
             </button>
 
-            <button onClick={handleLogout} className="text-sm text-gray-400 hover:text-red-500 transition-colors p-2" title="Cerrar sesión">
+            <button onClick={handleLogout} className="text-sm text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 transition-colors p-2" title="Cerrar sesión">
               <LogOut className="w-5 h-5" />
             </button>
           </div>

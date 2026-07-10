@@ -68,22 +68,22 @@ export default function Cart({ open, onClose }) {
       )}
 
       <div
-        className={`fixed top-0 right-0 z-50 h-full w-full max-w-md bg-white shadow-2xl transition-transform duration-300 ease-in-out flex flex-col ${
+        className={`fixed top-0 right-0 z-50 h-full w-full max-w-md bg-white dark:bg-gray-900 shadow-2xl transition-transform duration-300 ease-in-out flex flex-col ${
           open ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
-        <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100 dark:border-gray-700">
           <div>
-            <h2 className="text-lg font-bold text-gray-900">Carrito</h2>
-            <p className="text-sm text-gray-500">{localCount} producto(s)</p>
+            <h2 className="text-lg font-bold text-gray-900 dark:text-white">Carrito</h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400">{localCount} producto(s)</p>
           </div>
           <div className="flex items-center gap-2">
             {items.length > 0 && (
-              <button onClick={clear} className="text-xs text-red-500 hover:text-red-600 font-medium px-3 py-1.5 rounded-lg hover:bg-red-50 transition-colors">
+              <button onClick={clear} className="text-xs text-red-500 hover:text-red-600 font-medium px-3 py-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
                 Vaciar
               </button>
             )}
-            <button onClick={onClose} className="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100 transition-colors">
+            <button onClick={onClose} className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
               <X className="w-5 h-5" />
             </button>
           </div>
@@ -91,9 +91,9 @@ export default function Cart({ open, onClose }) {
 
         <div className="flex-1 overflow-y-auto px-5 py-4">
           {loading && items.length === 0 ? (
-            <div className="flex items-center justify-center h-full text-gray-400 text-sm">Cargando...</div>
+            <div className="flex items-center justify-center h-full text-gray-400 dark:text-gray-500 text-sm">Cargando...</div>
           ) : items.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full text-gray-400 gap-3">
+            <div className="flex flex-col items-center justify-center h-full text-gray-400 dark:text-gray-500 gap-3">
               <ShoppingCartIcon className="w-12 h-12" />
               <p className="text-sm">Tu carrito está vacío</p>
             </div>
@@ -103,15 +103,15 @@ export default function Cart({ open, onClose }) {
                 const qty = getQty(item.id)
                 const unitPrice = item.product.pricing?.unitPrice || item.product.precioBase || 0
                 return (
-                  <div key={item.id} className="flex items-center gap-4 p-3 bg-gray-50 rounded-xl">
+                  <div key={item.id} className="flex items-center gap-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-xl">
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold text-gray-900 truncate">{item.product.name}</p>
-                      <p className="text-xs text-gray-500">${unitPrice.toLocaleString('es-CL')} c/u</p>
+                      <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">{item.product.name}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">${unitPrice.toLocaleString('es-CL')} c/u</p>
                     </div>
 
                     <div className="flex items-center gap-1">
-                      <button onClick={() => handleStep(item.id, -1)} disabled={qty <= 1} className="p-1.5 rounded-lg border border-gray-200 hover:bg-white disabled:opacity-30 transition-colors">
-                        <Minus className="w-3.5 h-3.5 text-gray-600" />
+                      <button onClick={() => handleStep(item.id, -1)} disabled={qty <= 1} className="p-1.5 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-white dark:hover:bg-gray-700 disabled:opacity-30 transition-colors">
+                        <Minus className="w-3.5 h-3.5 text-gray-600 dark:text-gray-300" />
                       </button>
                       <input
                         type="number"
@@ -119,18 +119,18 @@ export default function Cart({ open, onClose }) {
                         value={qty}
                         onChange={(e) => handleQtyChange(item.id, e.target.value)}
                         onBlur={() => handleQtyBlur(item.id)}
-                        className="w-12 text-center text-sm font-semibold bg-transparent border-none outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                        className="w-12 text-center text-sm font-semibold bg-transparent border-none outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none text-gray-900 dark:text-white"
                       />
-                      <button onClick={() => handleStep(item.id, 1)} className="p-1.5 rounded-lg border border-gray-200 hover:bg-white transition-colors">
-                        <Plus className="w-3.5 h-3.5 text-gray-600" />
+                      <button onClick={() => handleStep(item.id, 1)} className="p-1.5 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-white dark:hover:bg-gray-700 transition-colors">
+                        <Plus className="w-3.5 h-3.5 text-gray-600 dark:text-gray-300" />
                       </button>
                     </div>
 
                     <div className="text-right min-w-[70px]">
-                      <p className="text-sm font-bold text-gray-900">${(unitPrice * qty).toLocaleString('es-CL')}</p>
+                      <p className="text-sm font-bold text-gray-900 dark:text-white">${(unitPrice * qty).toLocaleString('es-CL')}</p>
                     </div>
 
-                    <button onClick={() => remove(item.id)} className="p-1.5 text-gray-300 hover:text-red-500 transition-colors">
+                    <button onClick={() => remove(item.id)} className="p-1.5 text-gray-300 dark:text-gray-600 hover:text-red-500 transition-colors">
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
@@ -141,10 +141,10 @@ export default function Cart({ open, onClose }) {
         </div>
 
         {items.length > 0 && (
-          <div className="border-t border-gray-100 px-5 py-4 space-y-3 bg-white">
+          <div className="border-t border-gray-100 dark:border-gray-700 px-5 py-4 space-y-3 bg-white dark:bg-gray-900">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-600">Total</span>
-              <span className="text-xl font-bold text-gray-900">${localTotal.toLocaleString('es-CL')}</span>
+              <span className="text-sm text-gray-600 dark:text-gray-400">Total</span>
+              <span className="text-xl font-bold text-gray-900 dark:text-white">${localTotal.toLocaleString('es-CL')}</span>
             </div>
 
             <button
