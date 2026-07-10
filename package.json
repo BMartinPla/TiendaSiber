@@ -4,6 +4,7 @@
   "private": true,
   "description": "E-commerce Tienda Siber - Monorepo",
   "scripts": {
+    "start": "cd backend && npm start",
     "install:all": "cd backend && npm install && cd ../frontend && npm install",
     "dev:backend": "cd backend && npm run dev",
     "dev:frontend": "cd frontend && npm start",
