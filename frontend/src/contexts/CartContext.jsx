@@ -33,25 +33,44 @@ export function CartProvider({ children }) {
     fetchCart()
   }, [fetchCart])
 
-  async function add(productId, quantity = 1) {
-    await addToCart(productId, quantity)
-    await fetchCart()
+  function add(productId, quantity = 1, product = null) {
+    setItems((prev) => {
+      const idx = prev.findIndex((item) => item.product.id === productId)
+      if (idx !== -1) {
+        const updated = [...prev]
+        updated[idx] = { ...updated[idx], quantity: updated[idx].quantity + quantity }
+        return updated
+      }
+      if (product) {
+        return [...prev, {
+          id: `temp-${Date.now()}`,
+          quantity,
+          product: { ...product, pricing: product.pricing || {} },
+        }]
+      }
+      return prev
+    })
+    addToCart(productId, quantity).then(fetchCart).catch(fetchCart)
   }
 
-  async function update(id, quantity) {
-    await updateCartItem(id, quantity)
-    await fetchCart()
+  function update(id, quantity) {
+    setItems((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, quantity } : item))
+    )
+    updateCartItem(id, quantity).then(fetchCart).catch(fetchCart)
   }
 
-  async function remove(id) {
-    await removeCartItem(id)
-    await fetchCart()
+  function remove(id) {
+    setItems((prev) => prev.filter((item) => item.id !== id))
+    removeCartItem(id).then(fetchCart).catch(fetchCart)
   }
 
   async function clear() {
-    await clearCartApi()
     setItems([])
     setTotal(0)
+    try {
+      await clearCartApi()
+    } catch {}
   }
 
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0)

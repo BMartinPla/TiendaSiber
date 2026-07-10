@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext'
 import { openWhatsApp } from '../services/whatsapp'
 
 export default function Cart() {
-  const { items, total, loading, update, remove, clear } = useCart()
+  const { items, loading, update, remove, clear } = useCart()
   const { user } = useAuth()
   const [localQtys, setLocalQtys] = useState({})
 
@@ -13,6 +13,11 @@ export default function Cart() {
     const item = items.find((i) => i.id === itemId)
     return item ? item.quantity : 1
   }
+
+  const localTotal = items.reduce((sum, item) => {
+    const unitPrice = item.product.pricing?.unitPrice || item.product.precioBase || 0
+    return sum + unitPrice * getQty(item.id)
+  }, 0)
 
   function handleQtyChange(itemId, value) {
     const num = parseInt(value, 10)
@@ -110,7 +115,7 @@ export default function Cart() {
       <div style={styles.footer}>
         <div style={styles.totalRow}>
           <span style={styles.totalLabel}>Total</span>
-          <span style={styles.totalAmount}>${total.toLocaleString('es-CL')}</span>
+          <span style={styles.totalAmount}>${localTotal.toLocaleString('es-CL')}</span>
         </div>
         <button onClick={handleWhatsApp} style={styles.whatsappBtn}>
           💬 Enviar pedido por WhatsApp

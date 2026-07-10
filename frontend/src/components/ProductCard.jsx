@@ -1,22 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useCart } from '../contexts/CartContext'
 import { useAuth } from '../contexts/AuthContext'
 
 export default function ProductCard({ product }) {
   const { add } = useCart()
   const { isWholesale } = useAuth()
+  const [added, setAdded] = useState(false)
 
   const unitPrice = product.pricing?.unitPrice || product.precioBase
   const wholesalePrice = product.pricing?.wholesaleUnitPrice || product.precioMayorista
   const label = product.pricing?.label || ''
 
-  async function handleAdd() {
-    try {
-      await add(product.id)
-      alert(`✅ "${product.name}" agregado al carrito`)
-    } catch {
-      alert('Error al agregar al carrito')
-    }
+  function handleAdd() {
+    if (product.stock <= 0) return
+    add(product.id, 1, product)
+    setAdded(true)
+    setTimeout(() => setAdded(false), 800)
   }
 
   return (
@@ -58,9 +57,10 @@ export default function ProductCard({ product }) {
           style={{
             ...styles.addBtn,
             ...(product.stock <= 0 ? styles.disabledBtn : {}),
+            ...(added ? styles.addedBtn : {}),
           }}
         >
-          {product.stock > 0 ? '🛒 Agregar al carrito' : 'Agotado'}
+          {product.stock <= 0 ? 'Agotado' : added ? '✅ Agregado' : '🛒 Agregar al carrito'}
         </button>
       </div>
     </div>
@@ -171,5 +171,8 @@ const styles = {
   disabledBtn: {
     background: '#ccc',
     cursor: 'not-allowed',
+  },
+  addedBtn: {
+    background: '#2e7d32',
   },
 }
