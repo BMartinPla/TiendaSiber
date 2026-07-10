@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { LogIn, Package } from 'lucide-react'
 import { login } from '../services/api'
 import { useAuth } from '../contexts/AuthContext'
 
@@ -7,119 +8,93 @@ export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
   const { loginUser } = useAuth()
   const navigate = useNavigate()
 
   async function handleSubmit(e) {
     e.preventDefault()
     setError('')
+    setLoading(true)
     try {
       const data = await login(email, password)
       loginUser(data.user, data.token)
       navigate('/')
     } catch (err) {
       setError(err.response?.data?.error || 'Error al iniciar sesión')
+    } finally {
+      setLoading(false)
     }
   }
 
   return (
-    <div style={styles.container}>
-      <div style={styles.card}>
-        <h1 style={styles.title}>🛍️ Iniciar Sesión</h1>
-        {error && <div style={styles.error}>{error}</div>}
-        <form onSubmit={handleSubmit}>
-          <input
-            style={styles.input}
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <input
-            style={styles.input}
-            type="password"
-            placeholder="Contraseña"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <button style={styles.button} type="submit">Entrar</button>
-        </form>
-        <p style={styles.footer}>
-          ¿No tienes cuenta? <Link to="/register">Regístrate</Link>
-        </p>
-        <div style={styles.hint}>
-          <p><strong>Credenciales de prueba:</strong></p>
-          <p>Admin: admin@tiendasiper.com / admin123</p>
-          <p>Cliente: cliente@tiendasiper.com / admin123</p>
-          <p>Mayorista: mayorista@tiendasiper.com / admin123</p>
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+      <div className="w-full max-w-md">
+        <div className="text-center mb-8">
+          <Package className="w-10 h-10 text-emerald-600 mx-auto" />
+          <h1 className="text-2xl font-bold text-gray-900 mt-3">Tienda Siber</h1>
+          <p className="text-sm text-gray-500 mt-1">Inicia sesión para continuar</p>
+        </div>
+
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
+          {error && (
+            <div className="mb-5 bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Email</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="tu@email.com"
+                required
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Contraseña</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                required
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50"
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 transition-colors"
+            >
+              <LogIn className="w-4 h-4" />
+              {loading ? 'Entrando...' : 'Entrar'}
+            </button>
+          </form>
+
+          <p className="text-center text-sm text-gray-500 mt-6">
+            ¿No tienes cuenta?{' '}
+            <Link to="/register" className="text-emerald-600 hover:text-emerald-700 font-medium">
+              Regístrate
+            </Link>
+          </p>
+
+          <div className="mt-6 pt-5 border-t border-gray-100">
+            <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-2">Credenciales de prueba</p>
+            <div className="space-y-1 text-xs text-gray-500">
+              <p><span className="font-medium text-gray-600">Admin:</span> admin@tiendasiper.com / admin123</p>
+              <p><span className="font-medium text-gray-600">Cliente:</span> cliente@tiendasiper.com / admin123</p>
+              <p><span className="font-medium text-gray-600">Mayorista:</span> mayorista@tiendasiper.com / admin123</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   )
-}
-
-const styles = {
-  container: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    minHeight: '80vh',
-  },
-  card: {
-    background: '#fff',
-    padding: '32px',
-    borderRadius: '12px',
-    boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
-    width: '100%',
-    maxWidth: 400,
-  },
-  title: {
-    textAlign: 'center',
-    marginBottom: 24,
-    color: '#1a1a2e',
-  },
-  error: {
-    background: '#ffe0e0',
-    color: '#d32f2f',
-    padding: '10px',
-    borderRadius: 6,
-    marginBottom: 16,
-    fontSize: '0.9rem',
-  },
-  input: {
-    width: '100%',
-    padding: '12px',
-    marginBottom: 12,
-    border: '1px solid #ddd',
-    borderRadius: 6,
-    fontSize: '1rem',
-    boxSizing: 'border-box',
-  },
-  button: {
-    width: '100%',
-    padding: '12px',
-    background: '#1a1a2e',
-    color: '#fff',
-    border: 'none',
-    borderRadius: 6,
-    fontSize: '1rem',
-    cursor: 'pointer',
-    marginTop: 8,
-  },
-  footer: {
-    textAlign: 'center',
-    marginTop: 16,
-    fontSize: '0.9rem',
-  },
-  hint: {
-    marginTop: 20,
-    padding: '12px',
-    background: '#f5f5f5',
-    borderRadius: 6,
-    fontSize: '0.8rem',
-    color: '#666',
-    lineHeight: 1.6,
-  },
 }

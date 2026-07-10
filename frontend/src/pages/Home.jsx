@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { getProducts, getCategories } from '../services/api'
 import ProductCard from '../components/ProductCard'
 import Cart from '../components/Cart'
+import Navbar from '../components/Navbar'
 import { useAuth } from '../contexts/AuthContext'
 
 export default function Home() {
@@ -10,7 +11,7 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState('')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-  const [showCart, setShowCart] = useState(false)
+  const [cartOpen, setCartOpen] = useState(false)
   const { isAdmin } = useAuth()
 
   useEffect(() => {
@@ -33,129 +34,72 @@ export default function Home() {
       .finally(() => setLoading(false))
   }
 
-  if (loading) {
-    return <div style={styles.loading}>Cargando productos...</div>
-  }
-
-  if (error) {
-    return <div style={styles.error}>{error}</div>
-  }
-
   return (
-    <div>
-      <div style={styles.topBar}>
-        <h2 style={styles.title}>🛍️ Nuestros Productos</h2>
-        <button onClick={() => setShowCart(!showCart)} style={styles.cartToggle}>
-          {showCart ? '📋 Ver productos' : '🛒 Ver carrito'}
-        </button>
-      </div>
+    <div className="min-h-screen bg-gray-50">
+      <Navbar onCartClick={() => setCartOpen(true)} />
 
-      {isAdmin && (
-        <div style={styles.adminBanner}>
-          🔧 Vista Admin - Todos los precios visibles
-        </div>
-      )}
+      <main className="pt-20 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        {isAdmin && (
+          <div className="mb-6 bg-amber-50 border border-amber-200 text-amber-700 text-sm font-medium px-4 py-3 rounded-xl">
+            🔧 Vista Admin — Todos los precios visibles
+          </div>
+        )}
 
-      <div style={styles.filterBar}>
-        <label style={styles.filterLabel}>Filtrar por categoría:</label>
-        <select
-          value={selectedCategory}
-          onChange={(e) => handleCategoryChange(e.target.value)}
-          style={styles.filterSelect}
-        >
-          <option value="">Todas las categorías</option>
-          {categories.map((cat) => (
-            <option key={cat.id} value={cat.id}>{cat.name}</option>
-          ))}
-        </select>
-      </div>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Nuestros Productos</h1>
+            <p className="text-sm text-gray-500 mt-1">Encuentra lo que buscas al mejor precio</p>
+          </div>
 
-      {showCart ? (
-        <Cart />
-      ) : (
-        <>
-          {products.length === 0 ? (
-            <p style={styles.empty}>No hay productos disponibles</p>
-          ) : (
-            <div style={styles.grid}>
-              {products.map((product) => (
-                <ProductCard key={product.id} product={product} />
+          <div className="flex items-center gap-3">
+            <label className="text-sm text-gray-500 font-medium hidden sm:block">Filtrar:</label>
+            <select
+              value={selectedCategory}
+              onChange={(e) => handleCategoryChange(e.target.value)}
+              className="w-full sm:w-auto px-4 py-2.5 text-sm border border-gray-200 rounded-xl bg-white shadow-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+            >
+              <option value="">Todas las categorías</option>
+              {categories.map((cat) => (
+                <option key={cat.id} value={cat.id}>{cat.name}</option>
               ))}
-            </div>
-          )}
-        </>
-      )}
+            </select>
+          </div>
+        </div>
+
+        {error && (
+          <div className="mb-6 bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl">
+            {error}
+          </div>
+        )}
+
+        {loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div key={i} className="bg-white rounded-2xl h-80 animate-pulse border border-gray-100">
+                <div className="h-48 bg-gray-100 rounded-t-2xl" />
+                <div className="p-4 space-y-3">
+                  <div className="h-4 bg-gray-100 rounded w-3/4" />
+                  <div className="h-3 bg-gray-100 rounded w-1/2" />
+                  <div className="h-6 bg-gray-100 rounded w-1/3" />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : products.length === 0 ? (
+          <div className="text-center py-20 text-gray-400">
+            <p className="text-lg font-medium">Sin productos</p>
+            <p className="text-sm mt-1">No hay productos en esta categoría</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {products.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        )}
+      </main>
+
+      <Cart open={cartOpen} onClose={() => setCartOpen(false)} />
     </div>
   )
-}
-
-const styles = {
-  topBar: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  title: {
-    margin: 0,
-    color: '#1a1a2e',
-  },
-  cartToggle: {
-    background: '#1a1a2e',
-    color: '#fff',
-    border: 'none',
-    padding: '10px 20px',
-    borderRadius: 8,
-    cursor: 'pointer',
-    fontSize: '0.9rem',
-  },
-  adminBanner: {
-    background: '#fff3e0',
-    color: '#e65100',
-    padding: '8px 16px',
-    borderRadius: 8,
-    marginBottom: 16,
-    fontSize: '0.85rem',
-  },
-  filterBar: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 10,
-    marginBottom: 20,
-  },
-  filterLabel: {
-    fontSize: '0.9rem',
-    color: '#555',
-    fontWeight: 500,
-  },
-  filterSelect: {
-    padding: '8px 12px',
-    border: '1px solid #ddd',
-    borderRadius: 6,
-    fontSize: '0.9rem',
-    background: '#fff',
-    cursor: 'pointer',
-  },
-  grid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
-    gap: 20,
-  },
-  loading: {
-    textAlign: 'center',
-    padding: 40,
-    color: '#888',
-    fontSize: '1.1rem',
-  },
-  error: {
-    textAlign: 'center',
-    padding: 40,
-    color: '#e94560',
-    fontSize: '1.1rem',
-  },
-  empty: {
-    textAlign: 'center',
-    color: '#888',
-    padding: 40,
-  },
 }
