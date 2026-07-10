@@ -7,7 +7,7 @@ import { openWhatsApp } from '../services/whatsapp'
 
 export default function Cart({ open, onClose }) {
   const { items, loading, syncing, update, remove, clear } = useCart()
-  const { user } = useAuth()
+  const { user, isWholesale } = useAuth()
   const [localQtys, setLocalQtys] = useState({})
 
   useEffect(() => {
@@ -23,6 +23,13 @@ export default function Cart({ open, onClose }) {
   const localTotal = items.reduce((sum, item) => {
     const unitPrice = item.product.pricing?.unitPrice || item.product.precioBase || 0
     return sum + unitPrice * getQty(item.id)
+  }, 0)
+
+  const totalSavings = items.reduce((sum, item) => {
+    const base = item.product.precioBase || 0
+    const wholesale = item.product.precioMayorista || 0
+    if (base > wholesale) return sum + (base - wholesale) * getQty(item.id)
+    return sum
   }, 0)
 
   const localCount = items.reduce((sum, item) => sum + getQty(item.id), 0)
@@ -128,6 +135,9 @@ export default function Cart({ open, onClose }) {
 
                     <div className="text-right min-w-[70px]">
                       <p className="text-sm font-bold text-gray-900 dark:text-white">${(unitPrice * qty).toLocaleString('es-CL')}</p>
+                      {isWholesale && item.product.precioBase > item.product.precioMayorista && (
+                        <p className="text-xs text-gray-400 dark:text-gray-500 line-through">${(item.product.precioBase * qty).toLocaleString('es-CL')}</p>
+                      )}
                     </div>
 
                     <button onClick={() => remove(item.id)} className="p-1.5 text-gray-300 dark:text-gray-600 hover:text-red-500 transition-colors">
@@ -146,6 +156,13 @@ export default function Cart({ open, onClose }) {
               <span className="text-sm text-gray-600 dark:text-gray-400">Total</span>
               <span className="text-xl font-bold text-gray-900 dark:text-white">${localTotal.toLocaleString('es-CL')}</span>
             </div>
+
+            {isWholesale && totalSavings > 0 && (
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-emerald-600 dark:text-emerald-400 font-medium">Ahorras</span>
+                <span className="text-base font-bold text-emerald-600 dark:text-emerald-400">${totalSavings.toLocaleString('es-CL')}</span>
+              </div>
+            )}
 
             <button
               onClick={handleWhatsApp}
