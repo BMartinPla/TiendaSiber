@@ -4,6 +4,7 @@ import { ArrowLeft, Plus, X, Save, Trash2, RefreshCw, Package, ShieldOff, Upload
 import { useAuth } from '../contexts/AuthContext'
 import ImageCropper from '../components/ImageCropper'
 import {
+  getProducts,
   createProduct,
   updateProduct,
   bulkUpdatePrices,
