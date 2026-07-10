@@ -153,4 +153,12 @@ export function bulkUpdateUserRole(userIds, role) {
   return api.patch('/users/bulk-role', { userIds, role }).then((res) => res.data)
 }
 
+export function uploadImage(file) {
+  const formData = new FormData()
+  formData.append('image', file)
+  return api.post('/upload', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  }).then((res) => res.data)
+}
+
 export default api

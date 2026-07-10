@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, Plus, X, Save, Trash2, RefreshCw, Package, ShieldOff } from 'lucide-react'
+import { ArrowLeft, Plus, X, Save, Trash2, RefreshCw, Package, ShieldOff, Upload } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import {
   getProducts,
@@ -22,6 +22,7 @@ import {
   getUsers,
   updateUserRole,
   bulkUpdateUserRole,
+  uploadImage,
 } from '../services/api'
 
 export default function AdminDashboard() {
@@ -57,6 +58,7 @@ export default function AdminDashboard() {
   const [selectedUserIds, setSelectedUserIds] = useState([])
   const [selectAllUsers, setSelectAllUsers] = useState(false)
   const [bulkUserRole, setBulkUserRole] = useState('RETAIL')
+  const [uploadingImage, setUploadingImage] = useState(false)
 
   useEffect(() => {
     loadProducts()
@@ -135,6 +137,22 @@ export default function AdminDashboard() {
     if (isError) { setError(msg); setSuccess('') }
     else { setSuccess(msg); setError('') }
     setTimeout(() => { setError(''); setSuccess('') }, 3000)
+  }
+
+  async function handleImageUpload(e, target) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setUploadingImage(true)
+    try {
+      const data = await uploadImage(file)
+      if (target === 'create') setForm((prev) => ({ ...prev, imageUrl: data.url }))
+      else setEditForm((prev) => ({ ...prev, imageUrl: data.url }))
+      showMsg('Imagen subida exitosamente')
+    } catch (err) {
+      showMsg(err.response?.data?.error || 'Error al subir imagen', true)
+    } finally {
+      setUploadingImage(false)
+    }
   }
 
   async function handleCatCreate(e) {
@@ -352,9 +370,23 @@ export default function AdminDashboard() {
                 <input type="number" placeholder="Stock" value={form.stock} onChange={(e) => setForm({ ...form, stock: e.target.value })}
                   className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50" />
               </div>
-              <div>
-                <input placeholder="URL de imagen" value={form.imageUrl} onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50" />
+              <div className="sm:col-span-2">
+                <label className="block text-xs font-medium text-gray-500 mb-1">Imagen</label>
+                <div className="flex items-center gap-3">
+                  <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2.5 border border-gray-200 rounded-xl text-sm bg-gray-50 hover:bg-gray-100 transition-colors">
+                    <Upload size={16} />
+                    {uploadingImage ? 'Subiendo...' : 'Subir imagen'}
+                    <input type="file" accept="image/*" className="hidden" disabled={uploadingImage}
+                      onChange={(e) => handleImageUpload(e, 'create')} />
+                  </label>
+                  {form.imageUrl && (
+                    <button type="button" onClick={() => setForm((prev) => ({ ...prev, imageUrl: '' }))}
+                      className="text-xs text-red-500 hover:text-red-700">Eliminar</button>
+                  )}
+                </div>
+                {form.imageUrl && (
+                  <img src={form.imageUrl} alt="Vista previa" className="mt-2 h-24 w-24 object-cover rounded-lg border" />
+                )}
               </div>
               <div>
                 <select value={form.categoryId} onChange={(e) => setForm({ ...form, categoryId: e.target.value })}
@@ -702,8 +734,24 @@ export default function AdminDashboard() {
               <div className="grid grid-cols-2 gap-4">
                 <input type="number" placeholder="Stock" value={editForm.stock} onChange={(e) => setEditForm({ ...editForm, stock: e.target.value })}
                   className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50" />
-                <input placeholder="URL de imagen" value={editForm.imageUrl} onChange={(e) => setEditForm({ ...editForm, imageUrl: e.target.value })}
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50" />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1">Imagen</label>
+                <div className="flex items-center gap-3">
+                  <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2.5 border border-gray-200 rounded-xl text-sm bg-gray-50 hover:bg-gray-100 transition-colors">
+                    <Upload size={16} />
+                    {uploadingImage ? 'Subiendo...' : 'Subir imagen'}
+                    <input type="file" accept="image/*" className="hidden" disabled={uploadingImage}
+                      onChange={(e) => handleImageUpload(e, 'edit')} />
+                  </label>
+                  {editForm.imageUrl && (
+                    <button type="button" onClick={() => setEditForm((prev) => ({ ...prev, imageUrl: '' }))}
+                      className="text-xs text-red-500 hover:text-red-700">Eliminar</button>
+                  )}
+                </div>
+                {editForm.imageUrl && (
+                  <img src={editForm.imageUrl} alt="Vista previa" className="mt-2 h-24 w-24 object-cover rounded-lg border" />
+                )}
               </div>
               <select value={editForm.categoryId} onChange={(e) => setEditForm({ ...editForm, categoryId: e.target.value })}
                 className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50">
