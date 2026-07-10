@@ -5,12 +5,12 @@ import { useAuth } from '../contexts/AuthContext'
 
 export default function ProductCard({ product }) {
   const { add } = useCart()
-  const { isWholesale } = useAuth()
+  const { isWholesale, isAdmin } = useAuth()
   const [added, setAdded] = useState(false)
 
   const basePrice = product.precioBase || 0
   const wholesalePrice = product.precioMayorista || 0
-  const displayPrice = isWholesale ? wholesalePrice : basePrice
+  const displayPrice = isAdmin ? basePrice : (isWholesale ? wholesalePrice : basePrice)
   const savings = basePrice - wholesalePrice
 
   function handleAdd() {
@@ -53,17 +53,30 @@ export default function ProductCard({ product }) {
 
         <div className="mt-auto space-y-1">
           <div className="flex items-baseline gap-2">
-            <span className="text-xl font-bold text-gray-900">
-              ${displayPrice.toLocaleString('es-CL')}
-            </span>
-            {isWholesale && basePrice > wholesalePrice && (
-              <span className="text-sm text-gray-400 line-through">
-                ${basePrice.toLocaleString('es-CL')}
-              </span>
+            {isAdmin ? (
+              <>
+                <span className="text-xl font-bold text-gray-900">
+                  ${basePrice.toLocaleString('es-CL')}
+                </span>
+                <span className="text-sm bg-gray-100 text-gray-500 px-2 py-0.5 rounded-md font-medium">
+                  May: ${wholesalePrice.toLocaleString('es-CL')}
+                </span>
+              </>
+            ) : (
+              <>
+                <span className="text-xl font-bold text-gray-900">
+                  ${displayPrice.toLocaleString('es-CL')}
+                </span>
+                {isWholesale && basePrice > wholesalePrice && (
+                  <span className="text-sm text-gray-400 line-through">
+                    ${basePrice.toLocaleString('es-CL')}
+                  </span>
+                )}
+              </>
             )}
           </div>
 
-          {isWholesale && savings > 0 && (
+          {!isAdmin && isWholesale && savings > 0 && (
             <span className="inline-block bg-emerald-50 text-emerald-600 text-xs font-semibold px-2 py-0.5 rounded-full">
               Ahorras ${savings.toLocaleString('es-CL')}
             </span>

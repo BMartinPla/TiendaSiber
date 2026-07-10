@@ -62,12 +62,6 @@ export default function Home() {
       <Navbar onCartClick={() => setCartOpen(true)} search={search} onSearch={handleSearch} />
 
       <main className="pt-20 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        {isAdmin && (
-          <div className="mb-6 bg-amber-50 border border-amber-200 text-amber-700 text-sm font-medium px-4 py-3 rounded-xl">
-            🔧 Vista Admin — Todos los precios visibles
-          </div>
-        )}
-
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Nuestros Productos</h1>
