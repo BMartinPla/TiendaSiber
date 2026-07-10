@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowLeft, Plus, X, Save, Trash2, RefreshCw, Package, ShieldOff, Upload, ChevronDown, ChevronRight } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
+import ImageCropper from '../components/ImageCropper'
 import {
-  getProducts,
   createProduct,
   updateProduct,
   bulkUpdatePrices,
@@ -59,6 +59,8 @@ export default function AdminDashboard() {
   const [selectAllUsers, setSelectAllUsers] = useState(false)
   const [bulkUserRole, setBulkUserRole] = useState('RETAIL')
   const [uploadingImage, setUploadingImage] = useState(false)
+  const [cropImageUrl, setCropImageUrl] = useState(null)
+  const [cropTarget, setCropTarget] = useState(null)
 
   useEffect(() => {
     loadProducts()
@@ -142,10 +144,21 @@ export default function AdminDashboard() {
   async function handleImageUpload(e, target) {
     const file = e.target.files?.[0]
     if (!file) return
+    const reader = new FileReader()
+    reader.onload = () => {
+      setCropImageUrl(reader.result)
+      setCropTarget(target)
+    }
+    reader.readAsDataURL(file)
+  }
+
+  async function handleCropConfirm(blob) {
+    setCropImageUrl(null)
     setUploadingImage(true)
     try {
+      const file = new File([blob], 'cropped.jpg', { type: 'image/jpeg' })
       const data = await uploadImage(file)
-      if (target === 'create') setForm((prev) => ({ ...prev, imageUrl: data.url }))
+      if (cropTarget === 'create') setForm((prev) => ({ ...prev, imageUrl: data.url }))
       else setEditForm((prev) => ({ ...prev, imageUrl: data.url }))
       showMsg('Imagen subida exitosamente')
     } catch (err) {
@@ -710,6 +723,10 @@ export default function AdminDashboard() {
           )}
         </div>
       </div>
+
+      {cropImageUrl && (
+        <ImageCropper imageUrl={cropImageUrl} onCrop={handleCropConfirm} onCancel={() => setCropImageUrl(null)} />
+      )}
 
       {editProduct && (
         <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4" onClick={closeEdit}>
