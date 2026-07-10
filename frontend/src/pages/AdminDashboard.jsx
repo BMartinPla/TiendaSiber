@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, Plus, X, Save, Trash2, RefreshCw, Package } from 'lucide-react'
+import { ArrowLeft, Plus, X, Save, Trash2, RefreshCw, Package, ShieldOff } from 'lucide-react'
+import { useAuth } from '../contexts/AuthContext'
 import {
   getProducts,
   createProduct,
   updateProduct,
   bulkUpdatePrices,
+  bulkSuspendProducts,
+  bulkRestoreProducts,
+  bulkDeleteProducts,
   suspendProduct,
   restoreProduct,
   deleteProduct,
@@ -21,6 +25,7 @@ import {
 } from '../services/api'
 
 export default function AdminDashboard() {
+  const { user: currentUser } = useAuth()
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -120,11 +125,11 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     if (selectAllUsers) {
-      setSelectedUserIds(users.filter((u) => u.active).map((u) => u.id))
+      setSelectedUserIds(users.filter((u) => u.active && u.id !== currentUser?.id).map((u) => u.id))
     } else {
       setSelectedUserIds([])
     }
-  }, [selectAllUsers, users])
+  }, [selectAllUsers, users, currentUser])
 
   function showMsg(msg, isError = false) {
     if (isError) { setError(msg); setSuccess('') }
@@ -265,6 +270,20 @@ export default function AdminDashboard() {
       await loadProducts()
       if (expandedCat) await loadCatProducts(expandedCat)
     } catch { showMsg('Error en actualización masiva', true) }
+  }
+
+  async function handleBulkAction(action) {
+    if (selectedIds.length === 0) { showMsg('Selecciona al menos un producto', true); return }
+    const label = { suspend: 'suspendido', restore: 'restaurado', delete: 'eliminado' }[action]
+    if (action === 'delete' && !window.confirm(`¿Eliminar PERMANENTEMENTE ${selectedIds.length} producto(s)?`)) return
+    try {
+      const fn = action === 'suspend' ? bulkSuspendProducts : action === 'restore' ? bulkRestoreProducts : bulkDeleteProducts
+      const res = await fn(selectedIds)
+      showMsg(res.message)
+      setSelectedIds([]); setSelectAll(false)
+      await loadProducts()
+      if (expandedCat) await loadCatProducts(expandedCat)
+    } catch { showMsg(`Error al ${label} productos`, true) }
   }
 
   function toggleSelect(id) {
@@ -478,6 +497,23 @@ export default function AdminDashboard() {
         </div>
 
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          {selectedIds.length > 0 && (
+            <div className="flex items-center gap-2 px-5 py-3 bg-gray-50 border-b border-gray-100">
+              <span className="text-xs text-gray-500 font-medium">{selectedIds.length} seleccionado(s)</span>
+              <button onClick={() => { handleBulkAction('suspend') }}
+                className="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-amber-500 hover:bg-amber-600 transition-colors">
+                Suspender
+              </button>
+              <button onClick={() => { handleBulkAction('restore') }}
+                className="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-emerald-500 hover:bg-emerald-600 transition-colors">
+                Restaurar
+              </button>
+              <button onClick={() => { handleBulkAction('delete') }}
+                className="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-red-500 hover:bg-red-600 transition-colors">
+                Eliminar
+              </button>
+            </div>
+          )}
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
@@ -591,13 +627,15 @@ export default function AdminDashboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  {users.map((u) => (
+                  {users.map((u) => {
+                    const isSelf = u.id === currentUser?.id
+                    return (
                     <tr key={u.id} className={`border-t border-gray-50 hover:bg-gray-50/50 transition-colors ${u.active ? '' : 'opacity-50'}`}>
                       <td className="px-4 py-3">
-                        <input type="checkbox" checked={selectedUserIds.includes(u.id)} onChange={() => toggleUserSelect(u.id)}
-                          className="rounded border-gray-300 text-emerald-600 focus:ring-emerald-500" />
+                        <input type="checkbox" checked={selectedUserIds.includes(u.id)} onChange={() => toggleUserSelect(u.id)} disabled={isSelf}
+                          className="rounded border-gray-300 text-emerald-600 focus:ring-emerald-500 disabled:opacity-30" />
                       </td>
-                      <td className="px-4 py-3 font-medium text-gray-900">{u.name}</td>
+                      <td className="px-4 py-3 font-medium text-gray-900">{u.name}{isSelf && <span className="text-xs text-gray-400 ml-1">(tú)</span>}</td>
                       <td className="px-4 py-3 text-gray-600">{u.email}</td>
                       <td className="px-4 py-3">
                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
@@ -614,6 +652,12 @@ export default function AdminDashboard() {
                         </span>
                       </td>
                       <td className="px-4 py-3">
+                        {isSelf ? (
+                          <div className="flex items-center gap-1.5 text-gray-400 text-xs">
+                            <ShieldOff className="w-3.5 h-3.5" />
+                            Sin cambios
+                          </div>
+                        ) : (
                         <select
                           value={u.role}
                           onChange={(e) => handleRoleChange(u.id, e.target.value)}
@@ -623,9 +667,11 @@ export default function AdminDashboard() {
                           <option value="WHOLESALE">Mayorista</option>
                           <option value="ADMIN">Admin</option>
                         </select>
+                        )}
                       </td>
                     </tr>
-                  ))}
+                    )
+                  })}
                 </tbody>
               </table>
             </div>

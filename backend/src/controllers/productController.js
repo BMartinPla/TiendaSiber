@@ -241,6 +241,59 @@ async function hardDelete(req, res) {
   }
 }
 
+async function bulkSuspend(req, res) {
+  try {
+    const { productIds } = req.body
+    if (!productIds || !Array.isArray(productIds) || productIds.length === 0) {
+      return res.status(400).json({ error: 'Debes enviar un array productIds no vacío' })
+    }
+
+    const result = await prisma.product.updateMany({
+      where: { id: { in: productIds.map(Number) } },
+      data: { active: false },
+    })
+
+    res.json({ message: `${result.count} producto(s) suspendido(s)`, count: result.count })
+  } catch (error) {
+    res.status(500).json({ error: 'Error al suspender productos masivamente' })
+  }
+}
+
+async function bulkRestore(req, res) {
+  try {
+    const { productIds } = req.body
+    if (!productIds || !Array.isArray(productIds) || productIds.length === 0) {
+      return res.status(400).json({ error: 'Debes enviar un array productIds no vacío' })
+    }
+
+    const result = await prisma.product.updateMany({
+      where: { id: { in: productIds.map(Number) } },
+      data: { active: true },
+    })
+
+    res.json({ message: `${result.count} producto(s) restaurado(s)`, count: result.count })
+  } catch (error) {
+    res.status(500).json({ error: 'Error al restaurar productos masivamente' })
+  }
+}
+
+async function bulkDelete(req, res) {
+  try {
+    const { productIds } = req.body
+    if (!productIds || !Array.isArray(productIds) || productIds.length === 0) {
+      return res.status(400).json({ error: 'Debes enviar un array productIds no vacío' })
+    }
+
+    const result = await prisma.product.deleteMany({
+      where: { id: { in: productIds.map(Number) } },
+    })
+
+    res.json({ message: `${result.count} producto(s) eliminado(s) permanentemente`, count: result.count })
+  } catch (error) {
+    res.status(500).json({ error: 'Error al eliminar productos masivamente' })
+  }
+}
+
 module.exports = {
   list,
   getById,
@@ -251,4 +304,7 @@ module.exports = {
   softDelete,
   restore,
   hardDelete,
+  bulkSuspend,
+  bulkRestore,
+  bulkDelete,
 }

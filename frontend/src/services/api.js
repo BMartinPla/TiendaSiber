@@ -61,6 +61,18 @@ export function bulkUpdatePrices(productIds, percentage) {
   return api.post('/products/bulk-update-prices', { productIds, percentage }).then((res) => res.data)
 }
 
+export function bulkSuspendProducts(productIds) {
+  return api.post('/products/bulk-suspend', { productIds }).then((res) => res.data)
+}
+
+export function bulkRestoreProducts(productIds) {
+  return api.post('/products/bulk-restore', { productIds }).then((res) => res.data)
+}
+
+export function bulkDeleteProducts(productIds) {
+  return api.post('/products/bulk-delete', { productIds }).then((res) => res.data)
+}
+
 export function suspendProduct(id) {
   return api.patch(`/products/${id}/suspend`).then((res) => res.data)
 }

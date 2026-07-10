@@ -36,6 +36,10 @@ async function updateRole(req, res) {
     const { id } = req.params
     const { role } = req.body
 
+    if (Number(id) === req.user.id) {
+      return res.status(403).json({ error: 'No puedes cambiar tu propio rol' })
+    }
+
     if (!['ADMIN', 'RETAIL', 'WHOLESALE'].includes(role)) {
       return res.status(400).json({ error: 'Rol inválido. Debe ser ADMIN, RETAIL o WHOLESALE' })
     }
@@ -65,12 +69,18 @@ async function bulkUpdateRole(req, res) {
       return res.status(400).json({ error: 'Debes enviar un array userIds no vacío' })
     }
 
+    const filteredIds = userIds.map(Number).filter((id) => id !== req.user.id)
+
+    if (filteredIds.length === 0) {
+      return res.status(400).json({ error: 'No puedes cambiar tu propio rol' })
+    }
+
     if (!['ADMIN', 'RETAIL', 'WHOLESALE'].includes(role)) {
       return res.status(400).json({ error: 'Rol inválido. Debe ser ADMIN, RETAIL o WHOLESALE' })
     }
 
     const result = await prisma.user.updateMany({
-      where: { id: { in: userIds.map(Number) } },
+      where: { id: { in: filteredIds } },
       data: { role },
     })
 
