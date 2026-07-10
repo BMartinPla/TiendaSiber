@@ -668,12 +668,12 @@ export default function AdminDashboard() {
                           className="rounded border-gray-300 text-emerald-600 focus:ring-emerald-500 disabled:opacity-30" />
                       </td>
                       <td className="px-4 py-3 font-medium text-gray-900 dark:text-white">{u.name}{isSelf && <span className="text-xs text-gray-400 dark:text-gray-500 ml-1">(tú)</span>}</td>
-                      <td className="px-4 py-3 text-gray-600 dark:text-gray-300 dark:text-gray-400">{u.email}</td>
+                      <td className="px-4 py-3 text-gray-600 dark:text-gray-400">{u.email}</td>
                       <td className="px-4 py-3">
                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          u.role === 'ADMIN' ? 'bg-purple-100 text-purple-700' :
-                          u.role === 'WHOLESALE' ? 'bg-emerald-100 text-emerald-700' :
-                          'bg-blue-100 text-blue-700'
+                          u.role === 'ADMIN' ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300' :
+                          u.role === 'WHOLESALE' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300' :
+                          'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300'
                         }`}>
                           {u.role === 'ADMIN' ? 'Admin' : u.role === 'WHOLESALE' ? 'Mayorista' : 'Minorista'}
                         </span>
