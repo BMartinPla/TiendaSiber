@@ -1,8 +1,8 @@
 {
-  "name": "tienda-siber-monorepo",
+  "name": "quince-gear-sn-monorepo",
   "version": "1.0.0",
   "private": true,
-  "description": "E-commerce Tienda Siber - Monorepo",
+  "description": "E-commerce Quince Gear SN - Monorepo",
   "scripts": {
     "start": "cd backend && npm start",
     "install:all": "cd backend && npm install && cd ../frontend && npm install",

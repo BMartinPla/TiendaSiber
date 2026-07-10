@@ -1,4 +1,4 @@
-const STORE_NAME = 'Tienda Siber'
+const STORE_NAME = 'Quince Gear SN'
 const DEFAULT_PHONE = '56912345678'
 
 const ROLE_LABELS = {

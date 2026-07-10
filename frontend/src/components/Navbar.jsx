@@ -32,7 +32,7 @@ export default function Navbar({ onCartClick, search, onSearch }) {
         <div className="flex items-center justify-between h-16 gap-4">
           <Link to="/" className="flex items-center gap-2 shrink-0">
             <Package className="w-7 h-7 text-emerald-600" />
-            <span className="text-xl font-bold text-gray-900 hidden sm:block">Tienda Siber</span>
+            <span className="text-xl font-bold text-gray-900 hidden sm:block">Quince Gear SN</span>
           </Link>
 
           <div className="flex-1 max-w-md hidden sm:block">

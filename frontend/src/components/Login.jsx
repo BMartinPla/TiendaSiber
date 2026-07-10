@@ -32,7 +32,7 @@ export default function Login() {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Package className="w-10 h-10 text-emerald-600 mx-auto" />
-          <h1 className="text-2xl font-bold text-gray-900 mt-3">Tienda Siber</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mt-3">Quince Gear SN</h1>
           <p className="text-sm text-gray-500 mt-1">Inicia sesión para continuar</p>
         </div>
 

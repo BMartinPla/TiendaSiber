@@ -1,7 +1,7 @@
 {
-  "name": "tienda-siber-backend",
+  "name": "quince-gear-sn-backend",
   "version": "1.0.0",
-  "description": "Backend e-commerce Tienda Siber",
+  "description": "Backend e-commerce Quince Gear SN",
   "main": "src/server.js",
   "scripts": {
     "dev": "nodemon src/server.js",
