@@ -2,13 +2,15 @@ import axios from 'axios'
 
 const api = axios.create({
   baseURL: '/api',
-  headers: { 'Content-Type': 'application/json' },
 })
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token')
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
+  }
+  if (!(config.data instanceof FormData)) {
+    config.headers['Content-Type'] = 'application/json'
   }
   return config
 })
@@ -156,9 +158,7 @@ export function bulkUpdateUserRole(userIds, role) {
 export function uploadImage(file) {
   const formData = new FormData()
   formData.append('image', file)
-  return api.post('/upload', formData, {
-    headers: { 'Content-Type': 'multipart/form-data' },
-  }).then((res) => res.data)
+  return api.post('/upload', formData).then((res) => res.data)
 }
 
 export default api

@@ -20,7 +20,7 @@ async function uploadFile(req, res) {
 
     if (error) {
       console.error('Supabase upload error:', error)
-      return res.status(500).json({ error: 'Error al subir archivo a Storage' })
+      return res.status(500).json({ error: 'Error al subir archivo a Storage', detail: error.message })
     }
 
     const { data: urlData } = supabase.storage.from(BUCKET).getPublicUrl(fileName)
@@ -28,7 +28,7 @@ async function uploadFile(req, res) {
     res.json({ url: urlData.publicUrl, filename: fileName })
   } catch (error) {
     console.error('Upload error:', error)
-    res.status(500).json({ error: 'Error al subir archivo' })
+    res.status(500).json({ error: 'Error al subir archivo', detail: error.message })
   }
 }
 
