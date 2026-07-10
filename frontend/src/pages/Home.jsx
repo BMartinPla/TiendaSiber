@@ -3,7 +3,6 @@ import { getProducts, getCategories } from '../services/api'
 import ProductCard from '../components/ProductCard'
 import Cart from '../components/Cart'
 import Navbar from '../components/Navbar'
-import { useAuth } from '../contexts/AuthContext'
 
 export default function Home() {
   const [products, setProducts] = useState([])
@@ -14,7 +13,6 @@ export default function Home() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [cartOpen, setCartOpen] = useState(false)
-  const { isAdmin } = useAuth()
 
   useEffect(() => {
     Promise.all([getProducts(), getCategories()])

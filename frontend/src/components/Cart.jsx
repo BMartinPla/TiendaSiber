@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { X, Minus, Plus, Trash2, MessageCircle } from 'lucide-react'
 import { useCart } from '../contexts/CartContext'
 import { useAuth } from '../contexts/AuthContext'
+import { getCart } from '../services/api'
 import { openWhatsApp } from '../services/whatsapp'
 
 export default function Cart({ open, onClose }) {
-  const { items, loading, syncing, update, remove, clear, refresh } = useCart()
+  const { items, loading, syncing, update, remove, clear } = useCart()
   const { user } = useAuth()
   const [localQtys, setLocalQtys] = useState({})
 
@@ -53,9 +54,9 @@ export default function Cart({ open, onClose }) {
 
   async function handleWhatsApp() {
     if (items.length === 0 || syncing) return
-    await refresh()
+    const data = await getCart()
     openWhatsApp(
-      items.map((item) => ({ quantity: item.quantity, product: item.product })),
+      data.items.map((item) => ({ quantity: item.quantity, product: item.product })),
       user
     )
   }
