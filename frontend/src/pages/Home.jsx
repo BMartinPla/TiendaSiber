@@ -9,6 +9,7 @@ export default function Home() {
   const [products, setProducts] = useState([])
   const [categories, setCategories] = useState([])
   const [selectedCategory, setSelectedCategory] = useState('')
+  const [sortBy, setSortBy] = useState('')
   const [search, setSearch] = useState('')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -33,20 +34,27 @@ export default function Home() {
       .finally(() => setLoading(false))
   }
 
+  function buildParams(category, searchTerm, sort) {
+    const params = new URLSearchParams()
+    if (category) params.set('categoryId', category)
+    if (searchTerm) params.set('search', searchTerm)
+    if (sort) params.set('sortBy', sort)
+    return params.toString() ? `?${params.toString()}` : ''
+  }
+
   function handleCategoryChange(categoryId) {
     setSelectedCategory(categoryId)
-    const params = new URLSearchParams()
-    if (categoryId) params.set('categoryId', categoryId)
-    if (search) params.set('search', search)
-    loadProducts(params.toString() ? `?${params.toString()}` : '')
+    loadProducts(buildParams(categoryId, search, sortBy))
   }
 
   function handleSearch(value) {
     setSearch(value)
-    const params = new URLSearchParams()
-    if (value) params.set('search', value)
-    if (selectedCategory) params.set('categoryId', selectedCategory)
-    loadProducts(params.toString() ? `?${params.toString()}` : '')
+    loadProducts(buildParams(selectedCategory, value, sortBy))
+  }
+
+  function handleSortChange(value) {
+    setSortBy(value)
+    loadProducts(buildParams(selectedCategory, search, value))
   }
 
   return (
@@ -77,6 +85,15 @@ export default function Home() {
               {categories.map((cat) => (
                 <option key={cat.id} value={cat.id}>{cat.name}</option>
               ))}
+            </select>
+            <select
+              value={sortBy}
+              onChange={(e) => handleSortChange(e.target.value)}
+              className="w-full sm:w-auto px-4 py-2.5 text-sm border border-gray-200 rounded-xl bg-white shadow-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+            >
+              <option value="">Por defecto</option>
+              <option value="price_asc">Menor precio</option>
+              <option value="price_desc">Mayor precio</option>
             </select>
           </div>
         </div>

@@ -15,10 +15,14 @@ async function list(req, res) {
       where.name = { contains: req.query.search, mode: 'insensitive' }
     }
 
+    let orderBy = { name: 'asc' }
+    if (req.query.sortBy === 'price_asc') orderBy = { precioBase: 'asc' }
+    else if (req.query.sortBy === 'price_desc') orderBy = { precioBase: 'desc' }
+
     const products = await prisma.product.findMany({
       where,
       include: productInclude,
-      orderBy: { name: 'asc' },
+      orderBy,
     })
 
     const strategy = getPricingStrategy(req.user?.role || 'RETAIL')

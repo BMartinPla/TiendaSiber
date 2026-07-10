@@ -383,8 +383,8 @@ export default function AdminDashboard() {
                                       className={`px-2 py-1 rounded-lg text-xs font-medium text-white ${p.active ? 'bg-amber-500 hover:bg-amber-600' : 'bg-emerald-500 hover:bg-emerald-600'} transition-colors`}>
                                       {p.active ? 'Suspender' : 'Restaurar'}
                                     </button>
-                                    <button onClick={() => handleHardDelete(p)} disabled={p.active}
-                                      className="px-2 py-1 rounded-lg text-xs font-medium text-white bg-red-500 hover:bg-red-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
+                                    <button onClick={() => handleHardDelete(p)}
+                                      className="px-2 py-1 rounded-lg text-xs font-medium text-white bg-red-500 hover:bg-red-600 transition-colors">
                                       <Trash2 className="w-3 h-3" />
                                     </button>
                                   </div>
@@ -463,8 +463,8 @@ export default function AdminDashboard() {
                             className={`px-2.5 py-1.5 rounded-lg text-xs font-medium text-white ${p.active ? 'bg-amber-500 hover:bg-amber-600' : 'bg-emerald-500 hover:bg-emerald-600'} transition-colors`}>
                             {p.active ? 'Suspender' : 'Restaurar'}
                           </button>
-                          <button onClick={() => handleHardDelete(p)} disabled={p.active}
-                            className="px-2.5 py-1.5 rounded-lg text-xs font-medium text-white bg-red-500 hover:bg-red-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
+                          <button onClick={() => handleHardDelete(p)}
+                            className="px-2.5 py-1.5 rounded-lg text-xs font-medium text-white bg-red-500 hover:bg-red-600 transition-colors">
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
                         </div>
