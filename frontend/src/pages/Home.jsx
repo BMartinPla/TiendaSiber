@@ -9,6 +9,7 @@ export default function Home() {
   const [products, setProducts] = useState([])
   const [categories, setCategories] = useState([])
   const [selectedCategory, setSelectedCategory] = useState('')
+  const [search, setSearch] = useState('')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [cartOpen, setCartOpen] = useState(false)
@@ -24,19 +25,33 @@ export default function Home() {
       .finally(() => setLoading(false))
   }, [])
 
-  function handleCategoryChange(categoryId) {
-    setSelectedCategory(categoryId)
+  function loadProducts(params = '') {
     setLoading(true)
-    const params = categoryId ? `?categoryId=${categoryId}` : ''
     getProducts(params)
       .then(setProducts)
-      .catch((err) => setError(err.response?.data?.error || 'Error al filtrar'))
+      .catch((err) => setError(err.response?.data?.error || 'Error al cargar productos'))
       .finally(() => setLoading(false))
+  }
+
+  function handleCategoryChange(categoryId) {
+    setSelectedCategory(categoryId)
+    const params = new URLSearchParams()
+    if (categoryId) params.set('categoryId', categoryId)
+    if (search) params.set('search', search)
+    loadProducts(params.toString() ? `?${params.toString()}` : '')
+  }
+
+  function handleSearch(value) {
+    setSearch(value)
+    const params = new URLSearchParams()
+    if (value) params.set('search', value)
+    if (selectedCategory) params.set('categoryId', selectedCategory)
+    loadProducts(params.toString() ? `?${params.toString()}` : '')
   }
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar onCartClick={() => setCartOpen(true)} />
+      <Navbar onCartClick={() => setCartOpen(true)} search={search} onSearch={handleSearch} />
 
       <main className="pt-20 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         {isAdmin && (

@@ -1,14 +1,13 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { ShoppingCart, Search, LogOut, User, Package } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import { useCart } from '../contexts/CartContext'
 
-export default function Navbar({ onCartClick }) {
+export default function Navbar({ onCartClick, search, onSearch }) {
   const { user, logout, isAdmin } = useAuth()
   const { itemCount } = useCart()
   const navigate = useNavigate()
-  const [search, setSearch] = useState('')
 
   function handleLogout() {
     logout()
@@ -43,7 +42,7 @@ export default function Navbar({ onCartClick }) {
                 type="text"
                 placeholder="Buscar productos..."
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => onSearch(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50"
               />
             </div>

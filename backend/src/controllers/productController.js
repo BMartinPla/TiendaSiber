@@ -11,6 +11,10 @@ async function list(req, res) {
       where.categoryId = Number(req.query.categoryId)
     }
 
+    if (req.query.search) {
+      where.name = { contains: req.query.search, mode: 'insensitive' }
+    }
+
     const products = await prisma.product.findMany({
       where,
       include: productInclude,

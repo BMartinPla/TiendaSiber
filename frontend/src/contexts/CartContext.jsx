@@ -9,6 +9,9 @@ export function CartProvider({ children }) {
   const [items, setItems] = useState([])
   const [total, setTotal] = useState(0)
   const [loading, setLoading] = useState(false)
+  const [pendingOps, setPendingOps] = useState(0)
+
+  const syncing = pendingOps > 0
 
   const fetchCart = useCallback(async () => {
     if (!user) {
@@ -33,6 +36,37 @@ export function CartProvider({ children }) {
     fetchCart()
   }, [fetchCart])
 
+  function trackOp(promise) {
+    setPendingOps((prev) => prev + 1)
+    return promise.finally(() => setPendingOps((prev) => prev - 1))
+  }
+
+  function reconcileAdd(serverItem, productId, product) {
+    setItems((prev) => {
+      const idx = prev.findIndex((item) => item.product.id === productId)
+      if (idx !== -1) {
+        const updated = [...prev]
+        updated[idx] = {
+          id: serverItem.id,
+          quantity: Math.max(serverItem.quantity, prev[idx].quantity),
+          product: {
+            ...(product || prev[idx].product),
+            pricing: prev[idx].product.pricing || {},
+          },
+        }
+        return updated
+      }
+      return [...prev, {
+        id: serverItem.id,
+        quantity: serverItem.quantity,
+        product: {
+          ...product,
+          pricing: product?.pricing || {},
+        },
+      }]
+    })
+  }
+
   function add(productId, quantity = 1, product = null) {
     setItems((prev) => {
       const idx = prev.findIndex((item) => item.product.id === productId)
@@ -50,33 +84,40 @@ export function CartProvider({ children }) {
       }
       return prev
     })
-    addToCart(productId, quantity).then(fetchCart).catch(fetchCart)
+    trackOp(
+      addToCart(productId, quantity).then((serverItem) => {
+        reconcileAdd(serverItem, productId, product)
+      }).catch(fetchCart)
+    )
   }
 
   function update(id, quantity) {
-    setItems((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, quantity } : item))
+    trackOp(
+      updateCartItem(id, quantity).then(() => {
+        setItems((prev) =>
+          prev.map((item) => (item.id === id ? { ...item, quantity } : item))
+        )
+      }).catch(fetchCart)
     )
-    updateCartItem(id, quantity).then(fetchCart).catch(fetchCart)
   }
 
   function remove(id) {
     setItems((prev) => prev.filter((item) => item.id !== id))
-    removeCartItem(id).then(fetchCart).catch(fetchCart)
+    trackOp(
+      removeCartItem(id).catch(fetchCart)
+    )
   }
 
-  async function clear() {
+  function clear() {
     setItems([])
     setTotal(0)
-    try {
-      await clearCartApi()
-    } catch {}
+    trackOp(clearCartApi().catch(() => {}))
   }
 
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0)
 
   return (
-    <CartContext.Provider value={{ items, total, loading, itemCount, add, update, remove, clear, refresh: fetchCart }}>
+    <CartContext.Provider value={{ items, total, loading, syncing, itemCount, add, update, remove, clear, refresh: fetchCart }}>
       {children}
     </CartContext.Provider>
   )

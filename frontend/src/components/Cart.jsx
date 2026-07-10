@@ -5,7 +5,7 @@ import { useAuth } from '../contexts/AuthContext'
 import { openWhatsApp } from '../services/whatsapp'
 
 export default function Cart({ open, onClose }) {
-  const { items, loading, update, remove, clear } = useCart()
+  const { items, loading, syncing, update, remove, clear, refresh } = useCart()
   const { user } = useAuth()
   const [localQtys, setLocalQtys] = useState({})
 
@@ -51,13 +51,13 @@ export default function Cart({ open, onClose }) {
     update(itemId, next)
   }
 
-  function handleWhatsApp() {
-    if (items.length === 0) return
-    const cartData = items.map((item) => ({
-      quantity: item.quantity,
-      product: item.product,
-    }))
-    openWhatsApp(cartData, user)
+  async function handleWhatsApp() {
+    if (items.length === 0 || syncing) return
+    await refresh()
+    openWhatsApp(
+      items.map((item) => ({ quantity: item.quantity, product: item.product })),
+      user
+    )
   }
 
   return (
@@ -148,10 +148,11 @@ export default function Cart({ open, onClose }) {
 
             <button
               onClick={handleWhatsApp}
-              className="w-full flex items-center justify-center gap-3 py-3.5 rounded-xl text-sm font-bold text-white bg-[#25d366] hover:bg-[#20bd5a] active:scale-[0.98] transition-all duration-200 shadow-lg shadow-[#25d366]/25"
+              disabled={syncing}
+              className="w-full flex items-center justify-center gap-3 py-3.5 rounded-xl text-sm font-bold text-white bg-[#25d366] hover:bg-[#20bd5a] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100 transition-all duration-200 shadow-lg shadow-[#25d366]/25"
             >
-              <MessageCircle className="w-5 h-5" />
-              Enviar pedido por WhatsApp
+              <MessageCircle className={`w-5 h-5 ${syncing ? 'animate-pulse' : ''}`} />
+              {syncing ? 'Sincronizando...' : 'Enviar pedido por WhatsApp'}
             </button>
           </div>
         )}

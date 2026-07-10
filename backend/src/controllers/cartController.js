@@ -43,29 +43,20 @@ async function addItem(req, res) {
       return res.status(404).json({ error: 'Producto no encontrado' })
     }
 
-    const existing = await prisma.cartItem.findUnique({
+    const item = await prisma.cartItem.upsert({
       where: { userId_productId: { userId: req.user.id, productId: Number(productId) } },
-    })
-
-    if (existing) {
-      const updated = await prisma.cartItem.update({
-        where: { id: existing.id },
-        data: { quantity: existing.quantity + (quantity || 1) },
-        include: { product: { include: { category: { select: { id: true, name: true } } } } },
-      })
-      return res.json(updated)
-    }
-
-    const item = await prisma.cartItem.create({
-      data: {
+      create: {
         userId: req.user.id,
         productId: Number(productId),
         quantity: quantity || 1,
       },
+      update: {
+        quantity: { increment: quantity || 1 },
+      },
       include: { product: { include: { category: { select: { id: true, name: true } } } } },
     })
 
-    res.status(201).json(item)
+    res.json(item)
   } catch (error) {
     res.status(500).json({ error: 'Error al agregar al carrito' })
   }
