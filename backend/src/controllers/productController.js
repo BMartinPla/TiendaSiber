@@ -1,0 +1,246 @@
+const prisma = require('../config/database')
+const { getPricingStrategy } = require('../strategies/pricingStrategy')
+
+const productInclude = { category: { select: { id: true, name: true } } }
+
+async function list(req, res) {
+  try {
+    const where = req.user?.role === 'ADMIN' ? {} : { active: true }
+
+    if (req.query.categoryId) {
+      where.categoryId = Number(req.query.categoryId)
+    }
+
+    const products = await prisma.product.findMany({
+      where,
+      include: productInclude,
+      orderBy: { name: 'asc' },
+    })
+
+    const strategy = getPricingStrategy(req.user?.role || 'RETAIL')
+
+    const result = products.map((product) => {
+      const pricing = strategy.getPrice(product)
+      return {
+        ...product,
+        pricing,
+      }
+    })
+
+    res.json(result)
+  } catch (error) {
+    res.status(500).json({ error: 'Error al obtener productos' })
+  }
+}
+
+async function getById(req, res) {
+  try {
+    const { id } = req.params
+    const where = req.user?.role === 'ADMIN' ? { id: Number(id) } : { id: Number(id), active: true }
+
+    const product = await prisma.product.findFirst({
+      where,
+      include: productInclude,
+    })
+    if (!product) {
+      return res.status(404).json({ error: 'Producto no encontrado' })
+    }
+
+    const strategy = getPricingStrategy(req.user?.role || 'RETAIL')
+    const pricing = strategy.getPrice(product)
+
+    res.json({ ...product, pricing })
+  } catch (error) {
+    res.status(500).json({ error: 'Error al obtener producto' })
+  }
+}
+
+async function create(req, res) {
+  try {
+    const { name, description, precioBase, precioMayorista, stock, imageUrl, categoryId } = req.body
+
+    if (!name || precioBase == null || precioMayorista == null) {
+      return res.status(400).json({ error: 'Nombre, precio_base y precio_mayorista son obligatorios' })
+    }
+
+    const product = await prisma.product.create({
+      data: {
+        name,
+        description,
+        precioBase,
+        precioMayorista,
+        stock: stock || 0,
+        imageUrl,
+        categoryId: categoryId || null,
+      },
+      include: productInclude,
+    })
+
+    res.status(201).json(product)
+  } catch (error) {
+    res.status(500).json({ error: 'Error al crear producto' })
+  }
+}
+
+async function update(req, res) {
+  try {
+    const { id } = req.params
+    const { name, description, precioBase, precioMayorista, stock, imageUrl, categoryId } = req.body
+
+    const product = await prisma.product.findUnique({ where: { id: Number(id) } })
+    if (!product) {
+      return res.status(404).json({ error: 'Producto no encontrado' })
+    }
+
+    const updated = await prisma.product.update({
+      where: { id: Number(id) },
+      data: {
+        ...(name !== undefined && { name }),
+        ...(description !== undefined && { description }),
+        ...(precioBase !== undefined && { precioBase }),
+        ...(precioMayorista !== undefined && { precioMayorista }),
+        ...(stock !== undefined && { stock }),
+        ...(imageUrl !== undefined && { imageUrl }),
+        ...(categoryId !== undefined && { categoryId: categoryId || null }),
+      },
+      include: productInclude,
+    })
+
+    res.json(updated)
+  } catch (error) {
+    res.status(500).json({ error: 'Error al actualizar producto' })
+  }
+}
+
+async function updatePrice(req, res) {
+  try {
+    const { id } = req.params
+    const { precioBase, precioMayorista } = req.body
+
+    if (precioBase == null && precioMayorista == null) {
+      return res.status(400).json({ error: 'Debes enviar precio_base y/o precio_mayorista' })
+    }
+
+    const product = await prisma.product.findUnique({ where: { id: Number(id) } })
+    if (!product) {
+      return res.status(404).json({ error: 'Producto no encontrado' })
+    }
+
+    const updated = await prisma.product.update({
+      where: { id: Number(id) },
+      data: {
+        ...(precioBase !== undefined && { precioBase }),
+        ...(precioMayorista !== undefined && { precioMayorista }),
+      },
+    })
+
+    res.json({ message: 'Precio actualizado', product: updated })
+  } catch (error) {
+    res.status(500).json({ error: 'Error al actualizar precio' })
+  }
+}
+
+async function bulkUpdatePrices(req, res) {
+  try {
+    const { productIds, percentage } = req.body
+
+    if (!productIds || !Array.isArray(productIds) || productIds.length === 0) {
+      return res.status(400).json({ error: 'Debes enviar un array productIds no vacío' })
+    }
+
+    if (percentage == null || isNaN(percentage)) {
+      return res.status(400).json({ error: 'Debes enviar un percentage válido' })
+    }
+
+    const multiplier = 1 + percentage / 100
+
+    const result = await prisma.product.updateMany({
+      where: { id: { in: productIds.map(Number) } },
+      data: {
+        precioBase: { multiply: multiplier },
+        precioMayorista: { multiply: multiplier },
+      },
+    })
+
+    const updatedProducts = await prisma.product.findMany({
+      where: { id: { in: productIds.map(Number) } },
+    })
+
+    res.json({
+      message: `Precios actualizados: ${percentage >= 0 ? '+' : ''}${percentage}%`,
+      affectedCount: result.count,
+      products: updatedProducts,
+    })
+  } catch (error) {
+    res.status(500).json({ error: 'Error al actualizar precios masivamente' })
+  }
+}
+
+async function softDelete(req, res) {
+  try {
+    const { id } = req.params
+
+    const product = await prisma.product.findUnique({ where: { id: Number(id) } })
+    if (!product) {
+      return res.status(404).json({ error: 'Producto no encontrado' })
+    }
+
+    const updated = await prisma.product.update({
+      where: { id: Number(id) },
+      data: { active: false },
+    })
+
+    res.json({ message: 'Producto suspendido (borrado lógico)', product: updated })
+  } catch (error) {
+    res.status(500).json({ error: 'Error al suspender producto' })
+  }
+}
+
+async function restore(req, res) {
+  try {
+    const { id } = req.params
+
+    const product = await prisma.product.findUnique({ where: { id: Number(id) } })
+    if (!product) {
+      return res.status(404).json({ error: 'Producto no encontrado' })
+    }
+
+    const updated = await prisma.product.update({
+      where: { id: Number(id) },
+      data: { active: true },
+    })
+
+    res.json({ message: 'Producto restaurado', product: updated })
+  } catch (error) {
+    res.status(500).json({ error: 'Error al restaurar producto' })
+  }
+}
+
+async function hardDelete(req, res) {
+  try {
+    const { id } = req.params
+
+    const product = await prisma.product.findUnique({ where: { id: Number(id) } })
+    if (!product) {
+      return res.status(404).json({ error: 'Producto no encontrado' })
+    }
+
+    await prisma.product.delete({ where: { id: Number(id) } })
+
+    res.json({ message: 'Producto eliminado permanentemente' })
+  } catch (error) {
+    res.status(500).json({ error: 'Error al eliminar producto' })
+  }
+}
+
+module.exports = {
+  list,
+  getById,
+  create,
+  update,
+  updatePrice,
+  bulkUpdatePrices,
+  softDelete,
+  restore,
+  hardDelete,
+}
