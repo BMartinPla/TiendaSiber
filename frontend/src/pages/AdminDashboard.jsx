@@ -435,7 +435,7 @@ export default function AdminDashboard() {
               categories.map((cat) => (
                 <div key={cat.id}>
                   <div
-                    className={`flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl text-sm cursor-pointer transition-colors hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-700 ${cat.active ? 'opacity-100' : 'opacity-50'}`}
+                    className={`flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-800 rounded-xl text-sm cursor-pointer transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 ${cat.active ? 'opacity-100' : 'opacity-50'}`}
                     onClick={() => cat.active && toggleExpandCat(cat.id)}
                   >
                     <div className="flex items-center gap-2">
@@ -457,7 +457,7 @@ export default function AdminDashboard() {
                   </div>
 
                   {expandedCat === cat.id && (
-                    <div className="ml-6 mt-2 bg-white border border-gray-100 dark:border-gray-700 rounded-xl overflow-hidden">
+                    <div className="ml-6 mt-2 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl overflow-hidden">
                       {catProductsLoading ? (
                         <div className="p-4 text-sm text-gray-400 dark:text-gray-500">Cargando...</div>
                       ) : catProducts.length === 0 ? (
@@ -466,21 +466,21 @@ export default function AdminDashboard() {
                         <table className="w-full text-xs">
                           <thead>
                             <tr className="bg-gray-50 dark:bg-gray-800/50">
-                              <th className="text-left px-4 py-2 font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500">Producto</th>
-                              <th className="text-left px-4 py-2 font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500">P. Base</th>
-                              <th className="text-left px-4 py-2 font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500">P. May.</th>
-                              <th className="text-left px-4 py-2 font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500">Stock</th>
-                              <th className="text-left px-4 py-2 font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500">Estado</th>
-                              <th className="text-left px-4 py-2 font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500">Acción</th>
+                              <th className="text-left px-4 py-2 font-semibold text-gray-500 dark:text-gray-400">Producto</th>
+                              <th className="text-left px-4 py-2 font-semibold text-gray-500 dark:text-gray-400">P. Base</th>
+                              <th className="text-left px-4 py-2 font-semibold text-gray-500 dark:text-gray-400">P. May.</th>
+                              <th className="text-left px-4 py-2 font-semibold text-gray-500 dark:text-gray-400">Stock</th>
+                              <th className="text-left px-4 py-2 font-semibold text-gray-500 dark:text-gray-400">Estado</th>
+                              <th className="text-left px-4 py-2 font-semibold text-gray-500 dark:text-gray-400">Acción</th>
                             </tr>
                           </thead>
                           <tbody>
                             {catProducts.map((p) => (
-                              <tr key={p.id} className={`border-t border-gray-50 ${p.active ? 'opacity-100' : 'opacity-50'}`}>
+                              <tr key={p.id} className={`border-t border-gray-50 dark:border-gray-700 ${p.active ? 'opacity-100' : 'opacity-50'}`}>
                                 <td className="px-4 py-2 font-medium text-gray-900 dark:text-white">{p.name}</td>
-                                <td className="px-4 py-2 text-gray-600 dark:text-gray-300 dark:text-gray-400">${p.precioBase.toLocaleString('es-CL')}</td>
-                                <td className="px-4 py-2 text-gray-600 dark:text-gray-300 dark:text-gray-400">${p.precioMayorista.toLocaleString('es-CL')}</td>
-                                <td className="px-4 py-2 text-gray-600 dark:text-gray-300 dark:text-gray-400">{p.stock}</td>
+                                <td className="px-4 py-2 text-gray-600 dark:text-gray-400">${p.precioBase.toLocaleString('es-CL')}</td>
+                                <td className="px-4 py-2 text-gray-600 dark:text-gray-400">${p.precioMayorista.toLocaleString('es-CL')}</td>
+                                <td className="px-4 py-2 text-gray-600 dark:text-gray-400">{p.stock}</td>
                                 <td className="px-4 py-2">
                                   <span className={`text-xs font-medium ${p.active ? 'text-emerald-600' : 'text-red-500'}`}>
                                     {p.active ? 'Activo' : 'Suspendido'}
