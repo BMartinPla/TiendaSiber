@@ -57,4 +57,27 @@ async function updateRole(req, res) {
   }
 }
 
-module.exports = { list, updateRole }
+async function bulkUpdateRole(req, res) {
+  try {
+    const { userIds, role } = req.body
+
+    if (!userIds || !Array.isArray(userIds) || userIds.length === 0) {
+      return res.status(400).json({ error: 'Debes enviar un array userIds no vacío' })
+    }
+
+    if (!['ADMIN', 'RETAIL', 'WHOLESALE'].includes(role)) {
+      return res.status(400).json({ error: 'Rol inválido. Debe ser ADMIN, RETAIL o WHOLESALE' })
+    }
+
+    const result = await prisma.user.updateMany({
+      where: { id: { in: userIds.map(Number) } },
+      data: { role },
+    })
+
+    res.json({ message: `${result.count} usuario(s) actualizado(s) a ${role}`, count: result.count })
+  } catch (error) {
+    res.status(500).json({ error: 'Error al actualizar roles masivamente' })
+  }
+}
+
+module.exports = { list, updateRole, bulkUpdateRole }

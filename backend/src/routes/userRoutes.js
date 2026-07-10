@@ -7,6 +7,18 @@ const userController = require('../controllers/userController')
 const router = Router()
 
 router.get('/', authenticate, authorize('ADMIN'), userController.list)
+
+router.patch(
+  '/bulk-role',
+  authenticate,
+  authorize('ADMIN'),
+  [
+    body('userIds').isArray({ min: 1 }).withMessage('Debes enviar un array userIds no vacío'),
+    body('role').isIn(['ADMIN', 'RETAIL', 'WHOLESALE']).withMessage('Rol inválido'),
+  ],
+  userController.bulkUpdateRole
+)
+
 router.patch(
   '/:id/role',
   authenticate,

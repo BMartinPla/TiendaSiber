@@ -17,6 +17,7 @@ import {
   deleteCategory,
   getUsers,
   updateUserRole,
+  bulkUpdateUserRole,
 } from '../services/api'
 
 export default function AdminDashboard() {
@@ -48,6 +49,9 @@ export default function AdminDashboard() {
   const [users, setUsers] = useState([])
   const [usersLoading, setUsersLoading] = useState(false)
   const [userSearch, setUserSearch] = useState('')
+  const [selectedUserIds, setSelectedUserIds] = useState([])
+  const [selectAllUsers, setSelectAllUsers] = useState(false)
+  const [bulkUserRole, setBulkUserRole] = useState('RETAIL')
 
   useEffect(() => {
     loadProducts()
@@ -93,6 +97,34 @@ export default function AdminDashboard() {
       showMsg(err.response?.data?.error || 'Error al actualizar rol', true)
     }
   }
+
+  async function handleBulkRoleChange(newRole) {
+    if (selectedUserIds.length === 0) { showMsg('Selecciona al menos un usuario', true); return }
+    try {
+      const res = await bulkUpdateUserRole(selectedUserIds, newRole)
+      showMsg(res.message)
+      setSelectedUserIds([])
+      setSelectAllUsers(false)
+      loadUsers(userSearch)
+    } catch (err) {
+      showMsg(err.response?.data?.error || 'Error al actualizar roles', true)
+    }
+  }
+
+  function toggleUserSelect(id) {
+    setSelectedUserIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+    )
+    setSelectAllUsers(false)
+  }
+
+  useEffect(() => {
+    if (selectAllUsers) {
+      setSelectedUserIds(users.filter((u) => u.active).map((u) => u.id))
+    } else {
+      setSelectedUserIds([])
+    }
+  }, [selectAllUsers, users])
 
   function showMsg(msg, isError = false) {
     if (isError) { setError(msg); setSuccess('') }
@@ -508,14 +540,34 @@ export default function AdminDashboard() {
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
           <h2 className="text-base font-bold text-gray-900 mb-4">Usuarios</h2>
 
-          <div className="mb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
             <input
               type="text"
               placeholder="Buscar por nombre o email..."
               value={userSearch}
               onChange={(e) => handleUserSearch(e.target.value)}
-              className="w-full max-w-xs px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50"
+              className="w-full sm:max-w-xs px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50"
             />
+            {selectedUserIds.length > 0 && (
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-gray-500 font-medium">{selectedUserIds.length} seleccionado(s)</span>
+                <select
+                  value={bulkUserRole}
+                  onChange={(e) => setBulkUserRole(e.target.value)}
+                  className="px-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-white"
+                >
+                  <option value="RETAIL">Minorista</option>
+                  <option value="WHOLESALE">Mayorista</option>
+                  <option value="ADMIN">Admin</option>
+                </select>
+                <button
+                  onClick={() => handleBulkRoleChange(bulkUserRole)}
+                  className="px-4 py-2 rounded-lg text-sm font-semibold text-white bg-gray-900 hover:bg-gray-800 transition-colors"
+                >
+                  Cambiar Rol
+                </button>
+              </div>
+            )}
           </div>
 
           {usersLoading ? (
@@ -527,6 +579,10 @@ export default function AdminDashboard() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="bg-gray-50 border-b border-gray-100">
+                    <th className="text-left px-4 py-3">
+                      <input type="checkbox" checked={selectAllUsers} onChange={() => setSelectAllUsers(!selectAllUsers)}
+                        className="rounded border-gray-300 text-emerald-600 focus:ring-emerald-500" />
+                    </th>
                     <th className="text-left px-4 py-3 font-semibold text-gray-500 text-xs uppercase tracking-wider">Nombre</th>
                     <th className="text-left px-4 py-3 font-semibold text-gray-500 text-xs uppercase tracking-wider">Email</th>
                     <th className="text-left px-4 py-3 font-semibold text-gray-500 text-xs uppercase tracking-wider">Rol</th>
@@ -536,7 +592,11 @@ export default function AdminDashboard() {
                 </thead>
                 <tbody>
                   {users.map((u) => (
-                    <tr key={u.id} className="border-t border-gray-50 hover:bg-gray-50/50 transition-colors">
+                    <tr key={u.id} className={`border-t border-gray-50 hover:bg-gray-50/50 transition-colors ${u.active ? '' : 'opacity-50'}`}>
+                      <td className="px-4 py-3">
+                        <input type="checkbox" checked={selectedUserIds.includes(u.id)} onChange={() => toggleUserSelect(u.id)}
+                          className="rounded border-gray-300 text-emerald-600 focus:ring-emerald-500" />
+                      </td>
                       <td className="px-4 py-3 font-medium text-gray-900">{u.name}</td>
                       <td className="px-4 py-3 text-gray-600">{u.email}</td>
                       <td className="px-4 py-3">

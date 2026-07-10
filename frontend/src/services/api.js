@@ -137,4 +137,8 @@ export function updateUserRole(id, role) {
   return api.patch(`/users/${id}/role`, { role }).then((res) => res.data)
 }
 
+export function bulkUpdateUserRole(userIds, role) {
+  return api.patch('/users/bulk-role', { userIds, role }).then((res) => res.data)
+}
+
 export default api
