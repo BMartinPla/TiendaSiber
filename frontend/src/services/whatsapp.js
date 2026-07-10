@@ -1,5 +1,5 @@
 const STORE_NAME = 'Quince Gear SN'
-const DEFAULT_PHONE = '56912345678'
+const DEFAULT_PHONE = '5493364517514'
 
 const ROLE_LABELS = {
   RETAIL: 'Minorista',

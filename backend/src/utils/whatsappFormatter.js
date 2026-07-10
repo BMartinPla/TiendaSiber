@@ -1,7 +1,7 @@
 const { getPricingStrategy } = require('../strategies/pricingStrategy')
 
 const STORE_NAME = 'Quince Gear SN'
-const STORE_PHONE = '56912345678'
+const STORE_PHONE = '5493364517514'
 
 function formatCartMessage(cartItems, user) {
   const strategy = getPricingStrategy(user.role)
