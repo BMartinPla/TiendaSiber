@@ -149,7 +149,7 @@ export default function AdminDashboard() {
       else setEditForm((prev) => ({ ...prev, imageUrl: data.url }))
       showMsg('Imagen subida exitosamente')
     } catch (err) {
-      showMsg(err.response?.data?.error || 'Error al subir imagen', true)
+      showMsg(err.response?.data?.detail || err.response?.data?.error || 'Error al subir imagen', true)
     } finally {
       setUploadingImage(false)
     }

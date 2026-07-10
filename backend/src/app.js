@@ -26,8 +26,9 @@ app.use('/api/users', userRoutes)
 app.use('/api/upload', uploadRoutes)
 
 app.use((err, req, res, next) => {
-  console.error(err.stack)
-  res.status(500).json({ error: 'Error interno del servidor' })
+  console.error(err.stack || err.message || err)
+  const message = err.message || 'Error interno del servidor'
+  res.status(err.status || 500).json({ error: message })
 })
 
 module.exports = app

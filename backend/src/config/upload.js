@@ -2,7 +2,7 @@ const multer = require('multer')
 const path = require('path')
 
 const fileFilter = (req, file, cb) => {
-  const allowed = /\.(jpg|jpeg|png|gif|webp|svg)$/i
+  const allowed = /\.(jpg|jpeg|jfif|png|gif|webp|svg)$/i
   if (allowed.test(path.extname(file.originalname))) {
     cb(null, true)
   } else {
