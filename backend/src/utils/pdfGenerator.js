@@ -22,7 +22,12 @@ function generateOrderPdf(order) {
 
   y += 15
   doc.font('Helvetica').fontSize(9).fillColor('#555')
-  doc.text(`Pedido N°: ${order.id}  |  ${new Date(order.createdAt).toLocaleString('es-AR')}`, 40, y)
+  const dateStr = new Date(order.createdAt).toLocaleString('es-AR', {
+    timeZone: 'America/Argentina/Buenos_Aires',
+    dateStyle: 'short',
+    timeStyle: 'short',
+  })
+  doc.text(`Pedido N°: ${order.id}  |  ${dateStr}`, 40, y)
 
   const statusLabel = order.status === 'APPROVED' ? 'APROBADO' : 'PENDIENTE'
   doc.fillColor(order.status === 'APPROVED' ? '#059669' : '#d97706')
@@ -52,10 +57,10 @@ function generateOrderPdf(order) {
   y += 22
 
   const cols = [
-    { x: 40, w: 290, align: 'left', label: 'Producto' },
-    { x: 330, w: 60, align: 'center', label: 'Cant.' },
-    { x: 390, w: 85, align: 'right', label: 'P. Unit.' },
-    { x: 475, w: 85, align: 'right', label: 'Subtotal' },
+    { x: 40, w: 270, align: 'left', label: 'Producto' },
+    { x: 310, w: 50, align: 'center', label: 'Cant.' },
+    { x: 360, w: 70, align: 'right', label: 'P. Unit.' },
+    { x: 430, w: 75, align: 'right', label: 'Subtotal' },
   ]
   const tableRight = cols[cols.length - 1].x + cols[cols.length - 1].w
 
@@ -88,7 +93,7 @@ function generateOrderPdf(order) {
   y += 14
 
   doc.font('Helvetica-Bold').fontSize(13)
-  doc.text(`TOTAL: $${Number(order.total).toLocaleString('es-CL')}`, tableRight, y, { align: 'right' })
+  doc.text(`TOTAL: $${Number(order.total).toLocaleString('es-CL')}`, 40, y, { width: tableRight - 40, align: 'right' })
 
   y += 35
 
