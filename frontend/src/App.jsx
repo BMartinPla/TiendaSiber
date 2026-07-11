@@ -10,12 +10,13 @@ import Profile from './pages/Profile'
 import MyOrders from './pages/MyOrders'
 import AdminDashboard from './pages/AdminDashboard'
 
-function ProtectedRoute({ children, adminOnly = false }) {
+function ProtectedRoute({ children, adminOnly = false, notForAdmin = false }) {
   const { user, loading } = useAuth()
 
   if (loading) return <div className="flex items-center justify-center h-screen text-gray-500 dark:text-gray-400 text-sm">Cargando...</div>
   if (!user) return <Navigate to="/login" replace />
   if (adminOnly && user.role !== 'ADMIN') return <Navigate to="/" replace />
+  if (notForAdmin && user.role === 'ADMIN') return <Navigate to="/" replace />
 
   return children
 }
@@ -31,7 +32,7 @@ function AppRoutes() {
       <Route path="/register" element={user ? <Navigate to="/" replace /> : <Register />} />
       <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
       <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-      <Route path="/mis-pedidos" element={<ProtectedRoute><MyOrders /></ProtectedRoute>} />
+      <Route path="/mis-pedidos" element={<ProtectedRoute notForAdmin><MyOrders /></ProtectedRoute>} />
       <Route path="/admin" element={<ProtectedRoute adminOnly><AdminDashboard /></ProtectedRoute>} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
