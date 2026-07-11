@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { useAuth } from '../contexts/AuthContext'
 import { updateProfile } from '../services/api'
-import { User, Mail, Phone, Save } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { ArrowLeft, User, Mail, Phone, Save } from 'lucide-react'
 
 export default function Profile() {
   const { user, loginUser } = useAuth()
@@ -40,6 +41,10 @@ export default function Profile() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 pt-20 pb-12">
       <div className="max-w-lg mx-auto px-4">
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
+          <Link to="/" className="inline-flex items-center gap-1 text-sm text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors mb-4">
+            <ArrowLeft className="w-4 h-4" />
+            Volver
+          </Link>
           <div className="flex items-center gap-3 mb-6">
             <div className="p-2.5 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl">
               <User className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
