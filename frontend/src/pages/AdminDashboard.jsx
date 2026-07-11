@@ -501,7 +501,7 @@ export default function AdminDashboard() {
                         </label>
                         <span className="text-xs text-gray-400">o</span>
                         <input placeholder="URL de imagen" value={form.imageUrl} onChange={(e) => setForm((prev) => ({ ...prev, imageUrl: e.target.value }))}
-                          className="flex-1 min-w-[200px] px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                          className="flex-1 min-w-0 sm:min-w-[200px] px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                       </div>
                       {form.imageUrl && (
                         <img src={form.imageUrl} alt="Vista previa" className="mt-2 h-24 w-24 object-cover rounded-lg border dark:border-gray-600" />
@@ -528,13 +528,13 @@ export default function AdminDashboard() {
 
               <div>
                 <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-3">Categorías</h3>
-                <div className="flex gap-3 mb-3">
+                <div className="flex flex-col sm:flex-row gap-3 mb-3">
                   <input placeholder="Nombre *" value={catForm.name} onChange={(e) => setCatForm({ ...catForm, name: e.target.value })}
                     className="flex-1 px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                   <input placeholder="Descripción" value={catForm.description} onChange={(e) => setCatForm({ ...catForm, description: e.target.value })}
                     className="flex-1 px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                   <button onClick={handleCatCreate}
-                    className="px-4 py-2.5 bg-gray-900 text-white rounded-xl text-sm font-semibold hover:bg-gray-800 transition-colors">Crear</button>
+                    className="sm:self-start px-4 py-2.5 bg-gray-900 text-white rounded-xl text-sm font-semibold hover:bg-gray-800 transition-colors">Crear</button>
                 </div>
                 <div className="space-y-2">
                   {categories.length === 0 ? (
@@ -543,7 +543,7 @@ export default function AdminDashboard() {
                     categories.map((cat) => (
                       <div key={cat.id}>
                         <div
-                          className={`flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-800 rounded-xl text-sm cursor-pointer transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 ${cat.active ? 'opacity-100' : 'opacity-50'}`}
+                          className={`flex items-center justify-between gap-2 px-4 py-3 bg-gray-50 dark:bg-gray-800 rounded-xl text-sm cursor-pointer transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 flex-wrap ${cat.active ? 'opacity-100' : 'opacity-50'}`}
                           onClick={() => cat.active && toggleExpandCat(cat.id)}
                         >
                           <div className="flex items-center gap-2">
@@ -552,7 +552,7 @@ export default function AdminDashboard() {
                             <span className="text-xs text-gray-400 dark:text-gray-500">({cat._count?.products || 0})</span>
                             {!cat.active && <span className="text-xs text-red-500 dark:text-red-400 font-medium">Suspendida</span>}
                           </div>
-                          <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+                          <div className="flex items-center gap-1 flex-wrap" onClick={(e) => e.stopPropagation()}>
                             <button onClick={() => handleCatToggleSuspend(cat)}
                               className={`px-2.5 py-1 rounded-lg text-xs font-medium text-white ${cat.active ? 'bg-amber-500 hover:bg-amber-600' : 'bg-emerald-500 hover:bg-emerald-600'} transition-colors`}>
                               {cat.active ? 'Suspender' : 'Restaurar'}
@@ -564,7 +564,7 @@ export default function AdminDashboard() {
                           </div>
                         </div>
                         {expandedCat === cat.id && (
-                          <div className="ml-6 mt-2 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl overflow-hidden">
+                          <div className="ml-0 sm:ml-6 mt-2 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl overflow-x-auto">
                             {catProductsLoading ? (
                               <div className="p-4 text-sm text-gray-400 dark:text-gray-500">Cargando...</div>
                             ) : catProducts.length === 0 ? (
@@ -594,7 +594,7 @@ export default function AdminDashboard() {
                                         </span>
                                       </td>
                                       <td className="px-4 py-2">
-                                        <div className="flex gap-1">
+                                        <div className="flex gap-1 flex-wrap">
                                           <button onClick={() => openEdit(p)}
                                             className="px-2 py-1 rounded-lg text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors">Editar</button>
                                           <button onClick={() => handleToggleSuspend(p)}
@@ -623,12 +623,12 @@ export default function AdminDashboard() {
               <div>
                 <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-3">Actualización Masiva de Precios</h3>
                 <p className="text-xs text-gray-400 dark:text-gray-500 mb-3">Selecciona productos abajo, ingresa un % y aplica el cambio.</p>
-                <div className="flex gap-3">
+                <div className="flex flex-col sm:flex-row gap-3">
                   <input type="number" placeholder="Ej: 10 para +10%, -15 para -15%"
                     value={bulkPercentage} onChange={(e) => setBulkPercentage(e.target.value)}
                     className="flex-1 px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                   <button onClick={handleBulkUpdate} disabled={selectedIds.length === 0}
-                    className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
+                    className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
                     <RefreshCw className="w-4 h-4" />
                     Aplicar a {selectedIds.length}
                   </button>
@@ -637,7 +637,7 @@ export default function AdminDashboard() {
 
               <div className="overflow-hidden border border-gray-100 dark:border-gray-700 rounded-xl">
                 {selectedIds.length > 0 && (
-                  <div className="flex items-center gap-2 px-5 py-3 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-700">
+                  <div className="flex items-center gap-2 px-5 py-3 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-700 flex-wrap">
                     <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">{selectedIds.length} seleccionado(s)</span>
                     <button onClick={() => { handleBulkAction('suspend') }}
                       className="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-amber-500 hover:bg-amber-600 transition-colors">Suspender</button>
@@ -687,7 +687,7 @@ export default function AdminDashboard() {
                               </span>
                             </td>
                             <td className="px-4 py-3">
-                              <div className="flex gap-1.5">
+                              <div className="flex gap-1.5 flex-wrap">
                                 <button onClick={() => openEdit(p)}
                                   className="px-2.5 py-1.5 rounded-lg text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors">Editar</button>
                                 <button onClick={() => handleToggleSuspend(p)}
@@ -738,7 +738,7 @@ export default function AdminDashboard() {
                   onChange={(e) => handleUserSearch(e.target.value)}
                   className="w-full sm:max-w-xs px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                 {selectedUserIds.length > 0 && (
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">{selectedUserIds.length} seleccionado(s)</span>
                     <select value={bulkUserRole} onChange={(e) => setBulkUserRole(e.target.value)}
                       className="px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
@@ -817,7 +817,7 @@ export default function AdminDashboard() {
                                 <ShieldOff className="w-3.5 h-3.5" /> Sin cambios
                               </div>
                             ) : (
-                              <div className="flex gap-1">
+                              <div className="flex gap-1 flex-wrap">
                                 {u.active ? (
                                   <button onClick={() => handleUserSuspend(u.id)}
                                     className="px-2 py-1 rounded-lg text-xs font-medium text-white bg-amber-500 hover:bg-amber-600 transition-colors">Suspender</button>
@@ -887,10 +887,10 @@ export default function AdminDashboard() {
                   {orders.map((order) => (
                     <div key={order.id} className="border border-gray-100 dark:border-gray-700 rounded-xl overflow-hidden">
                       <div
-                        className="flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-800/50 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                        className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 px-4 py-3 bg-gray-50 dark:bg-gray-800/50 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                         onClick={() => toggleExpandOrder(order.id)}
                       >
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-3 flex-wrap">
                           {expandedOrder === order.id ? <ChevronDown className="w-4 h-4 text-gray-400" /> : <ChevronRight className="w-4 h-4 text-gray-400" />}
                           <span className="text-sm font-semibold text-gray-900 dark:text-white">#{order.id}</span>
                           <span className="text-sm text-gray-500 dark:text-gray-400">{order.user?.name}</span>
@@ -905,7 +905,7 @@ export default function AdminDashboard() {
                             {order.clientCondition === 'WHOLESALE' ? 'Mayorista' : 'Minorista'}
                           </span>
                         </div>
-                        <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+                        <div className="flex items-center gap-2 flex-wrap" onClick={(e) => e.stopPropagation()}>
                           <span className="text-sm font-bold text-gray-900 dark:text-white">${Number(order.total).toLocaleString('es-CL')}</span>
                           {order.status === 'PENDING' && (
                             <button onClick={() => handleApproveOrder(order.id)}
@@ -921,7 +921,7 @@ export default function AdminDashboard() {
                       </div>
 
                       {expandedOrder === order.id && (
-                        <div className="border-t border-gray-100 dark:border-gray-700 p-4">
+                        <div className="border-t border-gray-100 dark:border-gray-700 p-4 overflow-x-auto">
                           <table className="w-full text-sm">
                             <thead>
                               <tr className="text-left text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">
@@ -934,7 +934,7 @@ export default function AdminDashboard() {
                             <tbody>
                               {order.items?.map((item) => (
                                 <tr key={item.id} className="border-t border-gray-100 dark:border-gray-700">
-                                  <td className="py-2 text-gray-700 dark:text-gray-300 max-w-[200px] truncate">{item.productName}</td>
+                                  <td className="py-2 text-gray-700 dark:text-gray-300 max-w-[120px] sm:max-w-[200px] truncate">{item.productName}</td>
                                   <td className="py-2 text-right text-gray-600 dark:text-gray-400">${Number(item.unitPrice).toLocaleString('es-CL')}</td>
                                   <td className="py-2 text-right text-gray-600 dark:text-gray-400">{item.quantity}</td>
                                   <td className="py-2 text-right font-medium text-gray-900 dark:text-white">${Number(item.subtotal).toLocaleString('es-CL')}</td>
@@ -972,20 +972,16 @@ export default function AdminDashboard() {
                 className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
               <textarea placeholder="Descripción" value={editForm.description} onChange={(e) => setEditForm({ ...editForm, description: e.target.value })} rows={2}
                 className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <input type="number" step="0.01" placeholder="Precio Base *" value={editForm.precioBase} onChange={(e) => setEditForm({ ...editForm, precioBase: e.target.value })} required
                   className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                 <input type="number" step="0.01" placeholder="Precio Mayorista *" value={editForm.precioMayorista} onChange={(e) => setEditForm({ ...editForm, precioMayorista: e.target.value })} required
                   className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
               </div>
-              <div className="grid grid-cols-2 gap-4">
-                <input type="number" step="0.01" placeholder="Precio Costo" value={editForm.precioCosto} onChange={(e) => setEditForm({ ...editForm, precioCosto: e.target.value })}
-                  className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <input type="number" placeholder="Stock" value={editForm.stock} onChange={(e) => setEditForm({ ...editForm, stock: e.target.value })}
-                  className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
-              </div>
+              <input type="number" step="0.01" placeholder="Precio Costo" value={editForm.precioCosto} onChange={(e) => setEditForm({ ...editForm, precioCosto: e.target.value })}
+                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+              <input type="number" placeholder="Stock" value={editForm.stock} onChange={(e) => setEditForm({ ...editForm, stock: e.target.value })}
+                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
               <div>
                 <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Imagen</label>
                 <div className="flex flex-wrap items-center gap-3">
@@ -997,7 +993,7 @@ export default function AdminDashboard() {
                   </label>
                   <span className="text-xs text-gray-400">o</span>
                   <input placeholder="URL de imagen" value={editForm.imageUrl} onChange={(e) => setEditForm((prev) => ({ ...prev, imageUrl: e.target.value }))}
-                    className="flex-1 min-w-[200px] px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                    className="flex-1 min-w-0 sm:min-w-[200px] px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                 </div>
                 {editForm.imageUrl && (
                   <img src={editForm.imageUrl} alt="Vista previa" className="mt-2 h-24 w-24 object-cover rounded-lg border dark:border-gray-600" />
@@ -1010,13 +1006,13 @@ export default function AdminDashboard() {
                   <option key={c.id} value={c.id}>{c.name}</option>
                 ))}
               </select>
-              <div className="flex gap-3 pt-2">
+              <div className="flex flex-col sm:flex-row gap-3 pt-2">
                 <button type="submit"
                   className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold text-white bg-gray-900 hover:bg-gray-800 transition-colors">
                   <Save className="w-4 h-4" /> Guardar Cambios
                 </button>
                 <button type="button" onClick={closeEdit}
-                  className="px-6 py-3 rounded-xl text-sm font-semibold text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                  className="sm:flex-none px-6 py-3 rounded-xl text-sm font-semibold text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
                   Cancelar
                 </button>
               </div>
