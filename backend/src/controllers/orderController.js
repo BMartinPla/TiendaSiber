@@ -1,6 +1,7 @@
 const prisma = require('../config/database')
 const { getPricingStrategy } = require('../strategies/pricingStrategy')
 const { generateWhatsAppUrl, STORE_PHONE } = require('../utils/whatsappFormatter')
+const { generateOrderPdf } = require('../utils/pdfGenerator')
 
 async function createFromCart(req, res) {
   try {
@@ -157,4 +158,31 @@ async function remove(req, res) {
   }
 }
 
-module.exports = { createFromCart, list, getById, approve, remove }
+async function downloadPdf(req, res) {
+  try {
+    const { id } = req.params
+
+    const order = await prisma.order.findUnique({
+      where: { id: Number(id) },
+      include: {
+        user: { select: { id: true, name: true, email: true, role: true, phone: true } },
+        items: true,
+      },
+    })
+
+    if (!order) {
+      return res.status(404).json({ error: 'Pedido no encontrado' })
+    }
+
+    res.setHeader('Content-Type', 'application/pdf')
+    res.setHeader('Content-Disposition', `attachment; filename=remito-${order.id}.pdf`)
+
+    const doc = generateOrderPdf(order)
+    doc.pipe(res)
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Error al generar PDF' })
+  }
+}
+
+module.exports = { createFromCart, list, getById, approve, remove, downloadPdf }
