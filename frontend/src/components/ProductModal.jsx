@@ -63,7 +63,9 @@ export default function ProductModal({ product, onClose }) {
                       <span className="text-sm bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 px-2 py-0.5 rounded-md font-medium">
                         May: ${wholesalePrice.toLocaleString('es-CL')}
                       </span>
-                      <span className="text-2xl font-bold text-gray-900 dark:text-white">${basePrice.toLocaleString('es-CL')}</span>
+                      <span className="text-sm bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 px-2 py-0.5 rounded-md font-medium">
+                        Base: ${basePrice.toLocaleString('es-CL')}
+                      </span>
                     </>
                   ) : (
                     <>
