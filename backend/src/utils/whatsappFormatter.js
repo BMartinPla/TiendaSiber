@@ -36,7 +36,6 @@ function formatCartMessage(cartItems, user) {
   lines.push(`💲 *TOTAL${discountLabel}:* $${totalGeneral.toLocaleString('es-CL')}`)
   lines.push('')
   lines.push('✅ *¡Gracias por elegirnos!*')
-  lines.push('📱 Te contactaremos a la brevedad para coordinar el despacho.')
 
   return lines.join('\n')
 }
