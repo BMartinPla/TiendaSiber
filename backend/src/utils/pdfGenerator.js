@@ -8,6 +8,9 @@ function generateOrderPdf(order) {
 
   let y = 40
 
+  doc.moveTo(40, 20).lineTo(40 + pw, 20).lineWidth(1).strokeColor('#2563eb').stroke()
+  doc.moveTo(40, 24).lineTo(40 + pw, 24).lineWidth(1).strokeColor('#dc2626').stroke()
+
   const logoPath = path.join(__dirname, '../../public/logo.png')
   if (fs.existsSync(logoPath)) {
     doc.image(logoPath, 40, 42, { width: 48 })
