@@ -15,17 +15,17 @@ export default function Profile() {
   const roleColors = {
     ADMIN: 'bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300',
     WHOLESALE: 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300',
-    RETAIL: 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300',
+    RETAIL: 'bg-gray-100 text-gray-700 dark:bg-gray-700/50 dark:text-gray-300',
   }
   const roleIconColors = {
     ADMIN: 'text-purple-600 dark:text-purple-400',
     WHOLESALE: 'text-blue-600 dark:text-blue-400',
-    RETAIL: 'text-blue-600 dark:text-blue-400',
+    RETAIL: 'text-gray-600 dark:text-gray-400',
   }
   const roleBgIcon = {
     ADMIN: 'bg-purple-100 dark:bg-purple-900/30',
     WHOLESALE: 'bg-blue-100 dark:bg-blue-900/30',
-    RETAIL: 'bg-blue-100 dark:bg-blue-900/30',
+    RETAIL: 'bg-gray-100 dark:bg-gray-700/30',
   }
 
   async function handleSave(e) {

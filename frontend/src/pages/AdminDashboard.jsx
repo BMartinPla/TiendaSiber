@@ -787,7 +787,7 @@ export default function AdminDashboard() {
                             <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                               u.role === 'ADMIN' ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300' :
                               u.role === 'WHOLESALE' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300' :
-                              'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300'
+                              'bg-gray-100 text-gray-700 dark:bg-gray-700/50 dark:text-gray-300'
                             }`}>
                               {u.role === 'ADMIN' ? 'Admin' : u.role === 'WHOLESALE' ? 'Mayorista' : 'Minorista'}
                             </span>
@@ -900,7 +900,7 @@ export default function AdminDashboard() {
                             {order.status === 'APPROVED' ? 'Aprobado' : 'Pendiente'}
                           </span>
                           <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
-                            order.clientCondition === 'WHOLESALE' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300' : 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300'
+                            order.clientCondition === 'WHOLESALE' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300' : 'bg-gray-100 text-gray-700 dark:bg-gray-700/50 dark:text-gray-300'
                           }`}>
                             {order.clientCondition === 'WHOLESALE' ? 'Mayorista' : 'Minorista'}
                           </span>
