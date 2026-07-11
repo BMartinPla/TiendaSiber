@@ -28,6 +28,7 @@ import {
   getOrders,
   approveOrder,
   deleteOrder,
+  downloadOrderPdf,
   uploadImage,
 } from '../services/api'
 
@@ -908,8 +909,8 @@ export default function AdminDashboard() {
                             <button onClick={() => handleApproveOrder(order.id)}
                               className="px-2.5 py-1 rounded-lg text-xs font-medium text-white bg-emerald-500 hover:bg-emerald-600 transition-colors">Aprobar</button>
                           )}
-                          <a href={`/api/orders/${order.id}/pdf`} target="_blank" rel="noopener noreferrer"
-                            className="px-2.5 py-1 rounded-lg text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors">PDF</a>
+                          <button onClick={() => downloadOrderPdf(order.id)}
+                            className="px-2.5 py-1 rounded-lg text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors">PDF</button>
                           <button onClick={() => handleDeleteOrder(order.id)}
                             className="px-2.5 py-1 rounded-lg text-xs font-medium text-white bg-red-500 hover:bg-red-600 transition-colors">
                             <Trash2 className="w-3 h-3" />

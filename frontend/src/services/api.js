@@ -205,4 +205,16 @@ export function deleteOrder(id) {
   return api.delete(`/orders/${id}`).then((res) => res.data)
 }
 
+export async function downloadOrderPdf(id) {
+  const res = await api.get(`/orders/${id}/pdf`, { responseType: 'blob' })
+  const url = URL.createObjectURL(res.data)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `remito-${id}.pdf`
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(url)
+}
+
 export default api
