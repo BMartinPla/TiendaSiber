@@ -906,7 +906,7 @@ export default function AdminDashboard() {
                           </span>
                         </div>
                         <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
-                          <span className="text-sm font-bold text-gray-900 dark:text-white">${order.total.toLocaleString('es-CL')}</span>
+                          <span className="text-sm font-bold text-gray-900 dark:text-white">${Number(order.total).toLocaleString('es-CL')}</span>
                           {order.status === 'PENDING' && (
                             <button onClick={() => handleApproveOrder(order.id)}
                               className="px-2.5 py-1 rounded-lg text-xs font-medium text-white bg-emerald-500 hover:bg-emerald-600 transition-colors">Aprobar</button>
@@ -934,10 +934,10 @@ export default function AdminDashboard() {
                             <tbody>
                               {order.items?.map((item) => (
                                 <tr key={item.id} className="border-t border-gray-100 dark:border-gray-700">
-                                  <td className="py-2 text-gray-700 dark:text-gray-300 max-w-[200px] truncate">{item.product?.name || item.productName}</td>
-                                  <td className="py-2 text-right text-gray-600 dark:text-gray-400">${item.price.toLocaleString('es-CL')}</td>
+                                  <td className="py-2 text-gray-700 dark:text-gray-300 max-w-[200px] truncate">{item.productName}</td>
+                                  <td className="py-2 text-right text-gray-600 dark:text-gray-400">${Number(item.unitPrice).toLocaleString('es-CL')}</td>
                                   <td className="py-2 text-right text-gray-600 dark:text-gray-400">{item.quantity}</td>
-                                  <td className="py-2 text-right font-medium text-gray-900 dark:text-white">${(item.price * item.quantity).toLocaleString('es-CL')}</td>
+                                  <td className="py-2 text-right font-medium text-gray-900 dark:text-white">${Number(item.subtotal).toLocaleString('es-CL')}</td>
                                 </tr>
                               ))}
                             </tbody>
