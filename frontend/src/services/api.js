@@ -210,7 +210,9 @@ export async function downloadOrderPdf(id) {
   const url = URL.createObjectURL(res.data)
   const a = document.createElement('a')
   a.href = url
-  a.download = `remito-${id}.pdf`
+  const disposition = res.headers?.['content-disposition']
+  const match = disposition && disposition.match(/filename=([^;]+)/)
+  a.download = match ? match[1] : `remito-${id}.pdf`
   document.body.appendChild(a)
   a.click()
   document.body.removeChild(a)

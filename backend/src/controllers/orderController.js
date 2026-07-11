@@ -208,7 +208,8 @@ async function downloadPdf(req, res) {
     }
 
     res.setHeader('Content-Type', 'application/pdf')
-    res.setHeader('Content-Disposition', `attachment; filename=remito-${order.id}.pdf`)
+    const clientName = (order.user.name || 'cliente').replace(/[^a-zA-Z0-9_-]/g, '').toLowerCase() || 'cliente'
+    res.setHeader('Content-Disposition', `attachment; filename=remito-${clientName}.pdf`)
 
     const doc = generateOrderPdf(order)
     doc.pipe(res)
