@@ -8,13 +8,13 @@ function formatCartMessage(cartItems, user) {
   const roleLabel = { RETAIL: 'Minorista', WHOLESALE: 'Mayorista', ADMIN: 'Admin' }[user.role] || 'Cliente'
 
   const lines = []
-  lines.push(`🛍️ *${STORE_NAME}*`)
-  lines.push(`👤 *Cliente:* ${user.name}`)
-  lines.push(`📧 ${user.email}`)
-  lines.push(`🏷️ *Tipo:* ${roleLabel}`)
-  lines.push('📱 Quiero concretar la compra de los siguientes productos:')
+  lines.push(`*${STORE_NAME}*`)
+  lines.push(`*Cliente:* ${user.name}`)
+  lines.push(`${user.email}`)
+  lines.push(`*Tipo:* ${roleLabel}`)
+  lines.push('Quiero concretar la compra de los siguientes productos:')
   lines.push('')
-  lines.push('━'.repeat(30))
+  lines.push('--------------------------------')
   lines.push('')
 
   let totalGeneral = 0
@@ -24,18 +24,18 @@ function formatCartMessage(cartItems, user) {
     const subtotal = pricing.total || 0
     totalGeneral += subtotal
 
-    lines.push(`*${index + 1}. ${item.product.name}*`)
-    lines.push(`   📦 Cantidad: ${item.quantity}`)
-    lines.push(`   💰 Precio unit: $${(pricing.unitPrice || 0).toLocaleString('es-CL')}`)
-    lines.push(`   💵 Subtotal: $${subtotal.toLocaleString('es-CL')}`)
+    lines.push(`${index + 1}. ${item.product.name}`)
+    lines.push(`   Cantidad: ${item.quantity}`)
+    lines.push(`   Precio unit: $${(pricing.unitPrice || 0).toLocaleString('es-CL')}`)
+    lines.push(`   Subtotal: $${subtotal.toLocaleString('es-CL')}`)
     lines.push('')
   })
 
-  lines.push('━'.repeat(30))
+  lines.push('--------------------------------')
   const discountLabel = user.role === 'WHOLESALE' ? ' (Precio Mayorista)' : ''
-  lines.push(`💲 *TOTAL${discountLabel}:* $${totalGeneral.toLocaleString('es-CL')}`)
+  lines.push(`*TOTAL${discountLabel}:* $${totalGeneral.toLocaleString('es-CL')}`)
   lines.push('')
-  lines.push('✅ *¡Gracias por elegirnos!*')
+  lines.push(`Gracias por elegirnos!`)
 
   return lines.join('\n')
 }

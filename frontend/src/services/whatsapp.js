@@ -13,13 +13,13 @@ function formatCurrency(amount) {
 
 export function buildWhatsAppMessage(cartItems, user) {
   const lines = []
-  lines.push(`🛍️ *${STORE_NAME}*`)
-  lines.push(`👤 *Cliente:* ${user.name}`)
-  lines.push(`📧 ${user.email}`)
-  lines.push(`🏷️ *Tipo:* ${ROLE_LABELS[user.role] || 'Cliente'}`)
-  lines.push('📱 Quiero concretar la compra de los siguientes productos:')
+  lines.push(`*${STORE_NAME}*`)
+  lines.push(`*Cliente:* ${user.name}`)
+  lines.push(`${user.email}`)
+  lines.push(`*Tipo:* ${ROLE_LABELS[user.role] || 'Cliente'}`)
+  lines.push('Quiero concretar la compra de los siguientes productos:')
   lines.push('')
-  lines.push('━'.repeat(30))
+  lines.push('--------------------------------')
   lines.push('')
   lines.push('')
 
@@ -32,18 +32,18 @@ export function buildWhatsAppMessage(cartItems, user) {
     const subtotal = unitPrice * qty
     total += subtotal
 
-    lines.push(`*${idx + 1}. ${product.name}*`)
-    lines.push(`   📦 Cantidad: ${qty}`)
-    lines.push(`   💰 Precio unit: ${formatCurrency(unitPrice)}`)
-    lines.push(`   💵 Subtotal: ${formatCurrency(subtotal)}`)
+    lines.push(`${idx + 1}. ${product.name}`)
+    lines.push(`   Cantidad: ${qty}`)
+    lines.push(`   Precio unit: ${formatCurrency(unitPrice)}`)
+    lines.push(`   Subtotal: ${formatCurrency(subtotal)}`)
     lines.push('')
   })
 
-  lines.push('━'.repeat(30))
+  lines.push('--------------------------------')
   const discountNote = user.role === 'WHOLESALE' ? ' (Precio Mayorista)' : ''
-  lines.push(`💲 *TOTAL${discountNote}:* ${formatCurrency(total)}`)
+  lines.push(`*TOTAL${discountNote}:* ${formatCurrency(total)}`)
   lines.push('')
-  lines.push('✅ *¡Gracias por elegirnos!*')
+  lines.push(`Gracias por elegirnos!`)
 
   return lines.join('\n')
 }
