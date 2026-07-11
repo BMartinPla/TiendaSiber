@@ -6,7 +6,7 @@ import { useCart } from '../contexts/CartContext'
 import { useDarkMode } from '../contexts/DarkModeContext'
 
 export default function Navbar({ onCartClick, search, onSearch }) {
-  const { user, logout, isAdmin } = useAuth()
+  const { logout, isAdmin } = useAuth()
   const { itemCount } = useCart()
   const { dark, toggleDark } = useDarkMode()
   const navigate = useNavigate()
@@ -14,18 +14,6 @@ export default function Navbar({ onCartClick, search, onSearch }) {
   function handleLogout() {
     logout()
     navigate('/login')
-  }
-
-  const roleColors = {
-    ADMIN: 'bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300',
-    WHOLESALE: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300',
-    RETAIL: 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300',
-  }
-
-  const roleLabels = {
-    ADMIN: 'Admin',
-    WHOLESALE: 'Mayorista',
-    RETAIL: 'Minorista',
   }
 
   return (
@@ -54,13 +42,6 @@ export default function Navbar({ onCartClick, search, onSearch }) {
             <button onClick={toggleDark} className="p-2 text-gray-500 dark:text-gray-400 hover:text-amber-500 dark:hover:text-amber-400 transition-colors" title={dark ? 'Modo claro' : 'Modo oscuro'}>
               {dark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </button>
-
-            {user && (
-              <span className={`hidden sm:inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold ${roleColors[user.role] || roleColors.RETAIL}`}>
-                <User className="w-3 h-3" />
-                {roleLabels[user.role] || user.role}
-              </span>
-            )}
 
             <Link to="/profile" className="p-2 text-gray-500 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors" title="Perfil">
               <User className="w-5 h-5" />
