@@ -63,12 +63,6 @@ export default function Navbar({ onCartClick, search, onSearch }) {
             )}
 
             <div className="hidden sm:flex items-center gap-3">
-              {isAdmin && (
-                <Link to="/admin" className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 font-medium">
-                  Panel
-                </Link>
-              )}
-
               <Link to="/profile" className="text-sm text-gray-500 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium">
                 Perfil
               </Link>

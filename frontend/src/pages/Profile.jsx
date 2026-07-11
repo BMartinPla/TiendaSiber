@@ -17,6 +17,16 @@ export default function Profile() {
     WHOLESALE: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300',
     RETAIL: 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300',
   }
+  const roleIconColors = {
+    ADMIN: 'text-purple-600 dark:text-purple-400',
+    WHOLESALE: 'text-emerald-600 dark:text-emerald-400',
+    RETAIL: 'text-blue-600 dark:text-blue-400',
+  }
+  const roleBgIcon = {
+    ADMIN: 'bg-purple-100 dark:bg-purple-900/30',
+    WHOLESALE: 'bg-emerald-100 dark:bg-emerald-900/30',
+    RETAIL: 'bg-blue-100 dark:bg-blue-900/30',
+  }
 
   async function handleSave(e) {
     e.preventDefault()
@@ -46,8 +56,8 @@ export default function Profile() {
             Volver
           </Link>
           <div className="flex items-center gap-3 mb-6">
-            <div className="p-2.5 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl">
-              <User className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+            <div className={`p-2.5 rounded-xl ${roleBgIcon[user?.role] || roleBgIcon.RETAIL}`}>
+              <User className={`w-5 h-5 ${roleIconColors[user?.role] || roleIconColors.RETAIL}`} />
             </div>
             <div>
               <h1 className="text-xl font-bold text-gray-900 dark:text-white">Mi Perfil</h1>
