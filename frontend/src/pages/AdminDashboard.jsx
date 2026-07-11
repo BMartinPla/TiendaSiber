@@ -843,107 +843,105 @@ export default function AdminDashboard() {
           )}
         </div>
 
-        {/* Pedidos */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden transition-all">
-          <button
-            onClick={() => setExpandedSection(expandedSection === 'orders' ? null : 'orders')}
-            className="w-full flex items-center justify-between p-5 hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors"
+        {/* ===== PEDIDOS CARD ===== */}
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+          <div
+            className="p-6 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+            onClick={() => setExpandedSection(expandedSection === 'pedidos' ? null : 'pedidos')}
           >
-            <div className="flex items-center gap-3">
-              <ShoppingBag className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-              <span className="font-semibold text-gray-900 dark:text-white">Pedidos</span>
-            </div>
-            <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform ${expandedSection === 'orders' ? 'rotate-180' : ''}`} />
-          </button>
-          {expandedSection === 'orders' && (
-            <div className="px-5 pb-5 border-t border-gray-100 dark:border-gray-700">
-              <div className="flex flex-col sm:flex-row gap-3 mt-4 mb-4">
-                <div className="relative flex-1">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                  <input
-                    placeholder="Buscar por ID, cliente o total..."
-                    value={orderSearch}
-                    onChange={(e) => setOrderSearch(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && loadOrders(orderSearch, orderStatusFilter)}
-                    className="w-full pl-9 pr-4 py-2 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
-                  />
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 bg-amber-100 dark:bg-amber-900/30 rounded-xl">
+                  <ShoppingBag className="w-6 h-6 text-amber-600 dark:text-amber-400" />
                 </div>
-                <select
-                  value={orderStatusFilter}
-                  onChange={(e) => setOrderStatusFilter(e.target.value)}
-                  className="px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
-                >
-                  <option value="">Todos los estados</option>
-                  <option value="PENDIENTE">Pendiente</option>
-                  <option value="APROBADO">Aprobado</option>
-                </select>
-                <button onClick={() => loadOrders(orderSearch, orderStatusFilter)} className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-xl text-sm font-medium hover:bg-emerald-700 transition-colors">
-                  <Search className="w-4 h-4" /> Buscar
-                </button>
+                <div>
+                  <h2 className="text-lg font-bold text-gray-900 dark:text-white">Pedidos</h2>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">{orders.length} pedido(s)</p>
+                </div>
               </div>
+              {expandedSection === 'pedidos' ? <ChevronDown className="w-5 h-5 text-gray-400" /> : <ChevronRight className="w-5 h-5 text-gray-400" />}
+            </div>
+          </div>
+
+          {expandedSection === 'pedidos' && (
+            <div className="border-t border-gray-100 dark:border-gray-700 p-6">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
+                <input type="text" placeholder="Buscar por nombre o email..." value={orderSearch}
+                  onChange={(e) => { setOrderSearch(e.target.value); loadOrders(e.target.value, orderStatusFilter) }}
+                  className="w-full sm:max-w-xs px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                <select value={orderStatusFilter}
+                  onChange={(e) => { setOrderStatusFilter(e.target.value); loadOrders(orderSearch, e.target.value) }}
+                  className="px-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+                  <option value="">Todos</option>
+                  <option value="PENDING">Pendientes</option>
+                  <option value="APPROVED">Aprobados</option>
+                </select>
+              </div>
+
               {ordersLoading ? (
-                <div className="flex justify-center py-8"><Loader2 className="w-6 h-6 animate-spin text-emerald-600" /></div>
+                <div className="text-sm text-gray-400 dark:text-gray-500 py-4">Cargando pedidos...</div>
               ) : orders.length === 0 ? (
-                <p className="text-center text-gray-400 dark:text-gray-500 py-8 text-sm">No hay pedidos</p>
+                <div className="text-sm text-gray-400 dark:text-gray-500 py-4">Sin pedidos</div>
               ) : (
                 <div className="space-y-3">
                   {orders.map((order) => (
                     <div key={order.id} className="border border-gray-100 dark:border-gray-700 rounded-xl overflow-hidden">
-                      <button onClick={() => toggleExpandOrder(order.id)} className="w-full flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors">
-                        <div className="flex items-center gap-4">
-                          <span className="text-sm font-mono text-gray-500 dark:text-gray-400">#{order.id.slice(0, 8)}</span>
-                          <span className="text-sm font-medium text-gray-900 dark:text-white">{order.user?.name || order.user?.email}</span>
-                          <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                            order.status === 'APROBADO'
-                              ? 'bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-400'
-                              : 'bg-yellow-100 dark:bg-yellow-900/50 text-yellow-700 dark:text-yellow-400'
-                          }`}>{order.status || 'PENDIENTE'}</span>
-                        </div>
+                      <div
+                        className="flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-800/50 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                        onClick={() => toggleExpandOrder(order.id)}
+                      >
                         <div className="flex items-center gap-3">
-                          <span className="text-sm font-bold text-gray-900 dark:text-white">${Number(order.total).toLocaleString('es-CL')}</span>
-                          <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${expandedOrder === order.id ? 'rotate-180' : ''}`} />
+                          {expandedOrder === order.id ? <ChevronDown className="w-4 h-4 text-gray-400" /> : <ChevronRight className="w-4 h-4 text-gray-400" />}
+                          <span className="text-sm font-semibold text-gray-900 dark:text-white">#{order.id}</span>
+                          <span className="text-sm text-gray-500 dark:text-gray-400">{order.user?.name}</span>
+                          <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
+                            order.status === 'APPROVED' ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300' : 'bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300'
+                          }`}>
+                            {order.status === 'APPROVED' ? 'Aprobado' : 'Pendiente'}
+                          </span>
+                          <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
+                            order.clientCondition === 'WHOLESALE' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300' : 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300'
+                          }`}>
+                            {order.clientCondition === 'WHOLESALE' ? 'Mayorista' : 'Minorista'}
+                          </span>
                         </div>
-                      </button>
+                        <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+                          <span className="text-sm font-bold text-gray-900 dark:text-white">${order.total.toLocaleString('es-CL')}</span>
+                          {order.status === 'PENDING' && (
+                            <button onClick={() => handleApproveOrder(order.id)}
+                              className="px-2.5 py-1 rounded-lg text-xs font-medium text-white bg-emerald-500 hover:bg-emerald-600 transition-colors">Aprobar</button>
+                          )}
+                          <button onClick={() => downloadOrderPdf(order.id)}
+                            className="px-2.5 py-1 rounded-lg text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors">PDF</button>
+                          <button onClick={() => handleDeleteOrder(order.id)}
+                            className="px-2.5 py-1 rounded-lg text-xs font-medium text-white bg-red-500 hover:bg-red-600 transition-colors">
+                            <Trash2 className="w-3 h-3" />
+                          </button>
+                        </div>
+                      </div>
+
                       {expandedOrder === order.id && (
-                        <div className="border-t border-gray-100 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-800/50">
-                          <div className="overflow-x-auto">
-                            <table className="w-full text-sm">
-                              <thead>
-                                <tr className="text-left text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">
-                                  <th className="pb-2 font-medium">Producto</th>
-                                  <th className="pb-2 font-medium text-right">Precio</th>
-                                  <th className="pb-2 font-medium text-right">Cantidad</th>
-                                  <th className="pb-2 font-medium text-right">Subtotal</th>
+                        <div className="border-t border-gray-100 dark:border-gray-700 p-4">
+                          <table className="w-full text-sm">
+                            <thead>
+                              <tr className="text-left text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">
+                                <th className="pb-2 font-medium">Producto</th>
+                                <th className="pb-2 font-medium text-right">Precio</th>
+                                <th className="pb-2 font-medium text-right">Cant.</th>
+                                <th className="pb-2 font-medium text-right">Subtotal</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {order.items?.map((item) => (
+                                <tr key={item.id} className="border-t border-gray-100 dark:border-gray-700">
+                                  <td className="py-2 text-gray-700 dark:text-gray-300 max-w-[200px] truncate">{item.product?.name || item.productName}</td>
+                                  <td className="py-2 text-right text-gray-600 dark:text-gray-400">${item.price.toLocaleString('es-CL')}</td>
+                                  <td className="py-2 text-right text-gray-600 dark:text-gray-400">{item.quantity}</td>
+                                  <td className="py-2 text-right font-medium text-gray-900 dark:text-white">${(item.price * item.quantity).toLocaleString('es-CL')}</td>
                                 </tr>
-                              </thead>
-                              <tbody>
-                                {order.items?.map((item) => (
-                                  <tr key={item.id} className="border-t border-gray-100 dark:border-gray-700">
-                                    <td className="py-2 text-gray-700 dark:text-gray-300">{item.product?.name || item.productName}</td>
-                                    <td className="py-2 text-right text-gray-600 dark:text-gray-400">${Number(item.price).toLocaleString('es-CL')}</td>
-                                    <td className="py-2 text-right text-gray-600 dark:text-gray-400">{item.quantity}</td>
-                                    <td className="py-2 text-right font-medium text-gray-900 dark:text-white">${(Number(item.price) * item.quantity).toLocaleString('es-CL')}</td>
-                                  </tr>
-                                ))}
-                              </tbody>
-                              <tfoot>
-                                <tr className="border-t border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/30">
-                                  <td colSpan={3} className="px-4 py-2 text-right text-sm font-bold text-gray-700 dark:text-gray-200">Total</td>
-                                  <td className="px-4 py-2 text-right text-sm font-bold text-gray-900 dark:text-white">${Number(order.total).toLocaleString('es-CL')}</td>
-                                </tr>
-                              </tfoot>
-                            </table>
-                          </div>
-                          <div className="flex items-center gap-3 mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
-                            {order.status !== 'APROBADO' && (
-                              <button onClick={() => handleApproveOrder(order.id)} className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-xl text-sm font-medium hover:bg-emerald-700 transition-colors">
-                                <Check className="w-4 h-4" /> Aprobar
-                              </button>
-                            )}
-                            <button onClick={() => handleDeleteOrder(order.id)} className="flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-xl text-sm font-medium hover:bg-red-600 transition-colors">
-                              <Trash2 className="w-4 h-4" /> Eliminar
-                            </button>
-                          </div>
+                              ))}
+                            </tbody>
+                          </table>
                         </div>
                       )}
                     </div>
