@@ -8,6 +8,7 @@ const cartRoutes = require('./routes/cartRoutes')
 const categoryRoutes = require('./routes/categoryRoutes')
 const userRoutes = require('./routes/userRoutes')
 const uploadRoutes = require('./routes/uploadRoutes')
+const orderRoutes = require('./routes/orderRoutes')
 
 const app = express()
 
@@ -24,6 +25,7 @@ app.use('/api/cart', cartRoutes)
 app.use('/api/categories', categoryRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/upload', uploadRoutes)
+app.use('/api/orders', orderRoutes)
 
 app.use((err, req, res, next) => {
   console.error(err.stack || err.message || err)

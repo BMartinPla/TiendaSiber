@@ -177,4 +177,28 @@ export function updateProfile(data) {
   return api.patch('/auth/profile', data).then((res) => res.data)
 }
 
+export function createOrderFromCart() {
+  return api.post('/orders/from-cart').then((res) => res.data)
+}
+
+export function getOrders(search = '', status = '') {
+  const params = new URLSearchParams()
+  if (search) params.set('search', search)
+  if (status) params.set('status', status)
+  const qs = params.toString()
+  return api.get(`/orders${qs ? `?${qs}` : ''}`).then((res) => res.data)
+}
+
+export function getOrder(id) {
+  return api.get(`/orders/${id}`).then((res) => res.data)
+}
+
+export function approveOrder(id) {
+  return api.patch(`/orders/${id}/approve`).then((res) => res.data)
+}
+
+export function deleteOrder(id) {
+  return api.delete(`/orders/${id}`).then((res) => res.data)
+}
+
 export default api

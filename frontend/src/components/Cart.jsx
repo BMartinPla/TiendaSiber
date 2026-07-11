@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import { X, Minus, Plus, Trash2, MessageCircle } from 'lucide-react'
+import { X, Minus, Plus, Trash2, MessageCircle, CheckCircle } from 'lucide-react'
 import { useCart } from '../contexts/CartContext'
 import { useAuth } from '../contexts/AuthContext'
-import { getCart } from '../services/api'
-import { openWhatsApp } from '../services/whatsapp'
+import { createOrderFromCart } from '../services/api'
 
 export default function Cart({ open, onClose }) {
   const { items, loading, syncing, update, remove, clear } = useCart()
   const { user, isWholesale } = useAuth()
   const [localQtys, setLocalQtys] = useState({})
+  const [orderSuccess, setOrderSuccess] = useState(false)
 
   useEffect(() => {
     if (!open) setLocalQtys({})
@@ -61,11 +61,15 @@ export default function Cart({ open, onClose }) {
 
   async function handleWhatsApp() {
     if (items.length === 0 || syncing) return
-    const data = await getCart()
-    openWhatsApp(
-      data.items.map((item) => ({ quantity: item.quantity, product: item.product })),
-      user
-    )
+    try {
+      const data = await createOrderFromCart()
+      window.open(data.whatsappUrl, '_blank')
+      setOrderSuccess(true)
+      setTimeout(() => setOrderSuccess(false), 3000)
+      clear()
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   return (
@@ -161,6 +165,13 @@ export default function Cart({ open, onClose }) {
               <div className="flex items-center justify-between">
                 <span className="text-sm text-emerald-600 dark:text-emerald-400 font-medium">Ahorras</span>
                 <span className="text-base font-bold text-emerald-600 dark:text-emerald-400">${totalSavings.toLocaleString('es-CL')}</span>
+              </div>
+            )}
+
+            {orderSuccess && (
+              <div className="flex items-center gap-2 text-sm text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 px-4 py-2.5 rounded-xl">
+                <CheckCircle className="w-4 h-4 shrink-0" />
+                Pedido registrado. Revisa WhatsApp para enviarlo.
               </div>
             )}
 

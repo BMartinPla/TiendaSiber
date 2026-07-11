@@ -25,6 +25,9 @@ import {
   suspendUser,
   activateUser,
   deleteUser,
+  getOrders,
+  approveOrder,
+  deleteOrder,
   uploadImage,
 } from '../services/api'
 
@@ -48,11 +51,11 @@ export default function AdminDashboard() {
 
   const [editProduct, setEditProduct] = useState(null)
   const [editForm, setEditForm] = useState({
-    name: '', description: '', precioBase: '', precioMayorista: '', stock: '', imageUrl: '', categoryId: '',
+    name: '', description: '', precioBase: '', precioMayorista: '', precioCosto: '', stock: '', imageUrl: '', categoryId: '',
   })
 
   const [form, setForm] = useState({
-    name: '', description: '', precioBase: '', precioMayorista: '', stock: '', imageUrl: '', categoryId: '',
+    name: '', description: '', precioBase: '', precioMayorista: '', precioCosto: '', stock: '', imageUrl: '', categoryId: '',
   })
 
   const [users, setUsers] = useState([])
@@ -69,6 +72,7 @@ export default function AdminDashboard() {
     loadProducts()
     loadCategories()
     loadUsers()
+    loadOrders()
   }, [])
 
   useEffect(() => {
@@ -175,6 +179,43 @@ export default function AdminDashboard() {
     setTimeout(() => { setError(''); setSuccess('') }, 3000)
   }
 
+  const [orders, setOrders] = useState([])
+  const [ordersLoading, setOrdersLoading] = useState(false)
+  const [orderSearch, setOrderSearch] = useState('')
+  const [orderStatusFilter, setOrderStatusFilter] = useState('')
+  const [expandedOrder, setExpandedOrder] = useState(null)
+
+  async function loadOrders(search = '', status = '') {
+    setOrdersLoading(true)
+    try { setOrders(await getOrders(search, status)) } catch {}
+    finally { setOrdersLoading(false) }
+  }
+
+  async function handleApproveOrder(id) {
+    try {
+      await approveOrder(id)
+      showMsg('Pedido aprobado')
+      loadOrders(orderSearch, orderStatusFilter)
+    } catch (err) {
+      showMsg(err.response?.data?.error || 'Error al aprobar pedido', true)
+    }
+  }
+
+  async function handleDeleteOrder(id) {
+    if (!window.confirm('¿Eliminar este pedido?')) return
+    try {
+      await deleteOrder(id)
+      showMsg('Pedido eliminado')
+      loadOrders(orderSearch, orderStatusFilter)
+    } catch (err) {
+      showMsg(err.response?.data?.error || 'Error al eliminar pedido', true)
+    }
+  }
+
+  function toggleExpandOrder(id) {
+    setExpandedOrder(expandedOrder === id ? null : id)
+  }
+
   async function handleImageUpload(e, target) {
     const file = e.target.files?.[0]
     if (!file) return
@@ -256,12 +297,13 @@ export default function AdminDashboard() {
         description: form.description || undefined,
         precioBase: parseFloat(form.precioBase),
         precioMayorista: parseFloat(form.precioMayorista),
+        precioCosto: form.precioCosto ? parseFloat(form.precioCosto) : undefined,
         stock: parseInt(form.stock) || 0,
         imageUrl: form.imageUrl || undefined,
         categoryId: form.categoryId ? parseInt(form.categoryId) : undefined,
       })
       setShowCreate(false)
-      setForm({ name: '', description: '', precioBase: '', precioMayorista: '', stock: '', imageUrl: '', categoryId: '' })
+      setForm({ name: '', description: '', precioBase: '', precioMayorista: '', precioCosto: '', stock: '', imageUrl: '', categoryId: '' })
       showMsg('Producto creado exitosamente')
       await loadProducts()
       if (expandedCat) await loadCatProducts(expandedCat)
@@ -296,6 +338,7 @@ export default function AdminDashboard() {
       description: product.description || '',
       precioBase: String(product.precioBase),
       precioMayorista: String(product.precioMayorista),
+      precioCosto: product.precioCosto ? String(product.precioCosto) : '',
       stock: String(product.stock),
       imageUrl: product.imageUrl || '',
       categoryId: product.categoryId ? String(product.categoryId) : '',
@@ -313,6 +356,7 @@ export default function AdminDashboard() {
         description: editForm.description || undefined,
         precioBase: parseFloat(editForm.precioBase),
         precioMayorista: parseFloat(editForm.precioMayorista),
+        precioCosto: editForm.precioCosto ? parseFloat(editForm.precioCosto) : null,
         stock: parseInt(editForm.stock) || 0,
         imageUrl: editForm.imageUrl || undefined,
         categoryId: editForm.categoryId ? parseInt(editForm.categoryId) : null,
@@ -411,6 +455,10 @@ export default function AdminDashboard() {
               </div>
               <div>
                 <input type="number" step="0.01" placeholder="Precio Mayorista *" value={form.precioMayorista} onChange={(e) => setForm({ ...form, precioMayorista: e.target.value })} required
+                  className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+              </div>
+              <div>
+                <input type="number" step="0.01" placeholder="Precio Costo" value={form.precioCosto} onChange={(e) => setForm({ ...form, precioCosto: e.target.value })}
                   className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
               </div>
               <div>
@@ -782,6 +830,115 @@ export default function AdminDashboard() {
             </div>
           )}
         </div>
+
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
+          <h2 className="text-base font-bold text-gray-900 dark:text-white mb-4">Pedidos</h2>
+
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
+            <input
+              type="text"
+              placeholder="Buscar por nombre o email..."
+              value={orderSearch}
+              onChange={(e) => { setOrderSearch(e.target.value); loadOrders(e.target.value, orderStatusFilter) }}
+              className="w-full sm:max-w-xs px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+            />
+            <select
+              value={orderStatusFilter}
+              onChange={(e) => { setOrderStatusFilter(e.target.value); loadOrders(orderSearch, e.target.value) }}
+              className="px-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+            >
+              <option value="">Todos</option>
+              <option value="PENDING">Pendientes</option>
+              <option value="APPROVED">Aprobados</option>
+            </select>
+          </div>
+
+          {ordersLoading ? (
+            <div className="text-sm text-gray-400 dark:text-gray-500 py-4">Cargando pedidos...</div>
+          ) : orders.length === 0 ? (
+            <div className="text-sm text-gray-400 dark:text-gray-500 py-4">Sin pedidos</div>
+          ) : (
+            <div className="space-y-3">
+              {orders.map((order) => (
+                <div key={order.id} className="border border-gray-100 dark:border-gray-700 rounded-xl overflow-hidden">
+                  <div
+                    className="flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-800/50 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                    onClick={() => toggleExpandOrder(order.id)}
+                  >
+                    <div className="flex items-center gap-3">
+                      {expandedOrder === order.id ? <ChevronDown className="w-4 h-4 text-gray-400" /> : <ChevronRight className="w-4 h-4 text-gray-400" />}
+                      <span className="text-sm font-semibold text-gray-900 dark:text-white">#{order.id}</span>
+                      <span className="text-sm text-gray-500 dark:text-gray-400">{order.user.name}</span>
+                      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
+                        order.status === 'APPROVED'
+                          ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300'
+                          : 'bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300'
+                      }`}>
+                        {order.status === 'APPROVED' ? 'Aprobado' : 'Pendiente'}
+                      </span>
+                      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
+                        order.clientCondition === 'WHOLESALE'
+                          ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300'
+                          : 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300'
+                      }`}>
+                        {order.clientCondition === 'WHOLESALE' ? 'Mayorista' : 'Minorista'}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+                      <span className="text-sm font-bold text-gray-900 dark:text-white">${order.total.toLocaleString('es-CL')}</span>
+                      {order.status === 'PENDING' && (
+                        <button onClick={() => handleApproveOrder(order.id)}
+                          className="px-2.5 py-1 rounded-lg text-xs font-medium text-white bg-emerald-500 hover:bg-emerald-600 transition-colors">
+                          Aprobar
+                        </button>
+                      )}
+                      <button onClick={() => handleDeleteOrder(order.id)}
+                        className="px-2.5 py-1 rounded-lg text-xs font-medium text-white bg-red-500 hover:bg-red-600 transition-colors">
+                        <Trash2 className="w-3 h-3" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {expandedOrder === order.id && (
+                    <div className="border-t border-gray-100 dark:border-gray-700">
+                      <div className="px-4 py-3 bg-gray-50/50 dark:bg-gray-800/30 text-xs text-gray-500 dark:text-gray-400 space-y-1">
+                        <p><span className="font-semibold">Cliente:</span> {order.user.name} ({order.user.email})</p>
+                        <p><span className="font-semibold">Condición:</span> {order.clientCondition === 'WHOLESALE' ? 'Mayorista' : 'Minorista'}</p>
+                        <p><span className="font-semibold">Fecha:</span> {new Date(order.createdAt).toLocaleString('es-AR')}</p>
+                      </div>
+                      <table className="w-full text-xs">
+                        <thead>
+                          <tr className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-700">
+                            <th className="text-left px-4 py-2 font-semibold text-gray-500 dark:text-gray-400">Producto</th>
+                            <th className="text-center px-4 py-2 font-semibold text-gray-500 dark:text-gray-400">Cant.</th>
+                            <th className="text-right px-4 py-2 font-semibold text-gray-500 dark:text-gray-400">P. Unit</th>
+                            <th className="text-right px-4 py-2 font-semibold text-gray-500 dark:text-gray-400">Subtotal</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {order.items.map((item) => (
+                            <tr key={item.id} className="border-t border-gray-50 dark:border-gray-700">
+                              <td className="px-4 py-2 font-medium text-gray-900 dark:text-white">{item.productName}</td>
+                              <td className="px-4 py-2 text-center text-gray-600 dark:text-gray-400">{item.quantity}</td>
+                              <td className="px-4 py-2 text-right text-gray-600 dark:text-gray-400">${item.unitPrice.toLocaleString('es-CL')}</td>
+                              <td className="px-4 py-2 text-right font-semibold text-gray-900 dark:text-white">${item.subtotal.toLocaleString('es-CL')}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                        <tfoot>
+                          <tr className="border-t border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/30">
+                            <td colSpan={3} className="px-4 py-2 text-right text-sm font-bold text-gray-700 dark:text-gray-200">Total</td>
+                            <td className="px-4 py-2 text-right text-sm font-bold text-gray-900 dark:text-white">${order.total.toLocaleString('es-CL')}</td>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       {cropImageUrl && (
@@ -806,6 +963,10 @@ export default function AdminDashboard() {
                 <input type="number" step="0.01" placeholder="Precio Base *" value={editForm.precioBase} onChange={(e) => setEditForm({ ...editForm, precioBase: e.target.value })} required
                   className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                 <input type="number" step="0.01" placeholder="Precio Mayorista *" value={editForm.precioMayorista} onChange={(e) => setEditForm({ ...editForm, precioMayorista: e.target.value })} required
+                  className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <input type="number" step="0.01" placeholder="Precio Costo" value={editForm.precioCosto} onChange={(e) => setEditForm({ ...editForm, precioCosto: e.target.value })}
                   className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
               </div>
               <div className="grid grid-cols-2 gap-4">

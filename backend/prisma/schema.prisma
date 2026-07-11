@@ -25,6 +25,7 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   cartItems CartItem[]
+  orders    Order[]
 
   @@map("users")
 }
@@ -47,6 +48,7 @@ model Product {
   description     String?
   precioBase      Float     @map("precio_base")
   precioMayorista Float     @map("precio_mayorista")
+  precioCosto     Float?    @map("precio_costo")
   stock           Int       @default(0)
   imageUrl        String?   @map("image_url")
   categoryId      Int?      @map("category_id")
@@ -55,6 +57,7 @@ model Product {
   createdAt       DateTime  @default(now()) @map("created_at")
   updatedAt       DateTime  @updatedAt @map("updated_at")
   cartItems       CartItem[]
+  orderItems      OrderItem[]
 
   @@map("products")
 }
@@ -71,4 +74,36 @@ model CartItem {
 
   @@unique([userId, productId])
   @@map("cart_items")
+}
+
+enum OrderStatus {
+  PENDING
+  APPROVED
+}
+
+model Order {
+  id             Int         @id @default(autoincrement())
+  userId         Int         @map("user_id")
+  total          Float
+  clientCondition Role       @map("client_condition")
+  status         OrderStatus @default(PENDING)
+  createdAt      DateTime    @default(now()) @map("created_at")
+  user           User        @relation(fields: [userId], references: [id])
+  items          OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id          Int     @id @default(autoincrement())
+  orderId     Int     @map("order_id")
+  productId   Int     @map("product_id")
+  productName String  @map("product_name")
+  quantity    Int
+  unitPrice   Float   @map("unit_price")
+  subtotal    Float
+  order       Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product     Product @relation(fields: [productId], references: [id])
+
+  @@map("order_items")
 }
