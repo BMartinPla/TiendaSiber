@@ -23,33 +23,33 @@ export default function ProductModal({ product, onClose }) {
   return (
     <>
       <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4" onClick={onClose}>
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-          <button onClick={onClose} className="absolute top-4 right-4 z-10 p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col overflow-hidden" onClick={(e) => e.stopPropagation()}>
+          <button onClick={onClose} className="absolute top-4 right-4 z-10 p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors bg-white/80 dark:bg-gray-900/80">
             <X className="w-5 h-5" />
           </button>
 
-          <div className="grid grid-cols-1 md:grid-cols-2">
-            <div className="relative h-64 md:h-full min-h-[300px] bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 flex items-center justify-center">
-              {product.imageUrl ? (
-                <img src={product.imageUrl} alt={product.name} className="w-full h-full object-contain p-6" />
-              ) : (
-                <Package className="w-24 h-24 text-gray-300 dark:text-gray-600" />
-              )}
-              {product.category && (
-                <span className="absolute top-4 left-4 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm text-xs font-medium text-gray-600 dark:text-gray-300 px-3 py-1.5 rounded-full shadow-sm">
-                  {product.category.name}
-                </span>
+          <div className="relative h-64 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 flex items-center justify-center shrink-0">
+            {product.imageUrl ? (
+              <img src={product.imageUrl} alt={product.name} className="w-full h-full object-contain p-6" />
+            ) : (
+              <Package className="w-24 h-24 text-gray-300 dark:text-gray-600" />
+            )}
+            {product.category && (
+              <span className="absolute top-4 left-4 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm text-xs font-medium text-gray-600 dark:text-gray-300 px-3 py-1.5 rounded-full shadow-sm">
+                {product.category.name}
+              </span>
+            )}
+          </div>
+
+          <div className="flex-1 overflow-y-auto p-6 flex flex-col">
+            <div>
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white">{product.name}</h2>
+              {product.description && (
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 leading-relaxed">{product.description}</p>
               )}
             </div>
 
-            <div className="p-6 flex flex-col gap-4">
-              <div>
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white">{product.name}</h2>
-                {product.description && (
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 leading-relaxed">{product.description}</p>
-                )}
-              </div>
-
+            <div className="mt-auto pt-6 space-y-3">
               <div className="space-y-1">
                 <div className="flex items-baseline gap-2">
                   {isAdmin ? (
