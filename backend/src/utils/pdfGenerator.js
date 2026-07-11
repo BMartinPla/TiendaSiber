@@ -1,14 +1,23 @@
 const PDFDocument = require('pdfkit')
+const path = require('path')
+const fs = require('fs')
 
 function generateOrderPdf(order) {
   const doc = new PDFDocument({ margin: 50 })
 
-  doc.font('Helvetica-Bold').fontSize(20).text('Quince Gear SN', { align: 'center' })
-  doc.fontSize(10).font('Helvetica').text('Remito de Pedido', { align: 'center' })
-  doc.moveDown(0.5)
+  const logoPath = path.join(__dirname, '../../public/logo.png')
+  if (fs.existsSync(logoPath)) {
+    doc.image(logoPath, 50, 45, { width: 50 })
+  }
+
+  doc.font('Helvetica-Bold').fontSize(18).text('Quince Gear SN', 115, 50)
+  doc.fontSize(9).font('Helvetica').fillColor('#666').text('Remito de Pedido', 115, 70)
+  doc.fillColor('#000')
+  doc.moveDown(1.5)
+
   doc.fontSize(8).fillColor('#666').text(`Pedido #${order.id} - ${new Date(order.createdAt).toLocaleString('es-AR')}`, { align: 'center' })
   doc.fillColor('#000')
-  doc.moveDown(1)
+  doc.moveDown(1.5)
 
   doc.fontSize(10).font('Helvetica-Bold').text('Datos del Cliente')
   doc.font('Helvetica').fontSize(9)
@@ -16,47 +25,47 @@ function generateOrderPdf(order) {
   doc.text(`Email: ${order.user.email}`)
   if (order.user.phone) doc.text(`Teléfono: ${order.user.phone}`)
   doc.text(`Condición: ${order.clientCondition === 'WHOLESALE' ? 'Mayorista' : 'Minorista'}`)
-  doc.moveDown(1)
+  doc.moveDown(1.5)
 
   doc.font('Helvetica-Bold').fontSize(10).text('Productos')
-  doc.moveDown(0.3)
+  doc.moveDown(0.5)
 
   const tableTop = doc.y
-  const colX = [50, 280, 360, 430, 500]
-  const headers = ['Producto', 'Cantidad', 'P. Unit', 'Subtotal']
+  const colProduct = 50
+  const colQty = 330
+  const colPrice = 400
+  const colSubtotal = 470
 
   doc.font('Helvetica-Bold').fontSize(8)
-  doc.text('Producto', colX[0], tableTop)
-  doc.text('Cantidad', colX[1], tableTop, { width: 70, align: 'center' })
-  doc.text('P. Unit', colX[2], tableTop, { width: 70, align: 'right' })
-  doc.text('Subtotal', colX[3], tableTop, { width: 70, align: 'right' })
+  doc.text('Producto', colProduct, tableTop)
+  doc.text('Cant.', colQty, tableTop, { width: 50, align: 'center' })
+  doc.text('P. Unit', colPrice, tableTop, { width: 60, align: 'right' })
+  doc.text('Subtotal', colSubtotal, tableTop, { width: 60, align: 'right' })
 
-  doc.moveDown(0.3)
-  const lineY = doc.y
-  doc.moveTo(colX[0], lineY).lineTo(520, lineY).strokeColor('#ccc').stroke()
-  doc.moveDown(0.5)
+  const lineY = doc.y + 3
+  doc.moveTo(colProduct, lineY).lineTo(530, lineY).strokeColor('#ccc').stroke()
+  doc.moveDown(0.8)
 
   doc.font('Helvetica').fontSize(8)
   order.items.forEach((item) => {
-    const y = doc.y
-    if (y > 700) {
+    if (doc.y > 700) {
       doc.addPage()
-      doc.y = 50
     }
-    doc.text(item.productName, colX[0], doc.y, { width: 220 })
-    doc.text(String(item.quantity), colX[1], doc.y - 12, { width: 70, align: 'center' })
-    doc.text(`$${item.unitPrice.toLocaleString('es-CL')}`, colX[2], doc.y - 12, { width: 70, align: 'right' })
-    doc.text(`$${item.subtotal.toLocaleString('es-CL')}`, colX[3], doc.y - 12, { width: 70, align: 'right' })
-    doc.moveDown(0.8)
+    const rowY = doc.y
+    doc.text(item.productName, colProduct, rowY, { width: 270 })
+    doc.text(String(item.quantity), colQty, rowY, { width: 50, align: 'center' })
+    doc.text(`$${Number(item.unitPrice).toLocaleString('es-CL')}`, colPrice, rowY, { width: 60, align: 'right' })
+    doc.text(`$${Number(item.subtotal).toLocaleString('es-CL')}`, colSubtotal, rowY, { width: 60, align: 'right' })
+    doc.moveDown(1.2)
   })
 
-  const totalY = doc.y + 5
-  doc.moveTo(colX[0], totalY).lineTo(520, totalY).strokeColor('#ccc').stroke()
-  doc.moveDown(0.5)
+  const totalLineY = doc.y + 5
+  doc.moveTo(colProduct, totalLineY).lineTo(530, totalLineY).strokeColor('#ccc').stroke()
+  doc.moveDown(0.8)
 
-  doc.font('Helvetica-Bold').fontSize(11)
-  doc.text(`Total: $${order.total.toLocaleString('es-CL')}`, 430, doc.y, { align: 'right' })
-  doc.moveDown(0.3)
+  doc.font('Helvetica-Bold').fontSize(12)
+  doc.text(`Total: $${Number(order.total).toLocaleString('es-CL')}`, 400, doc.y, { align: 'right' })
+  doc.moveDown(0.5)
 
   doc.font('Helvetica').fontSize(8).fillColor('#666')
   doc.text(`Estado: ${order.status === 'APPROVED' ? 'Aprobado' : 'Pendiente'}`, { align: 'center' })
