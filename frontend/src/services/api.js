@@ -189,6 +189,10 @@ export function getOrders(search = '', status = '') {
   return api.get(`/orders${qs ? `?${qs}` : ''}`).then((res) => res.data)
 }
 
+export function getMyOrders() {
+  return api.get('/orders/mine').then((res) => res.data)
+}
+
 export function getOrder(id) {
   return api.get(`/orders/${id}`).then((res) => res.data)
 }

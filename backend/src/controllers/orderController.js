@@ -90,6 +90,20 @@ async function list(req, res) {
   }
 }
 
+async function listMyOrders(req, res) {
+  try {
+    const orders = await prisma.order.findMany({
+      where: { userId: req.user.id },
+      include: { items: true },
+      orderBy: { createdAt: 'desc' },
+    })
+    res.json(orders)
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Error al obtener tus pedidos' })
+  }
+}
+
 async function getById(req, res) {
   try {
     const { id } = req.params
@@ -185,4 +199,4 @@ async function downloadPdf(req, res) {
   }
 }
 
-module.exports = { createFromCart, list, getById, approve, remove, downloadPdf }
+module.exports = { createFromCart, list, listMyOrders, getById, approve, remove, downloadPdf }

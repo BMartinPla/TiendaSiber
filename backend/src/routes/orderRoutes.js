@@ -7,6 +7,7 @@ const router = Router()
 
 router.post('/from-cart', authenticate, orderController.createFromCart)
 router.get('/', authenticate, authorize('ADMIN'), orderController.list)
+router.get('/mine', authenticate, orderController.listMyOrders)
 router.get('/:id', authenticate, authorize('ADMIN'), orderController.getById)
 router.patch('/:id/approve', authenticate, authorize('ADMIN'), orderController.approve)
 router.delete('/:id', authenticate, authorize('ADMIN'), orderController.remove)
