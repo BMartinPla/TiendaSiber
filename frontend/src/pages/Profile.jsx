@@ -14,17 +14,17 @@ export default function Profile() {
   const roleLabels = { ADMIN: 'Admin', WHOLESALE: 'Mayorista', RETAIL: 'Minorista' }
   const roleColors = {
     ADMIN: 'bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300',
-    WHOLESALE: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300',
+    WHOLESALE: 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300',
     RETAIL: 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300',
   }
   const roleIconColors = {
     ADMIN: 'text-purple-600 dark:text-purple-400',
-    WHOLESALE: 'text-emerald-600 dark:text-emerald-400',
+    WHOLESALE: 'text-blue-600 dark:text-blue-400',
     RETAIL: 'text-blue-600 dark:text-blue-400',
   }
   const roleBgIcon = {
     ADMIN: 'bg-purple-100 dark:bg-purple-900/30',
-    WHOLESALE: 'bg-emerald-100 dark:bg-emerald-900/30',
+    WHOLESALE: 'bg-blue-100 dark:bg-blue-900/30',
     RETAIL: 'bg-blue-100 dark:bg-blue-900/30',
   }
 
@@ -69,7 +69,7 @@ export default function Profile() {
             <div className={`mb-4 text-sm px-4 py-3 rounded-xl border ${
               message.error
                 ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-600 dark:text-red-400'
-                : 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800 text-emerald-600 dark:text-emerald-400'
+                : 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-600 dark:text-red-400'
             }`}>
               {message.text}
             </div>
@@ -91,7 +91,7 @@ export default function Profile() {
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
               />
             </div>
 
@@ -104,7 +104,7 @@ export default function Profile() {
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="+54 9 11 1234-5678"
-                  className="w-full pl-10 pr-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                  className="w-full pl-10 pr-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 />
               </div>
             </div>
@@ -120,7 +120,7 @@ export default function Profile() {
             <button
               type="submit"
               disabled={saving}
-              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold text-white bg-gray-900 dark:bg-emerald-600 hover:bg-gray-800 dark:hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold text-white bg-gray-900 dark:bg-blue-600 hover:bg-gray-800 dark:hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               <Save className="w-4 h-4" />
               {saving ? 'Guardando...' : 'Guardar Cambios'}

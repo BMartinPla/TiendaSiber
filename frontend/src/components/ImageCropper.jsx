@@ -87,7 +87,7 @@ export default function ImageCropper({ imageUrl, onCrop, onCancel }) {
                 step={0.1}
                 value={zoom}
                 onChange={(e) => setZoom(Number(e.target.value))}
-                className="w-full accent-emerald-500"
+                className="w-full accent-blue-500"
               />
             </div>
             <div className="flex gap-3">
@@ -96,7 +96,7 @@ export default function ImageCropper({ imageUrl, onCrop, onCancel }) {
                 Cancelar
               </button>
               <button onClick={handleConfirm}
-                className="flex-1 py-3 rounded-xl text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-700 transition-colors">
+                className="flex-1 py-3 rounded-xl text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-colors">
                 Aplicar
               </button>
             </div>

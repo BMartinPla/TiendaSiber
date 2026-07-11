@@ -78,14 +78,14 @@ export default function ProductModal({ product, onClose }) {
                 </div>
 
                 {!isAdmin && isWholesale && savings > 0 && (
-                  <span className="inline-block bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 text-xs font-semibold px-2 py-0.5 rounded-full">
-                    Ahorras ${savings.toLocaleString('es-CL')}
-                  </span>
+                <span className="inline-block bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 text-xs font-semibold px-2 py-0.5 rounded-full">
+                  Ahorras ${savings.toLocaleString('es-CL')}
+                </span>
                 )}
               </div>
 
               <div className="flex items-center gap-1.5">
-                <span className={`text-sm ${product.stock > 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-500 dark:text-red-400'}`}>
+                <span className={`text-sm ${product.stock > 0 ? 'text-red-600 dark:text-red-400' : 'text-red-500 dark:text-red-400'}`}>
                   {product.stock > 0 ? `📦 ${product.stock} disponibles` : '❌ Agotado'}
                 </span>
               </div>
@@ -98,8 +98,8 @@ export default function ProductModal({ product, onClose }) {
                     product.stock <= 0
                       ? 'bg-gray-100 dark:bg-gray-700 text-gray-400 cursor-not-allowed'
                       : added
-                      ? 'bg-emerald-600 text-white'
-                      : 'bg-emerald-600 text-white hover:bg-emerald-700 active:scale-[0.98]'
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-blue-600 text-white hover:bg-blue-700 active:scale-[0.98]'
                   }`}
                 >
                   {product.stock <= 0 ? (

@@ -173,13 +173,13 @@ export default function Cart({ open, onClose }) {
 
             {isWholesale && totalSavings > 0 && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-emerald-600 dark:text-emerald-400 font-medium">Ahorras</span>
-                <span className="text-base font-bold text-emerald-600 dark:text-emerald-400">${totalSavings.toLocaleString('es-CL')}</span>
+                <span className="text-sm text-red-600 dark:text-red-400 font-medium">Ahorras</span>
+                <span className="text-base font-bold text-red-600 dark:text-red-400">${totalSavings.toLocaleString('es-CL')}</span>
               </div>
             )}
 
             {orderSuccess && (
-              <div className="flex items-center gap-2 text-sm text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 px-4 py-2.5 rounded-xl">
+              <div className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 px-4 py-2.5 rounded-xl">
                 <CheckCircle className="w-4 h-4 shrink-0" />
                 Pedido registrado. Revisa WhatsApp para enviarlo.
               </div>
