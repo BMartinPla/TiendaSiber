@@ -68,6 +68,11 @@ export function CartProvider({ children }) {
   }
 
   function add(productId, quantity = 1, product = null) {
+    if (product) {
+      const existing = items.find((i) => i.product.id === productId)
+      const totalQty = (existing?.quantity || 0) + quantity
+      if (totalQty > product.stock) return
+    }
     setItems((prev) => {
       const idx = prev.findIndex((item) => item.product.id === productId)
       if (idx !== -1) {

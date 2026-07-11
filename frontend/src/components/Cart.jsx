@@ -43,7 +43,13 @@ export default function Cart({ open, onClose }) {
   function handleQtyBlur(itemId) {
     const qty = getQty(itemId)
     const item = items.find((i) => i.id === itemId)
-    if (item && qty !== item.quantity) update(itemId, qty)
+    if (item && qty !== item.quantity) {
+      if (item?.product?.stock != null && qty > item.product.stock) {
+        setLocalQtys((prev) => ({ ...prev, [itemId]: item.quantity }))
+        return
+      }
+      update(itemId, qty)
+    }
     setLocalQtys((prev) => {
       const copy = { ...prev }
       delete copy[itemId]
@@ -55,6 +61,8 @@ export default function Cart({ open, onClose }) {
     const current = getQty(itemId)
     const next = current + delta
     if (next < 1) return
+    const item = items.find((i) => i.id === itemId)
+    if (delta > 0 && item?.product?.stock != null && next > item.product.stock) return
     setLocalQtys((prev) => ({ ...prev, [itemId]: next }))
     update(itemId, next)
   }

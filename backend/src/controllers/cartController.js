@@ -33,7 +33,7 @@ async function getCart(req, res) {
 
 async function addItem(req, res) {
   try {
-    const { productId, quantity } = req.body
+    const { productId, quantity = 1 } = req.body
 
     if (!productId) {
       return res.status(400).json({ error: 'productId es obligatorio' })
@@ -44,15 +44,25 @@ async function addItem(req, res) {
       return res.status(404).json({ error: 'Producto no encontrado' })
     }
 
+    const existing = await prisma.cartItem.findUnique({
+      where: { userId_productId: { userId: req.user.id, productId: Number(productId) } },
+    })
+    const totalQty = (existing?.quantity || 0) + quantity
+    if (totalQty > product.stock) {
+      return res.status(400).json({
+        error: `Stock insuficiente. Disponible: ${product.stock}, solicitado: ${totalQty}`,
+      })
+    }
+
     const item = await prisma.cartItem.upsert({
       where: { userId_productId: { userId: req.user.id, productId: Number(productId) } },
       create: {
         userId: req.user.id,
         productId: Number(productId),
-        quantity: quantity || 1,
+        quantity,
       },
       update: {
-        quantity: { increment: quantity || 1 },
+        quantity: { increment: quantity },
       },
       include: { product: { include: { category: { select: { id: true, name: true } } } } },
     })
@@ -60,6 +70,9 @@ async function addItem(req, res) {
     res.json(item)
   } catch (error) {
     console.error(error)
+    if (error.code === 'P2002') {
+      return res.status(400).json({ error: 'El producto ya está en el carrito' })
+    }
     res.status(500).json({ error: 'Error al agregar al carrito' })
   }
 }
@@ -75,10 +88,17 @@ async function updateItemQuantity(req, res) {
 
     const item = await prisma.cartItem.findFirst({
       where: { id: Number(id), userId: req.user.id },
+      include: { product: true },
     })
 
     if (!item) {
       return res.status(404).json({ error: 'Item no encontrado en el carrito' })
+    }
+
+    if (quantity > item.product.stock) {
+      return res.status(400).json({
+        error: `Stock insuficiente. Disponible: ${item.product.stock}, solicitado: ${quantity}`,
+      })
     }
 
     const updated = await prisma.cartItem.update({
