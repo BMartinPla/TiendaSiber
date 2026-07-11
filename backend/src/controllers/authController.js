@@ -98,4 +98,26 @@ async function profile(req, res) {
   }
 }
 
-module.exports = { register, login, profile }
+async function updateProfile(req, res) {
+  try {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() })
+    }
+
+    const { name, phone } = req.body
+
+    const updated = await prisma.user.update({
+      where: { id: req.user.id },
+      data: { name, phone },
+      select: { id: true, name: true, email: true, role: true, phone: true, active: true },
+    })
+
+    res.json({ user: updated })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Error al actualizar perfil' })
+  }
+}
+
+module.exports = { register, login, profile, updateProfile }

@@ -68,6 +68,10 @@ export default function Navbar({ onCartClick, search, onSearch }) {
               </Link>
             )}
 
+            <Link to="/profile" className="text-sm text-gray-500 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium">
+              Perfil
+            </Link>
+
             <button onClick={onCartClick} className="relative p-2 text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
               <ShoppingCart className="w-6 h-6" />
               {itemCount > 0 && (

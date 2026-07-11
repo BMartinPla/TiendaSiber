@@ -27,4 +27,8 @@ router.patch(
   userController.updateRole
 )
 
+router.patch('/:id/suspend', authenticate, authorize('ADMIN'), userController.suspend)
+router.patch('/:id/activate', authenticate, authorize('ADMIN'), userController.activate)
+router.delete('/:id', authenticate, authorize('ADMIN'), userController.remove)
+
 module.exports = router

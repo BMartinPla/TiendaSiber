@@ -93,4 +93,81 @@ async function bulkUpdateRole(req, res) {
   }
 }
 
-module.exports = { list, updateRole, bulkUpdateRole }
+async function suspend(req, res) {
+  try {
+    const { id } = req.params
+
+    if (Number(id) === req.user.id) {
+      return res.status(403).json({ error: 'No puedes suspender tu propia cuenta' })
+    }
+
+    const user = await prisma.user.findUnique({ where: { id: Number(id) } })
+    if (!user) {
+      return res.status(404).json({ error: 'Usuario no encontrado' })
+    }
+
+    if (!user.active) {
+      return res.status(400).json({ error: 'El usuario ya está suspendido' })
+    }
+
+    const updated = await prisma.user.update({
+      where: { id: Number(id) },
+      data: { active: false },
+      select: { id: true, name: true, email: true, role: true, active: true },
+    })
+
+    res.json(updated)
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Error al suspender usuario' })
+  }
+}
+
+async function activate(req, res) {
+  try {
+    const { id } = req.params
+
+    const user = await prisma.user.findUnique({ where: { id: Number(id) } })
+    if (!user) {
+      return res.status(404).json({ error: 'Usuario no encontrado' })
+    }
+
+    if (user.active) {
+      return res.status(400).json({ error: 'El usuario ya está activo' })
+    }
+
+    const updated = await prisma.user.update({
+      where: { id: Number(id) },
+      data: { active: true },
+      select: { id: true, name: true, email: true, role: true, active: true },
+    })
+
+    res.json(updated)
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Error al activar usuario' })
+  }
+}
+
+async function remove(req, res) {
+  try {
+    const { id } = req.params
+
+    if (Number(id) === req.user.id) {
+      return res.status(403).json({ error: 'No puedes eliminar tu propia cuenta' })
+    }
+
+    const user = await prisma.user.findUnique({ where: { id: Number(id) } })
+    if (!user) {
+      return res.status(404).json({ error: 'Usuario no encontrado' })
+    }
+
+    await prisma.user.delete({ where: { id: Number(id) } })
+    res.json({ message: 'Usuario eliminado permanentemente' })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Error al eliminar usuario' })
+  }
+}
+
+module.exports = { list, updateRole, bulkUpdateRole, suspend, activate, remove }

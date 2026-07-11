@@ -22,6 +22,9 @@ import {
   getUsers,
   updateUserRole,
   bulkUpdateUserRole,
+  suspendUser,
+  activateUser,
+  deleteUser,
   uploadImage,
 } from '../services/api'
 
@@ -125,6 +128,37 @@ export default function AdminDashboard() {
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
     )
     setSelectAllUsers(false)
+  }
+
+  async function handleUserSuspend(id) {
+    try {
+      await suspendUser(id)
+      showMsg('Usuario suspendido')
+      loadUsers(userSearch)
+    } catch (err) {
+      showMsg(err.response?.data?.error || 'Error al suspender usuario', true)
+    }
+  }
+
+  async function handleUserActivate(id) {
+    try {
+      await activateUser(id)
+      showMsg('Usuario activado')
+      loadUsers(userSearch)
+    } catch (err) {
+      showMsg(err.response?.data?.error || 'Error al activar usuario', true)
+    }
+  }
+
+  async function handleUserDelete(id) {
+    if (!window.confirm('¿Eliminar PERMANENTEMENTE este usuario? Esta acción no se puede deshacer.')) return
+    try {
+      await deleteUser(id)
+      showMsg('Usuario eliminado permanentemente')
+      loadUsers(userSearch)
+    } catch (err) {
+      showMsg(err.response?.data?.error || 'Error al eliminar usuario', true)
+    }
   }
 
   useEffect(() => {
@@ -668,6 +702,7 @@ export default function AdminDashboard() {
                     <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Rol</th>
                     <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Estado</th>
                     <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Cambiar Rol</th>
+                    <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -711,6 +746,32 @@ export default function AdminDashboard() {
                           <option value="WHOLESALE">Mayorista</option>
                           <option value="ADMIN">Admin</option>
                         </select>
+                        )}
+                      </td>
+                      <td className="px-4 py-3">
+                        {isSelf ? (
+                          <div className="flex items-center gap-1.5 text-gray-400 dark:text-gray-500 text-xs">
+                            <ShieldOff className="w-3.5 h-3.5" />
+                            Sin cambios
+                          </div>
+                        ) : (
+                          <div className="flex gap-1">
+                            {u.active ? (
+                              <button onClick={() => handleUserSuspend(u.id)}
+                                className="px-2 py-1 rounded-lg text-xs font-medium text-white bg-amber-500 hover:bg-amber-600 transition-colors">
+                                Suspender
+                              </button>
+                            ) : (
+                              <button onClick={() => handleUserActivate(u.id)}
+                                className="px-2 py-1 rounded-lg text-xs font-medium text-white bg-emerald-500 hover:bg-emerald-600 transition-colors">
+                                Activar
+                              </button>
+                            )}
+                            <button onClick={() => handleUserDelete(u.id)}
+                              className="px-2 py-1 rounded-lg text-xs font-medium text-white bg-red-500 hover:bg-red-600 transition-colors">
+                              <Trash2 className="w-3 h-3" />
+                            </button>
+                          </div>
                         )}
                       </td>
                     </tr>

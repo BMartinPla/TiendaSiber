@@ -1,6 +1,6 @@
 const { Router } = require('express')
 const { body } = require('express-validator')
-const { register, login, profile } = require('../controllers/authController')
+const { register, login, profile, updateProfile } = require('../controllers/authController')
 const authenticate = require('../middleware/authMiddleware')
 
 const router = Router()
@@ -26,5 +26,12 @@ router.post(
 )
 
 router.get('/profile', authenticate, profile)
+
+router.patch(
+  '/profile',
+  authenticate,
+  [body('name').optional().notEmpty().withMessage('El nombre no puede estar vacío')],
+  updateProfile
+)
 
 module.exports = router

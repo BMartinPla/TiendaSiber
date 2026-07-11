@@ -6,6 +6,7 @@ import { DarkModeProvider } from './contexts/DarkModeContext'
 import Login from './components/Login'
 import Register from './components/Register'
 import Home from './pages/Home'
+import Profile from './pages/Profile'
 import AdminDashboard from './pages/AdminDashboard'
 
 function ProtectedRoute({ children, adminOnly = false }) {
@@ -28,6 +29,7 @@ function AppRoutes() {
       <Route path="/login" element={user ? <Navigate to="/" replace /> : <Login />} />
       <Route path="/register" element={user ? <Navigate to="/" replace /> : <Register />} />
       <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+      <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
       <Route path="/admin" element={<ProtectedRoute adminOnly><AdminDashboard /></ProtectedRoute>} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

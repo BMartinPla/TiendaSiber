@@ -161,4 +161,20 @@ export function uploadImage(file) {
   return api.post('/upload', formData).then((res) => res.data)
 }
 
+export function suspendUser(id) {
+  return api.patch(`/users/${id}/suspend`).then((res) => res.data)
+}
+
+export function activateUser(id) {
+  return api.patch(`/users/${id}/activate`).then((res) => res.data)
+}
+
+export function deleteUser(id) {
+  return api.delete(`/users/${id}`).then((res) => res.data)
+}
+
+export function updateProfile(data) {
+  return api.patch('/auth/profile', data).then((res) => res.data)
+}
+
 export default api
