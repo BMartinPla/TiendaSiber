@@ -170,7 +170,7 @@ export default function Cart({ open, onClose }) {
               className="w-full flex items-center justify-center gap-3 py-3.5 rounded-xl text-sm font-bold text-white bg-[#25d366] hover:bg-[#20bd5a] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100 transition-all duration-200 shadow-lg shadow-[#25d366]/25"
             >
               <MessageCircle className={`w-5 h-5 ${syncing ? 'animate-pulse' : ''}`} />
-              {syncing ? 'Sincronizando...' : 'Concretar compra por WhatsApp'}
+              {syncing ? 'Sincronizando...' : 'Enviar pedido por WhatsApp'}
             </button>
           </div>
         )}
