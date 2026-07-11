@@ -26,6 +26,7 @@ async function getCart(req, res) {
 
     res.json({ items: cartItems, total })
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: 'Error al obtener carrito' })
   }
 }
@@ -58,6 +59,7 @@ async function addItem(req, res) {
 
     res.json(item)
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: 'Error al agregar al carrito' })
   }
 }
@@ -87,6 +89,7 @@ async function updateItemQuantity(req, res) {
 
     res.json(updated)
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: 'Error al actualizar cantidad' })
   }
 }
@@ -107,6 +110,7 @@ async function removeItem(req, res) {
 
     res.json({ message: 'Item eliminado del carrito' })
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: 'Error al eliminar item del carrito' })
   }
 }
@@ -116,6 +120,7 @@ async function clearCart(req, res) {
     await prisma.cartItem.deleteMany({ where: { userId: req.user.id } })
     res.json({ message: 'Carrito vaciado' })
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: 'Error al vaciar carrito' })
   }
 }
@@ -143,6 +148,7 @@ async function getCartSummary(req, res) {
 
     res.json({ details, total, strategy: strategy.getPrice.name.replace('PricingStrategy', '') })
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: 'Error al obtener resumen del carrito' })
   }
 }

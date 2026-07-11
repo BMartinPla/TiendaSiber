@@ -27,6 +27,7 @@ async function list(req, res) {
 
     res.json(users)
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: 'Error al obtener usuarios' })
   }
 }
@@ -57,6 +58,7 @@ async function updateRole(req, res) {
 
     res.json(updated)
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: 'Error al actualizar rol' })
   }
 }
@@ -86,6 +88,7 @@ async function bulkUpdateRole(req, res) {
 
     res.json({ message: `${result.count} usuario(s) actualizado(s) a ${role}`, count: result.count })
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: 'Error al actualizar roles masivamente' })
   }
 }

@@ -86,7 +86,7 @@ export default function Cart({ open, onClose }) {
           </div>
           <div className="flex items-center gap-2">
             {items.length > 0 && (
-              <button onClick={clear} className="text-xs text-red-500 hover:text-red-600 font-medium px-3 py-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+              <button onClick={clear} className="text-xs text-red-500 dark:text-red-400 hover:text-red-600 dark:hover:text-red-400 font-medium px-3 py-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
                 Vaciar
               </button>
             )}
@@ -140,7 +140,7 @@ export default function Cart({ open, onClose }) {
                       )}
                     </div>
 
-                    <button onClick={() => remove(item.id)} className="p-1.5 text-gray-300 dark:text-gray-600 hover:text-red-500 transition-colors">
+                    <button onClick={() => remove(item.id)} className="p-1.5 text-gray-300 dark:text-gray-600 hover:text-red-500 dark:hover:text-red-400 transition-colors">
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>

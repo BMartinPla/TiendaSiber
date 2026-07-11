@@ -11,7 +11,7 @@ import AdminDashboard from './pages/AdminDashboard'
 function ProtectedRoute({ children, adminOnly = false }) {
   const { user, loading } = useAuth()
 
-  if (loading) return <div className="flex items-center justify-center h-screen text-gray-500 text-sm">Cargando...</div>
+  if (loading) return <div className="flex items-center justify-center h-screen text-gray-500 dark:text-gray-400 text-sm">Cargando...</div>
   if (!user) return <Navigate to="/login" replace />
   if (adminOnly && user.role !== 'ADMIN') return <Navigate to="/" replace />
 
@@ -21,7 +21,7 @@ function ProtectedRoute({ children, adminOnly = false }) {
 function AppRoutes() {
   const { user, loading } = useAuth()
 
-  if (loading) return <div className="flex items-center justify-center h-screen text-gray-500 text-sm">Cargando...</div>
+  if (loading) return <div className="flex items-center justify-center h-screen text-gray-500 dark:text-gray-400 text-sm">Cargando...</div>
 
   return (
     <Routes>

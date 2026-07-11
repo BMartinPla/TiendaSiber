@@ -39,6 +39,7 @@ async function register(req, res) {
 
     res.status(201).json({ user, token })
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: 'Error al registrar usuario' })
   }
 }
@@ -83,12 +84,18 @@ async function login(req, res) {
       token,
     })
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: 'Error al iniciar sesión' })
   }
 }
 
 async function profile(req, res) {
-  res.json({ user: req.user })
+  try {
+    res.json({ user: req.user })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Error al obtener perfil' })
+  }
 }
 
 module.exports = { register, login, profile }

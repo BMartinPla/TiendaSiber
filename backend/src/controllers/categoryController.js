@@ -10,6 +10,7 @@ async function list(req, res) {
     })
     res.json(categories)
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: 'Error al obtener categorías' })
   }
 }
@@ -24,6 +25,7 @@ async function getById(req, res) {
     if (!category) return res.status(404).json({ error: 'Categoría no encontrada' })
     res.json(category)
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: 'Error al obtener categoría' })
   }
 }
@@ -35,6 +37,7 @@ async function create(req, res) {
     const category = await prisma.category.create({ data: { name, description } })
     res.status(201).json(category)
   } catch (error) {
+    console.error(error)
     if (error.code === 'P2002') return res.status(409).json({ error: 'Ya existe una categoría con ese nombre' })
     res.status(500).json({ error: 'Error al crear categoría' })
   }
@@ -55,6 +58,7 @@ async function update(req, res) {
     })
     res.json(updated)
   } catch (error) {
+    console.error(error)
     if (error.code === 'P2002') return res.status(409).json({ error: 'Ya existe una categoría con ese nombre' })
     res.status(500).json({ error: 'Error al actualizar categoría' })
   }
@@ -68,6 +72,7 @@ async function softDelete(req, res) {
     const updated = await prisma.category.update({ where: { id: Number(id) }, data: { active: false } })
     res.json({ message: 'Categoría suspendida', category: updated })
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: 'Error al suspender categoría' })
   }
 }
@@ -80,6 +85,7 @@ async function restore(req, res) {
     const updated = await prisma.category.update({ where: { id: Number(id) }, data: { active: true } })
     res.json({ message: 'Categoría restaurada', category: updated })
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: 'Error al restaurar categoría' })
   }
 }
@@ -92,12 +98,13 @@ async function hardDelete(req, res) {
     const productCount = await prisma.product.count({ where: { categoryId: Number(id) } })
     if (productCount > 0) {
       return res.status(409).json({
-        error: `No se puede eliminar: ${productCount} producto(s) usan esta categoría. Reasí gnalos primero.`,
+        error: `No se puede eliminar: ${productCount} producto(s) usan esta categoría. Reasígnalos primero.`,
       })
     }
     await prisma.category.delete({ where: { id: Number(id) } })
     res.json({ message: 'Categoría eliminada permanentemente' })
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: 'Error al eliminar categoría' })
   }
 }

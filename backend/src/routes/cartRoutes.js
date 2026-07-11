@@ -1,7 +1,7 @@
 const { Router } = require('express')
 const authenticate = require('../middleware/authMiddleware')
 const cartController = require('../controllers/cartController')
-const { generateWhatsAppUrl } = require('../utils/whatsappFormatter')
+const { generateWhatsAppUrl, STORE_PHONE } = require('../utils/whatsappFormatter')
 
 const router = Router()
 
@@ -16,7 +16,6 @@ router.get('/summary', cartController.getCartSummary)
 
 router.get('/whatsapp-link', async (req, res) => {
   try {
-    const { getCart } = require('../controllers/cartController')
     const prisma = require('../config/database')
 
     const items = await prisma.cartItem.findMany({
@@ -30,7 +29,7 @@ router.get('/whatsapp-link', async (req, res) => {
     }))
 
     const url = generateWhatsAppUrl(cartItems, req.user)
-    res.json({ whatsappUrl: url, phone: require('../utils/whatsappFormatter').STORE_PHONE })
+    res.json({ whatsappUrl: url, phone: STORE_PHONE })
   } catch (error) {
     res.status(500).json({ error: 'Error al generar enlace de WhatsApp' })
   }

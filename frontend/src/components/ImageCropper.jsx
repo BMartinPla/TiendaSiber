@@ -60,7 +60,7 @@ export default function ImageCropper({ imageUrl, onCrop, onCancel }) {
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden" onClick={(e) => e.stopPropagation()}>
           <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100 dark:border-gray-700">
             <h2 className="text-lg font-bold text-gray-900 dark:text-white">Ajustar imagen</h2>
-            <button onClick={onCancel} className="p-1.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+            <button onClick={onCancel} className="p-1.5 text-gray-400 dark:text-gray-300 hover:text-gray-600 dark:hover:text-gray-100 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
               <X className="w-5 h-5" />
             </button>
           </div>
@@ -79,7 +79,7 @@ export default function ImageCropper({ imageUrl, onCrop, onCancel }) {
 
           <div className="px-5 py-4 space-y-4">
             <div className="flex items-center gap-3">
-              <ZoomIn className="w-4 h-4 text-gray-400 shrink-0" />
+              <ZoomIn className="w-4 h-4 text-gray-400 dark:text-gray-300 shrink-0" />
               <input
                 type="range"
                 min={1}

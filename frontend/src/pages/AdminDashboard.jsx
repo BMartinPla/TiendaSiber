@@ -16,7 +16,6 @@ import {
   deleteProduct,
   getCategories,
   createCategory,
-  updateCategory,
   suspendCategory,
   restoreCategory,
   deleteCategory,
@@ -331,16 +330,16 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
-      <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-600 dark:border-gray-700 shadow-sm">
+      <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Link to="/" className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:text-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:text-gray-400 transition-colors">
+              <Link to="/" className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
                 <ArrowLeft className="w-5 h-5" />
               </Link>
               <div>
-                <h1 className="text-xl font-bold text-gray-900 dark:text-white dark:text-white">Panel de Administración</h1>
-                <p className="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500 mt-0.5">Gestiona productos, categorías y precios</p>
+                <h1 className="text-xl font-bold text-gray-900 dark:text-white">Panel de Administración</h1>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Gestiona productos, categorías y precios</p>
               </div>
             </div>
             <button onClick={() => setShowCreate(!showCreate)}
@@ -361,7 +360,7 @@ export default function AdminDashboard() {
         )}
 
         {showCreate && (
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 dark:border-gray-700 p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
             <h2 className="text-base font-bold text-gray-900 dark:text-white mb-4">Nuevo Producto</h2>
             <form onSubmit={handleCreate} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="sm:col-span-2">
@@ -412,7 +411,7 @@ export default function AdminDashboard() {
               </div>
               <div className="sm:col-span-2">
                 <button type="submit"
-                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold text-white bg-gray-900 hover:bg-gray-800 transition-colors">
+                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold text-white bg-gray-900 dark:bg-emerald-600 hover:bg-gray-800 dark:hover:bg-emerald-700 transition-colors">
                   <Package className="w-4 h-4" /> Crear Producto
                 </button>
               </div>
@@ -420,7 +419,7 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 dark:border-gray-700 p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-base font-bold text-gray-900 dark:text-white">Categorías</h2>
             <button onClick={() => setShowCategoryForm(!showCategoryForm)}
@@ -455,7 +454,7 @@ export default function AdminDashboard() {
                       {expandedCat === cat.id ? <ChevronDown className="w-4 h-4 text-gray-400" /> : <ChevronRight className="w-4 h-4 text-gray-400" />}
                       <span className="font-semibold text-gray-900 dark:text-white">{cat.name}</span>
                       <span className="text-xs text-gray-400 dark:text-gray-500">({cat._count?.products || 0})</span>
-                      {!cat.active && <span className="text-xs text-red-500 font-medium">Suspendida</span>}
+                      {!cat.active && <span className="text-xs text-red-500 dark:text-red-400 font-medium">Suspendida</span>}
                     </div>
                     <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
                       <button onClick={() => handleCatToggleSuspend(cat)}
@@ -526,7 +525,7 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 dark:border-gray-700 p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
           <h2 className="text-base font-bold text-gray-900 dark:text-white mb-1">Actualización Masiva de Precios</h2>
           <p className="text-xs text-gray-400 dark:text-gray-500 mb-4">Selecciona productos abajo, ingresa un % y aplica el cambio.</p>
           <div className="flex gap-3">
@@ -541,10 +540,10 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 dark:border-gray-700 overflow-hidden">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
           {selectedIds.length > 0 && (
             <div className="flex items-center gap-2 px-5 py-3 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-700">
-              <span className="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500 font-medium">{selectedIds.length} seleccionado(s)</span>
+              <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">{selectedIds.length} seleccionado(s)</span>
               <button onClick={() => { handleBulkAction('suspend') }}
                 className="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-amber-500 hover:bg-amber-600 transition-colors">
                 Suspender
@@ -567,13 +566,13 @@ export default function AdminDashboard() {
                     <input type="checkbox" checked={selectAll} onChange={() => setSelectAll(!selectAll)}
                       className="rounded border-gray-300 text-emerald-600 focus:ring-emerald-500" />
                   </th>
-                  <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500 text-xs uppercase tracking-wider">ID</th>
-                  <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500 text-xs uppercase tracking-wider">Nombre</th>
-                  <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500 text-xs uppercase tracking-wider">P. Base</th>
-                  <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500 text-xs uppercase tracking-wider">P. May.</th>
-                  <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500 text-xs uppercase tracking-wider">Stock</th>
-                  <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500 text-xs uppercase tracking-wider">Estado</th>
-                  <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500 text-xs uppercase tracking-wider">Acciones</th>
+                  <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">ID</th>
+                  <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Nombre</th>
+                  <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">P. Base</th>
+                  <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">P. May.</th>
+                  <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Stock</th>
+                  <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Estado</th>
+                  <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Acciones</th>
                 </tr>
               </thead>
               <tbody>
@@ -586,7 +585,7 @@ export default function AdminDashboard() {
                         <input type="checkbox" checked={selectedIds.includes(p.id)} onChange={() => toggleSelect(p.id)}
                           className="rounded border-gray-300 text-emerald-600 focus:ring-emerald-500" />
                       </td>
-                      <td className="px-4 py-3 text-gray-500 dark:text-gray-400 dark:text-gray-500 text-xs">{p.id}</td>
+                      <td className="px-4 py-3 text-gray-500 dark:text-gray-400 text-xs">{p.id}</td>
                       <td className="px-4 py-3 font-medium text-gray-900 dark:text-white">{p.name}</td>
                       <td className="px-4 py-3 text-gray-700 dark:text-gray-200">${p.precioBase.toLocaleString('es-CL')}</td>
                       <td className="px-4 py-3 text-gray-700 dark:text-gray-200">${p.precioMayorista.toLocaleString('es-CL')}</td>
@@ -618,7 +617,7 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 dark:border-gray-700 p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
           <h2 className="text-base font-bold text-gray-900 dark:text-white mb-4">Usuarios</h2>
 
           <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
@@ -631,7 +630,7 @@ export default function AdminDashboard() {
             />
             {selectedUserIds.length > 0 && (
               <div className="flex items-center gap-2">
-                <span className="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500 font-medium">{selectedUserIds.length} seleccionado(s)</span>
+                <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">{selectedUserIds.length} seleccionado(s)</span>
                 <select
                   value={bulkUserRole}
                   onChange={(e) => setBulkUserRole(e.target.value)}
@@ -664,11 +663,11 @@ export default function AdminDashboard() {
                       <input type="checkbox" checked={selectAllUsers} onChange={() => setSelectAllUsers(!selectAllUsers)}
                         className="rounded border-gray-300 text-emerald-600 focus:ring-emerald-500" />
                     </th>
-                    <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500 text-xs uppercase tracking-wider">Nombre</th>
-                    <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500 text-xs uppercase tracking-wider">Email</th>
-                    <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500 text-xs uppercase tracking-wider">Rol</th>
-                    <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500 text-xs uppercase tracking-wider">Estado</th>
-                    <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500 text-xs uppercase tracking-wider">Cambiar Rol</th>
+                    <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Nombre</th>
+                    <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Email</th>
+                    <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Rol</th>
+                    <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Estado</th>
+                    <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Cambiar Rol</th>
                   </tr>
                 </thead>
                 <tbody>

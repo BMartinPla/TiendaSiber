@@ -37,6 +37,7 @@ async function list(req, res) {
 
     res.json(result)
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: 'Error al obtener productos' })
   }
 }
@@ -59,6 +60,7 @@ async function getById(req, res) {
 
     res.json({ ...product, pricing })
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: 'Error al obtener producto' })
   }
 }
@@ -86,6 +88,7 @@ async function create(req, res) {
 
     res.status(201).json(product)
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: 'Error al crear producto' })
   }
 }
@@ -116,6 +119,7 @@ async function update(req, res) {
 
     res.json(updated)
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: 'Error al actualizar producto' })
   }
 }
@@ -144,6 +148,7 @@ async function updatePrice(req, res) {
 
     res.json({ message: 'Precio actualizado', product: updated })
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: 'Error al actualizar precio' })
   }
 }
@@ -180,6 +185,7 @@ async function bulkUpdatePrices(req, res) {
       products: updatedProducts,
     })
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: 'Error al actualizar precios masivamente' })
   }
 }
@@ -200,6 +206,7 @@ async function softDelete(req, res) {
 
     res.json({ message: 'Producto suspendido (borrado lógico)', product: updated })
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: 'Error al suspender producto' })
   }
 }
@@ -220,6 +227,7 @@ async function restore(req, res) {
 
     res.json({ message: 'Producto restaurado', product: updated })
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: 'Error al restaurar producto' })
   }
 }
@@ -237,6 +245,7 @@ async function hardDelete(req, res) {
 
     res.json({ message: 'Producto eliminado permanentemente' })
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: 'Error al eliminar producto' })
   }
 }
@@ -255,6 +264,7 @@ async function bulkSuspend(req, res) {
 
     res.json({ message: `${result.count} producto(s) suspendido(s)`, count: result.count })
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: 'Error al suspender productos masivamente' })
   }
 }
@@ -273,6 +283,7 @@ async function bulkRestore(req, res) {
 
     res.json({ message: `${result.count} producto(s) restaurado(s)`, count: result.count })
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: 'Error al restaurar productos masivamente' })
   }
 }
@@ -290,6 +301,7 @@ async function bulkDelete(req, res) {
 
     res.json({ message: `${result.count} producto(s) eliminado(s) permanentemente`, count: result.count })
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: 'Error al eliminar productos masivamente' })
   }
 }
