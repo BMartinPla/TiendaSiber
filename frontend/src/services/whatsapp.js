@@ -17,8 +17,10 @@ export function buildWhatsAppMessage(cartItems, user) {
   lines.push(`👤 *Cliente:* ${user.name}`)
   lines.push(`📧 ${user.email}`)
   lines.push(`🏷️ *Tipo:* ${ROLE_LABELS[user.role] || 'Cliente'}`)
+  lines.push('📱 Quiero concretar la compra de los siguientes productos:')
   lines.push('')
   lines.push('━'.repeat(30))
+  lines.push('')
   lines.push('')
 
   let total = 0

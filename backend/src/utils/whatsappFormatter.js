@@ -12,6 +12,7 @@ function formatCartMessage(cartItems, user) {
   lines.push(`👤 *Cliente:* ${user.name}`)
   lines.push(`📧 ${user.email}`)
   lines.push(`🏷️ *Tipo:* ${roleLabel}`)
+  lines.push('📱 Quiero concretar la compra de los siguientes productos:')
   lines.push('')
   lines.push('━'.repeat(30))
   lines.push('')
