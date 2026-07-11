@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { getProducts, getCategories } from '../services/api'
 import ProductCard from '../components/ProductCard'
+import ProductModal from '../components/ProductModal'
 import Cart from '../components/Cart'
 import Navbar from '../components/Navbar'
 
@@ -13,6 +14,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [cartOpen, setCartOpen] = useState(false)
+  const [selectedProduct, setSelectedProduct] = useState(null)
 
   useEffect(() => {
     Promise.all([getProducts(), getCategories()])
@@ -117,13 +119,17 @@ export default function Home() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {products.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard key={product.id} product={product} onView={() => setSelectedProduct(product)} />
             ))}
           </div>
         )}
       </main>
 
       <Cart open={cartOpen} onClose={() => setCartOpen(false)} />
+
+      {selectedProduct && (
+        <ProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />
+      )}
     </div>
   )
 }

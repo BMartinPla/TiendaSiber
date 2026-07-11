@@ -3,7 +3,7 @@ import { ShoppingCart, Check, Package } from 'lucide-react'
 import { useCart } from '../contexts/CartContext'
 import { useAuth } from '../contexts/AuthContext'
 
-export default function ProductCard({ product }) {
+export default function ProductCard({ product, onView }) {
   const { add } = useCart()
   const { isWholesale, isAdmin } = useAuth()
   const [added, setAdded] = useState(false)
@@ -13,7 +13,8 @@ export default function ProductCard({ product }) {
   const displayPrice = isAdmin ? basePrice : (isWholesale ? wholesalePrice : basePrice)
   const savings = basePrice - wholesalePrice
 
-  function handleAdd() {
+  function handleAdd(e) {
+    e.stopPropagation()
     if (product.stock <= 0) return
     add(product.id, 1, product)
     setAdded(true)
@@ -21,7 +22,7 @@ export default function ProductCard({ product }) {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 flex flex-col">
+    <div onClick={onView} className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 flex flex-col cursor-pointer">
       <div className="relative h-48 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 flex items-center justify-center">
         {product.imageUrl ? (
           <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover" />
