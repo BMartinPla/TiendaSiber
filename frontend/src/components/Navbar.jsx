@@ -37,7 +37,7 @@ export default function Navbar({ onCartClick, search, onSearch }) {
             <span className="text-xl font-bold text-gray-900 dark:text-white hidden sm:block">Quince Gear SN</span>
           </Link>
 
-          <div className="flex-1 max-w-md hidden sm:block">
+          <div className="flex-1 max-w-md">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" />
               <input
