@@ -90,25 +90,27 @@ export default function ProductModal({ product, onClose }) {
                 </span>
               </div>
 
-              <button
-                onClick={handleAdd}
-                disabled={product.stock <= 0}
-                className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all duration-200 ${
-                  product.stock <= 0
-                    ? 'bg-gray-100 dark:bg-gray-700 text-gray-400 cursor-not-allowed'
-                    : added
-                    ? 'bg-emerald-600 text-white'
-                    : 'bg-emerald-600 text-white hover:bg-emerald-700 active:scale-[0.98]'
-                }`}
-              >
-                {product.stock <= 0 ? (
-                  'Agotado'
-                ) : added ? (
-                  <><Check className="w-4 h-4" /> Agregado</>
-                ) : (
-                  <><ShoppingCart className="w-4 h-4" /> Agregar al carrito</>
-                )}
-              </button>
+              {!isAdmin && (
+                <button
+                  onClick={handleAdd}
+                  disabled={product.stock <= 0}
+                  className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                    product.stock <= 0
+                      ? 'bg-gray-100 dark:bg-gray-700 text-gray-400 cursor-not-allowed'
+                      : added
+                      ? 'bg-emerald-600 text-white'
+                      : 'bg-emerald-600 text-white hover:bg-emerald-700 active:scale-[0.98]'
+                  }`}
+                >
+                  {product.stock <= 0 ? (
+                    'Agotado'
+                  ) : added ? (
+                    <><Check className="w-4 h-4" /> Agregado</>
+                  ) : (
+                    <><ShoppingCart className="w-4 h-4" /> Agregar al carrito</>
+                  )}
+                </button>
+              )}
             </div>
           </div>
         </div>

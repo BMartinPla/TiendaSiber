@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { ShoppingCart, Search, LogOut, User, Moon, Sun } from 'lucide-react'
+import { ShoppingCart, Search, LogOut, User, Moon, Sun, LayoutDashboard } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import { useCart } from '../contexts/CartContext'
 import { useDarkMode } from '../contexts/DarkModeContext'
@@ -83,14 +83,20 @@ export default function Navbar({ onCartClick, search, onSearch }) {
               <User className="w-5 h-5" />
             </Link>
 
-            <button onClick={onCartClick} className="relative p-2 text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
-              <ShoppingCart className="w-6 h-6" />
-              {itemCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-emerald-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                  {itemCount > 99 ? '99+' : itemCount}
-                </span>
-              )}
-            </button>
+            {isAdmin ? (
+              <Link to="/admin" className="p-2 text-gray-500 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors" title="Panel Admin">
+                <LayoutDashboard className="w-6 h-6" />
+              </Link>
+            ) : (
+              <button onClick={onCartClick} className="relative p-2 text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
+                <ShoppingCart className="w-6 h-6" />
+                {itemCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-emerald-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                    {itemCount > 99 ? '99+' : itemCount}
+                  </span>
+                )}
+              </button>
+            )}
 
             <button onClick={handleLogout} className="p-2 text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 transition-colors" title="Cerrar sesión">
               <LogOut className="w-5 h-5" />
