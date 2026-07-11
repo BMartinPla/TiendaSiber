@@ -130,7 +130,10 @@ async function approve(req, res) {
   try {
     const { id } = req.params
 
-    const order = await prisma.order.findUnique({ where: { id: Number(id) } })
+    const order = await prisma.order.findUnique({
+      where: { id: Number(id) },
+      include: { items: { include: { product: true } } },
+    })
     if (!order) {
       return res.status(404).json({ error: 'Pedido no encontrado' })
     }
@@ -139,13 +142,29 @@ async function approve(req, res) {
       return res.status(400).json({ error: 'El pedido ya está aprobado' })
     }
 
-    const updated = await prisma.order.update({
-      where: { id: Number(id) },
-      data: { status: 'APPROVED' },
-      include: {
-        user: { select: { id: true, name: true, email: true, role: true } },
-        items: true,
-      },
+    for (const item of order.items) {
+      if ((item.product.stock) < item.quantity) {
+        return res.status(400).json({
+          error: `Stock insuficiente para "${item.productName}". Disponible: ${item.product.stock}, requerido: ${item.quantity}`,
+        })
+      }
+    }
+
+    const updated = await prisma.$transaction(async (tx) => {
+      for (const item of order.items) {
+        await tx.product.update({
+          where: { id: item.productId },
+          data: { stock: { decrement: item.quantity } },
+        })
+      }
+      return tx.order.update({
+        where: { id: Number(id) },
+        data: { status: 'APPROVED' },
+        include: {
+          user: { select: { id: true, name: true, email: true, role: true } },
+          items: true,
+        },
+      })
     })
 
     res.json(updated)
