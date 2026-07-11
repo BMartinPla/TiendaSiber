@@ -47,11 +47,11 @@ export default function MyOrders() {
               {orders.map((order) => (
                 <div key={order.id} className="border border-gray-100 dark:border-gray-700 rounded-xl overflow-hidden">
                   <div
-                    className="flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-800/50 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                    className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 px-4 py-3 bg-gray-50 dark:bg-gray-800/50 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                     onClick={() => setExpandedOrder(expandedOrder === order.id ? null : order.id)}
                   >
-                    <div className="flex items-center gap-3">
-                      {expandedOrder === order.id ? <ChevronDown className="w-4 h-4 text-gray-400" /> : <ChevronRight className="w-4 h-4 text-gray-400" />}
+                    <div className="flex items-center gap-3 flex-wrap">
+                      {expandedOrder === order.id ? <ChevronDown className="w-4 h-4 text-gray-400 shrink-0" /> : <ChevronRight className="w-4 h-4 text-gray-400 shrink-0" />}
                       <span className="text-sm font-semibold text-gray-900 dark:text-white">#{order.id}</span>
                       <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
                         order.status === 'APPROVED'
@@ -61,8 +61,8 @@ export default function MyOrders() {
                         {order.status === 'APPROVED' ? 'Aprobado' : 'Pendiente'}
                       </span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm text-gray-500 dark:text-gray-400">{new Date(order.createdAt).toLocaleDateString('es-AR')}</span>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">{new Date(order.createdAt).toLocaleDateString('es-AR')}</span>
                       <span className="text-sm font-bold text-gray-900 dark:text-white">${order.total.toLocaleString('es-CL')}</span>
                     </div>
                   </div>
@@ -73,6 +73,7 @@ export default function MyOrders() {
                         <p><span className="font-semibold">Fecha:</span> {new Date(order.createdAt).toLocaleString('es-AR')}</p>
                         <p><span className="font-semibold">Estado:</span> {order.status === 'APPROVED' ? 'Aprobado' : 'Pendiente de aprobación'}</p>
                       </div>
+                      <div className="overflow-x-auto">
                       <table className="w-full text-xs">
                         <thead>
                           <tr className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-700">
@@ -99,6 +100,7 @@ export default function MyOrders() {
                           </tr>
                         </tfoot>
                       </table>
+                      </div>
                     </div>
                   )}
                 </div>

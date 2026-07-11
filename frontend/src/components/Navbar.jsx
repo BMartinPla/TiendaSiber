@@ -31,18 +31,18 @@ export default function Navbar({ onCartClick, search, onSearch }) {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 gap-4">
+        <div className="flex items-center justify-between h-16 gap-2 sm:gap-4">
           <Link to="/" className="flex items-center gap-2 shrink-0">
             <img src="/logo.png" alt="Logo" className="h-8 w-auto" />
             <span className="text-xl font-bold text-gray-900 dark:text-white hidden sm:block">Quince Gear SN</span>
           </Link>
 
-          <div className="flex-1 max-w-md">
+          <div className="flex-1 max-w-[120px] sm:max-w-md">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" />
               <input
                 type="text"
-                placeholder="Buscar productos..."
+                placeholder="Buscar..."
                 value={search}
                 onChange={(e) => onSearch(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100"
@@ -50,7 +50,7 @@ export default function Navbar({ onCartClick, search, onSearch }) {
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1 sm:gap-3">
             <button onClick={toggleDark} className="p-2 text-gray-500 dark:text-gray-400 hover:text-amber-500 dark:hover:text-amber-400 transition-colors" title={dark ? 'Modo claro' : 'Modo oscuro'}>
               {dark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </button>
@@ -62,20 +62,26 @@ export default function Navbar({ onCartClick, search, onSearch }) {
               </span>
             )}
 
-            {isAdmin && (
-              <Link to="/admin" className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 font-medium">
-                Panel
-              </Link>
-            )}
+            <div className="hidden sm:flex items-center gap-3">
+              {isAdmin && (
+                <Link to="/admin" className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 font-medium">
+                  Panel
+                </Link>
+              )}
 
-            <Link to="/profile" className="text-sm text-gray-500 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium">
-              Perfil
-            </Link>
-            {!isAdmin && (
-              <Link to="/mis-pedidos" className="text-sm text-gray-500 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium">
-                Pedidos
+              <Link to="/profile" className="text-sm text-gray-500 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium">
+                Perfil
               </Link>
-            )}
+              {!isAdmin && (
+                <Link to="/mis-pedidos" className="text-sm text-gray-500 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium">
+                  Pedidos
+                </Link>
+              )}
+            </div>
+
+            <Link to="/profile" className="sm:hidden p-2 text-gray-500 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors" title="Perfil">
+              <User className="w-5 h-5" />
+            </Link>
 
             <button onClick={onCartClick} className="relative p-2 text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
               <ShoppingCart className="w-6 h-6" />
@@ -86,7 +92,7 @@ export default function Navbar({ onCartClick, search, onSearch }) {
               )}
             </button>
 
-            <button onClick={handleLogout} className="text-sm text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 transition-colors p-2" title="Cerrar sesión">
+            <button onClick={handleLogout} className="p-2 text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 transition-colors" title="Cerrar sesión">
               <LogOut className="w-5 h-5" />
             </button>
           </div>
