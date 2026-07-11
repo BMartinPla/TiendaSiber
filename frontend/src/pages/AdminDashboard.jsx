@@ -679,7 +679,7 @@ export default function AdminDashboard() {
                             <td className="px-4 py-3 font-medium text-gray-900 dark:text-white">{p.name}</td>
                             <td className="px-4 py-3 text-gray-700 dark:text-gray-200">${p.precioBase.toLocaleString('es-CL')}</td>
                             <td className="px-4 py-3 text-gray-700 dark:text-gray-200">${p.precioMayorista.toLocaleString('es-CL')}</td>
-                            <td className="px-4 py-3 text-gray-700 dark:text-gray-200">${p.precioCosto != null ? '$' + p.precioCosto.toLocaleString('es-CL') : '-'}</td>
+                            <td className="px-4 py-3 text-gray-700 dark:text-gray-200">${p.precioCosto != null ? p.precioCosto.toLocaleString('es-CL') : '-'}</td>
                             <td className="px-4 py-3 text-gray-700 dark:text-gray-200">{p.stock}</td>
                             <td className="px-4 py-3">
                               <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${p.active ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300' : 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300'}`}>
