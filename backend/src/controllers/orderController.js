@@ -14,6 +14,14 @@ async function createFromCart(req, res) {
       return res.status(400).json({ error: 'El carrito está vacío' })
     }
 
+    for (const item of items) {
+      if (item.quantity > item.product.stock) {
+        return res.status(400).json({
+          error: `Stock insuficiente para "${item.product.name}". Disponible: ${item.product.stock}, solicitado: ${item.quantity}`,
+        })
+      }
+    }
+
     const strategy = getPricingStrategy(req.user.role)
     let total = 0
     const orderItems = items.map((item) => {
