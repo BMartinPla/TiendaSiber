@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, ShoppingBag, ChevronDown, ChevronRight } from 'lucide-react'
-import { getMyOrders } from '../services/api'
+import { ArrowLeft, ShoppingBag, ChevronDown, ChevronRight, XCircle } from 'lucide-react'
+import { getMyOrders, cancelMyOrder } from '../services/api'
 
 export default function MyOrders() {
   const [orders, setOrders] = useState([])
@@ -18,6 +18,28 @@ export default function MyOrders() {
     }
     fetchOrders()
   }, [])
+
+  async function handleCancel(id) {
+    if (!window.confirm('¿Estás seguro de cancelar este pedido?')) return
+    try {
+      await cancelMyOrder(id)
+      setOrders((prev) => prev.map((o) => o.id === id ? { ...o, status: 'CANCELLED' } : o))
+    } catch (err) {
+      alert(err.response?.data?.error || 'Error al cancelar pedido')
+    }
+  }
+
+  function statusBadge(status) {
+    if (status === 'APPROVED') return 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300'
+    if (status === 'CANCELLED') return 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300'
+    return 'bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300'
+  }
+
+  function statusLabel(status) {
+    if (status === 'APPROVED') return 'Aprobado'
+    if (status === 'CANCELLED') return 'Cancelado'
+    return 'Pendiente'
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 pt-20 pb-12">
@@ -53,17 +75,19 @@ export default function MyOrders() {
                     <div className="flex items-center gap-3 flex-wrap">
                       {expandedOrder === order.id ? <ChevronDown className="w-4 h-4 text-gray-400 shrink-0" /> : <ChevronRight className="w-4 h-4 text-gray-400 shrink-0" />}
                       <span className="text-sm font-semibold text-gray-900 dark:text-white">#{order.id}</span>
-                      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
-                        order.status === 'APPROVED'
-                          ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300'
-                          : 'bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300'
-                      }`}>
-                        {order.status === 'APPROVED' ? 'Aprobado' : 'Pendiente'}
+                      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${statusBadge(order.status)}`}>
+                        {statusLabel(order.status)}
                       </span>
                     </div>
                     <div className="flex items-center gap-2 flex-wrap">
                       <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">{new Date(order.createdAt).toLocaleDateString('es-AR')}</span>
                       <span className="text-sm font-bold text-gray-900 dark:text-white">${order.total.toLocaleString('es-CL')}</span>
+                      {order.status === 'PENDING' && (
+                        <button onClick={() => handleCancel(order.id)}
+                          className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium text-white bg-red-500 hover:bg-red-600 transition-colors">
+                          <XCircle className="w-3 h-3" /> Cancelar
+                        </button>
+                      )}
                     </div>
                   </div>
 

@@ -5,6 +5,14 @@ const { generateOrderPdf } = require('../utils/pdfGenerator')
 
 async function createFromCart(req, res) {
   try {
+    const existingPending = await prisma.order.findFirst({
+      where: { userId: req.user.id, status: 'PENDING' },
+    })
+
+    if (existingPending) {
+      return res.status(400).json({ error: 'Ya tienes un pedido pendiente. Cancélalo antes de crear uno nuevo.' })
+    }
+
     const items = await prisma.cartItem.findMany({
       where: { userId: req.user.id },
       include: { product: true },
@@ -227,4 +235,33 @@ async function downloadPdf(req, res) {
   }
 }
 
-module.exports = { createFromCart, list, listMyOrders, getById, approve, remove, downloadPdf }
+async function cancelMyOrder(req, res) {
+  try {
+    const { id } = req.params
+
+    const order = await prisma.order.findUnique({ where: { id: Number(id) } })
+    if (!order) {
+      return res.status(404).json({ error: 'Pedido no encontrado' })
+    }
+
+    if (order.userId !== req.user.id) {
+      return res.status(403).json({ error: 'No puedes cancelar un pedido de otro usuario' })
+    }
+
+    if (order.status !== 'PENDING') {
+      return res.status(400).json({ error: 'Solo puedes cancelar pedidos pendientes' })
+    }
+
+    const updated = await prisma.order.update({
+      where: { id: Number(id) },
+      data: { status: 'CANCELLED' },
+    })
+
+    res.json(updated)
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Error al cancelar pedido' })
+  }
+}
+
+module.exports = { createFromCart, list, listMyOrders, getById, approve, remove, downloadPdf, cancelMyOrder }

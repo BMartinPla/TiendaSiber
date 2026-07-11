@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { X, Minus, Plus, Trash2, MessageCircle, CheckCircle } from 'lucide-react'
+import { X, Minus, Plus, Trash2, MessageCircle, CheckCircle, XCircle } from 'lucide-react'
 import { useCart } from '../contexts/CartContext'
 import { useAuth } from '../contexts/AuthContext'
 import { createOrderFromCart } from '../services/api'
@@ -9,9 +9,10 @@ export default function Cart({ open, onClose }) {
   const { user, isWholesale } = useAuth()
   const [localQtys, setLocalQtys] = useState({})
   const [orderSuccess, setOrderSuccess] = useState(false)
+  const [orderError, setOrderError] = useState('')
 
   useEffect(() => {
-    if (!open) setLocalQtys({})
+    if (!open) { setLocalQtys({}); setOrderError('') }
   }, [open])
 
   function getQty(itemId) {
@@ -73,10 +74,11 @@ export default function Cart({ open, onClose }) {
       const data = await createOrderFromCart()
       window.open(data.whatsappUrl, '_blank')
       setOrderSuccess(true)
+      setOrderError('')
       setTimeout(() => setOrderSuccess(false), 3000)
       clear()
     } catch (err) {
-      console.error(err)
+      setOrderError(err.response?.data?.error || 'Error al crear pedido')
     }
   }
 
@@ -180,6 +182,13 @@ export default function Cart({ open, onClose }) {
               <div className="flex items-center gap-2 text-sm text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 px-4 py-2.5 rounded-xl">
                 <CheckCircle className="w-4 h-4 shrink-0" />
                 Pedido registrado. Revisa WhatsApp para enviarlo.
+              </div>
+            )}
+
+            {orderError && (
+              <div className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 px-4 py-2.5 rounded-xl">
+                <XCircle className="w-4 h-4 shrink-0" />
+                {orderError}
               </div>
             )}
 

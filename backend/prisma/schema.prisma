@@ -79,6 +79,7 @@ model CartItem {
 enum OrderStatus {
   PENDING
   APPROVED
+  CANCELLED
 }
 
 model Order {

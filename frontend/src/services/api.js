@@ -201,6 +201,10 @@ export function approveOrder(id) {
   return api.patch(`/orders/${id}/approve`).then((res) => res.data)
 }
 
+export function cancelMyOrder(id) {
+  return api.patch(`/orders/${id}/cancel`).then((res) => res.data)
+}
+
 export function deleteOrder(id) {
   return api.delete(`/orders/${id}`).then((res) => res.data)
 }
