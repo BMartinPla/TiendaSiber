@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { ShoppingCart, Search, LogOut, User, Moon, Sun, LayoutDashboard } from 'lucide-react'
+import { ShoppingCart, Search, LogOut, User, Moon, Sun, LayoutDashboard, ShoppingBag } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import { useCart } from '../contexts/CartContext'
 import { useDarkMode } from '../contexts/DarkModeContext'
@@ -62,20 +62,14 @@ export default function Navbar({ onCartClick, search, onSearch }) {
               </span>
             )}
 
-            <div className="hidden sm:flex items-center gap-3">
-              <Link to="/profile" className="text-sm text-gray-500 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium">
-                Perfil
-              </Link>
-              {!isAdmin && (
-                <Link to="/mis-pedidos" className="text-sm text-gray-500 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium">
-                  Pedidos
-                </Link>
-              )}
-            </div>
-
-            <Link to="/profile" className="sm:hidden p-2 text-gray-500 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors" title="Perfil">
+            <Link to="/profile" className="p-2 text-gray-500 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors" title="Perfil">
               <User className="w-5 h-5" />
             </Link>
+            {!isAdmin && (
+              <Link to="/mis-pedidos" className="p-2 text-gray-500 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors" title="Mis Pedidos">
+                <ShoppingBag className="w-5 h-5" />
+              </Link>
+            )}
 
             {isAdmin ? (
               <Link to="/admin" className="p-2 text-gray-500 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors" title="Panel Admin">
