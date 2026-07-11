@@ -385,21 +385,20 @@ export default function AdminDashboard() {
                   className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
               </div>
               <div className="sm:col-span-2">
-                <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 dark:text-gray-500 mb-1">Imagen</label>
-                <div className="flex items-center gap-3">
-                  <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-700 transition-colors">
+                <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Imagen</label>
+                <div className="flex flex-wrap items-center gap-3">
+                  <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
                     <Upload size={16} />
                     {uploadingImage ? 'Subiendo...' : 'Subir imagen'}
                     <input type="file" accept="image/*" className="hidden" disabled={uploadingImage}
                       onChange={(e) => handleImageUpload(e, 'create')} />
                   </label>
-                  {form.imageUrl && (
-                    <button type="button" onClick={() => setForm((prev) => ({ ...prev, imageUrl: '' }))}
-                      className="text-xs text-red-500 hover:text-red-700">Eliminar</button>
-                  )}
+                  <span className="text-xs text-gray-400">o</span>
+                  <input placeholder="URL de imagen" value={form.imageUrl} onChange={(e) => setForm((prev) => ({ ...prev, imageUrl: e.target.value }))}
+                    className="flex-1 min-w-[200px] px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                 </div>
                 {form.imageUrl && (
-                  <img src={form.imageUrl} alt="Vista previa" className="mt-2 h-24 w-24 object-cover rounded-lg border" />
+                  <img src={form.imageUrl} alt="Vista previa" className="mt-2 h-24 w-24 object-cover rounded-lg border dark:border-gray-600" />
                 )}
               </div>
               <div>
@@ -754,21 +753,20 @@ export default function AdminDashboard() {
                   className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 dark:text-gray-500 mb-1">Imagen</label>
-                <div className="flex items-center gap-3">
-                  <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-700 transition-colors">
+                <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Imagen</label>
+                <div className="flex flex-wrap items-center gap-3">
+                  <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
                     <Upload size={16} />
                     {uploadingImage ? 'Subiendo...' : 'Subir imagen'}
                     <input type="file" accept="image/*" className="hidden" disabled={uploadingImage}
                       onChange={(e) => handleImageUpload(e, 'edit')} />
                   </label>
-                  {editForm.imageUrl && (
-                    <button type="button" onClick={() => setEditForm((prev) => ({ ...prev, imageUrl: '' }))}
-                      className="text-xs text-red-500 hover:text-red-700">Eliminar</button>
-                  )}
+                  <span className="text-xs text-gray-400">o</span>
+                  <input placeholder="URL de imagen" value={editForm.imageUrl} onChange={(e) => setEditForm((prev) => ({ ...prev, imageUrl: e.target.value }))}
+                    className="flex-1 min-w-[200px] px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                 </div>
                 {editForm.imageUrl && (
-                  <img src={editForm.imageUrl} alt="Vista previa" className="mt-2 h-24 w-24 object-cover rounded-lg border" />
+                  <img src={editForm.imageUrl} alt="Vista previa" className="mt-2 h-24 w-24 object-cover rounded-lg border dark:border-gray-600" />
                 )}
               </div>
               <select value={editForm.categoryId} onChange={(e) => setEditForm({ ...editForm, categoryId: e.target.value })}
