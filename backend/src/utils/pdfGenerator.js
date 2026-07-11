@@ -10,11 +10,11 @@ function generateOrderPdf(order) {
 
   const logoPath = path.join(__dirname, '../../public/logo.png')
   if (fs.existsSync(logoPath)) {
-    doc.image(logoPath, 40, y, { width: 55 })
+    doc.image(logoPath, 40, 42, { width: 48 })
   }
 
-  doc.font('Helvetica-Bold').fontSize(22).text('QUINCE GEAR SN', 110, y + 5)
-  doc.font('Helvetica').fontSize(10).fillColor('#888').text('REMITO DE PEDIDO', 110, y + 32)
+  doc.font('Helvetica-Bold').fontSize(22).text('QUINCE GEAR SN', 100, 42)
+  doc.font('Helvetica').fontSize(10).fillColor('#888').text('REMITO DE PEDIDO', 100, 68)
   doc.fillColor('#000')
 
   y = 90
