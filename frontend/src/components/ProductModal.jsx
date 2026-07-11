@@ -10,6 +10,7 @@ export default function ProductModal({ product, onClose }) {
 
   const basePrice = product.precioBase || 0
   const wholesalePrice = product.precioMayorista || 0
+  const costoPrice = product.precioCosto
   const displayPrice = isAdmin ? basePrice : (isWholesale ? wholesalePrice : basePrice)
   const savings = basePrice - wholesalePrice
 
@@ -54,10 +55,15 @@ export default function ProductModal({ product, onClose }) {
                 <div className="flex items-baseline gap-2">
                   {isAdmin ? (
                     <>
-                      <span className="text-2xl font-bold text-gray-900 dark:text-white">${basePrice.toLocaleString('es-CL')}</span>
+                      {costoPrice != null && (
+                        <span className="text-sm bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 px-2 py-0.5 rounded-md font-medium">
+                          Costo: ${costoPrice.toLocaleString('es-CL')}
+                        </span>
+                      )}
                       <span className="text-sm bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 px-2 py-0.5 rounded-md font-medium">
                         May: ${wholesalePrice.toLocaleString('es-CL')}
                       </span>
+                      <span className="text-2xl font-bold text-gray-900 dark:text-white">${basePrice.toLocaleString('es-CL')}</span>
                     </>
                   ) : (
                     <>

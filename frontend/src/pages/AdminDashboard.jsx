@@ -475,7 +475,7 @@ export default function AdminDashboard() {
                         className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                     </div>
                     <div>
-                      <input type="number" step="0.01" placeholder="Precio Base *" value={form.precioBase} onChange={(e) => setForm({ ...form, precioBase: e.target.value })} required
+                      <input type="number" step="0.01" placeholder="Precio Costo" value={form.precioCosto} onChange={(e) => setForm({ ...form, precioCosto: e.target.value })}
                         className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                     </div>
                     <div>
@@ -483,7 +483,7 @@ export default function AdminDashboard() {
                         className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                     </div>
                     <div>
-                      <input type="number" step="0.01" placeholder="Precio Costo" value={form.precioCosto} onChange={(e) => setForm({ ...form, precioCosto: e.target.value })}
+                      <input type="number" step="0.01" placeholder="Precio Base *" value={form.precioBase} onChange={(e) => setForm({ ...form, precioBase: e.target.value })} required
                         className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                     </div>
                     <div>
@@ -657,9 +657,9 @@ export default function AdminDashboard() {
                         </th>
                         <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">ID</th>
                         <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Nombre</th>
-                        <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">P. Base</th>
-                        <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">P. May.</th>
                         <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">P. Costo</th>
+                        <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">P. May.</th>
+                        <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">P. Base</th>
                         <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Stock</th>
                         <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Estado</th>
                         <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Acciones</th>
@@ -677,9 +677,9 @@ export default function AdminDashboard() {
                             </td>
                             <td className="px-4 py-3 text-gray-500 dark:text-gray-400 text-xs">{p.id}</td>
                             <td className="px-4 py-3 font-medium text-gray-900 dark:text-white">{p.name}</td>
-                            <td className="px-4 py-3 text-gray-700 dark:text-gray-200">${p.precioBase.toLocaleString('es-CL')}</td>
-                            <td className="px-4 py-3 text-gray-700 dark:text-gray-200">${p.precioMayorista.toLocaleString('es-CL')}</td>
                             <td className="px-4 py-3 text-gray-700 dark:text-gray-200">${p.precioCosto != null ? p.precioCosto.toLocaleString('es-CL') : '-'}</td>
+                            <td className="px-4 py-3 text-gray-700 dark:text-gray-200">${p.precioMayorista.toLocaleString('es-CL')}</td>
+                            <td className="px-4 py-3 text-gray-700 dark:text-gray-200">${p.precioBase.toLocaleString('es-CL')}</td>
                             <td className="px-4 py-3 text-gray-700 dark:text-gray-200">{p.stock}</td>
                             <td className="px-4 py-3">
                               <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${p.active ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300' : 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300'}`}>
