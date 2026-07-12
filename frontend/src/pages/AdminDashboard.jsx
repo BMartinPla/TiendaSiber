@@ -240,7 +240,7 @@ export default function AdminDashboard() {
     setCropImageUrl(null)
     setUploadingImage(true)
     try {
-      const file = new File([blob], 'cropped.jpg', { type: 'image/jpeg' })
+      const file = new File([blob], 'cropped.png', { type: 'image/png' })
       const data = await uploadImage(file)
       if (cropTarget === 'create') setForm((prev) => ({ ...prev, imageUrl: data.url }))
       else if (cropTarget === 'create-featured') setForm((prev) => ({ ...prev, featuredImageUrl: data.url }))
@@ -338,6 +338,7 @@ export default function AdminDashboard() {
       const updated = await toggleFeatured(product.id)
       showMsg(updated.featured ? `"${product.name}" destacado` : `"${product.name}" ya no está destacado`)
       await loadProducts()
+      if (expandedCat) await loadCatProducts(expandedCat)
     } catch { showMsg('Error al destacar producto', true) }
   }
 
