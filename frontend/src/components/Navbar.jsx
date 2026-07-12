@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { ShoppingCart, Search, LogOut, User, Moon, Sun, LayoutDashboard, ShoppingBag, Menu, X } from 'lucide-react'
+import { ShoppingCart, Search, LogOut, User, Moon, Sun, LayoutDashboard, ShoppingBag, Menu, X, ChevronDown } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import { useCart } from '../contexts/CartContext'
 import { useDarkMode } from '../contexts/DarkModeContext'
@@ -12,7 +12,7 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
   const { itemCount } = useCart()
   const { dark, toggleDark } = useDarkMode()
   const navigate = useNavigate()
-  const [menuOpen, setMenuOpen] = React.useState(false)
+  const [catOpen, setCatOpen] = React.useState(true)
   const [profileOpen, setProfileOpen] = React.useState(false)
   const [ordersOpen, setOrdersOpen] = React.useState(false)
 
@@ -27,9 +27,9 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
       <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-14 sm:h-16 gap-2 sm:gap-4">
-            {/* Mobile menu toggle */}
-            <button onClick={() => setMenuOpen(!menuOpen)} className="sm:hidden p-1.5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
-              {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {/* Categories toggle (mobile) */}
+            <button onClick={() => setCatOpen(!catOpen)} className="sm:hidden p-1.5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
+              {catOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
 
             {/* Logo */}
@@ -91,40 +91,12 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
         </div>
       </div>
 
-      {/* Mobile menu */}
-      {menuOpen && (
-        <div className="sm:hidden bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-md">
-          <div className="px-4 py-3 space-y-2">
-            {!isAdmin && (
-              <button onClick={() => { setOrdersOpen(true); setMenuOpen(false) }}
-                className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 w-full text-left transition-colors">
-                <ShoppingBag className="w-4 h-4" /> Mis Pedidos
-              </button>
-            )}
-            <button onClick={() => { setProfileOpen(true); setMenuOpen(false) }}
-              className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 w-full text-left transition-colors">
-              <User className="w-4 h-4" /> Perfil
-            </button>
-            {isAdmin && (
-              <Link to="/admin" onClick={() => setMenuOpen(false)}
-                className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                <LayoutDashboard className="w-4 h-4" /> Panel Admin
-              </Link>
-            )}
-            <button onClick={() => { handleLogout(); setMenuOpen(false) }}
-              className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-red-600 dark:text-red-400 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 w-full text-left transition-colors">
-              <LogOut className="w-4 h-4" /> Cerrar sesión
-            </button>
-          </div>
-        </div>
-      )}
-
       {/* Categories nav bar */}
       {categories && categories.length > 0 && (
-        <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-sm">
+        <div className={`bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-sm transition-all duration-200 ${catOpen ? '' : 'overflow-hidden'}`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex gap-1 overflow-x-auto py-2 scrollbar-none" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-              <div className="flex gap-1 mx-auto">
+            <div className="flex items-center gap-1 overflow-x-auto scrollbar-none" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+              <div className={`flex gap-1 mx-auto ${catOpen ? 'py-2' : 'h-0 py-0 overflow-hidden'}`}>
                 {categories.map((cat) => (
                   <button
                     key={cat.id}
@@ -139,6 +111,10 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
                   </button>
                 ))}
               </div>
+              <button onClick={() => setCatOpen(!catOpen)}
+                className="hidden sm:flex shrink-0 p-1.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${catOpen ? '' : 'rotate-180'}`} />
+              </button>
             </div>
           </div>
         </div>
