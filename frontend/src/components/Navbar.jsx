@@ -87,6 +87,34 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
         </div>
       </div>
 
+      {/* Mobile menu */}
+      {menuOpen && (
+        <div className="sm:hidden bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-md">
+          <div className="px-4 py-3 space-y-2">
+            {!isAdmin && (
+              <Link to="/mis-pedidos" onClick={() => setMenuOpen(false)}
+                className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                <ShoppingBag className="w-4 h-4" /> Mis Pedidos
+              </Link>
+            )}
+            <Link to="/profile" onClick={() => setMenuOpen(false)}
+              className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+              <User className="w-4 h-4" /> Perfil
+            </Link>
+            {isAdmin && (
+              <Link to="/admin" onClick={() => setMenuOpen(false)}
+                className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                <LayoutDashboard className="w-4 h-4" /> Panel Admin
+              </Link>
+            )}
+            <button onClick={() => { handleLogout(); setMenuOpen(false) }}
+              className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-red-600 dark:text-red-400 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 w-full text-left transition-colors">
+              <LogOut className="w-4 h-4" /> Cerrar sesión
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Categories nav bar */}
       {categories && categories.length > 0 && (
         <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-sm">
