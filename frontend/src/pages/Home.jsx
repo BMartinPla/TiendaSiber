@@ -47,10 +47,6 @@ export default function Home() {
   }, [selectedCategories, search, sortBy])
 
   useEffect(() => {
-    setCurrentSlide(0)
-  }, [selectedCategories])
-
-  useEffect(() => {
     if (visibleFeatured.length < 2) return
     timerRef.current = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % visibleFeatured.length)
@@ -85,6 +81,7 @@ export default function Home() {
   }
 
   function handleCategoryChange(categoryId) {
+    setCurrentSlide(0)
     setSelectedCategories((prev) =>
       prev.includes(categoryId) ? prev.filter((id) => id !== categoryId) : [...prev, categoryId]
     )
