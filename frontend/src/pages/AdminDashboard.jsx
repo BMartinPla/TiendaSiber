@@ -243,6 +243,8 @@ export default function AdminDashboard() {
       const file = new File([blob], 'cropped.jpg', { type: 'image/jpeg' })
       const data = await uploadImage(file)
       if (cropTarget === 'create') setForm((prev) => ({ ...prev, imageUrl: data.url }))
+      else if (cropTarget === 'create-featured') setForm((prev) => ({ ...prev, featuredImageUrl: data.url }))
+      else if (cropTarget === 'edit-featured') setEditForm((prev) => ({ ...prev, featuredImageUrl: data.url }))
       else setEditForm((prev) => ({ ...prev, imageUrl: data.url }))
       showMsg('Imagen subida exitosamente')
     } catch (err) {
@@ -684,9 +686,19 @@ export default function AdminDashboard() {
                           <img src={form.imageUrl} alt="Vista previa" className="mt-2 h-20 w-20 object-cover rounded-lg border dark:border-gray-600" />
                         )}
                       </div>
-                      <div>
-                        <input placeholder="URL imagen destacada (opcional)" value={form.featuredImageUrl} onChange={(e) => setForm((prev) => ({ ...prev, featuredImageUrl: e.target.value }))}
-                          className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                      <div className="sm:col-span-2">
+                        <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Imagen destacada (opcional)</label>
+                        <div className="flex flex-wrap items-center gap-3">
+                          <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+                            <Upload size={16} />
+                            {uploadingImage ? 'Subiendo...' : 'Subir imagen'}
+                            <input type="file" accept="image/*" className="hidden" disabled={uploadingImage}
+                              onChange={(e) => handleImageUpload(e, 'create-featured')} />
+                          </label>
+                          <span className="text-xs text-gray-400">o</span>
+                          <input placeholder="URL imagen destacada" value={form.featuredImageUrl} onChange={(e) => setForm((prev) => ({ ...prev, featuredImageUrl: e.target.value }))}
+                            className="flex-1 min-w-0 sm:min-w-[200px] px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                        </div>
                         {form.featuredImageUrl && (
                           <img src={form.featuredImageUrl} alt="Vista previa destacada" className="mt-2 h-20 w-20 object-cover rounded-lg border dark:border-gray-600" />
                         )}
@@ -1163,8 +1175,18 @@ export default function AdminDashboard() {
                 )}
               </div>
               <div>
-                <input placeholder="URL imagen destacada (opcional)" value={editForm.featuredImageUrl} onChange={(e) => setEditForm((prev) => ({ ...prev, featuredImageUrl: e.target.value }))}
-                  className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Imagen destacada (opcional)</label>
+                <div className="flex flex-wrap items-center gap-3">
+                  <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+                    <Upload size={16} />
+                    {uploadingImage ? 'Subiendo...' : 'Subir imagen'}
+                    <input type="file" accept="image/*" className="hidden" disabled={uploadingImage}
+                      onChange={(e) => handleImageUpload(e, 'edit-featured')} />
+                  </label>
+                  <span className="text-xs text-gray-400">o</span>
+                  <input placeholder="URL imagen destacada" value={editForm.featuredImageUrl} onChange={(e) => setEditForm((prev) => ({ ...prev, featuredImageUrl: e.target.value }))}
+                    className="flex-1 min-w-0 sm:min-w-[200px] px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                </div>
                 {editForm.featuredImageUrl && (
                   <img src={editForm.featuredImageUrl} alt="Vista previa destacada" className="mt-2 h-20 w-20 object-cover rounded-lg border dark:border-gray-600" />
                 )}
