@@ -12,6 +12,7 @@ export default function Home() {
   const [products, setProducts] = useState([])
   const [categories, setCategories] = useState([])
   const [featuredProducts, setFeaturedProducts] = useState([])
+  const [currentSlide, setCurrentSlide] = useState(0)
   const [selectedCategory, setSelectedCategory] = useState('')
   const [sortBy, setSortBy] = useState('')
   const [search, setSearch] = useState('')
@@ -19,7 +20,7 @@ export default function Home() {
   const [error, setError] = useState('')
   const [cartOpen, setCartOpen] = useState(false)
   const [selectedProduct, setSelectedProduct] = useState(null)
-  const scrollRef = useRef(null)
+  const timerRef = useRef(null)
 
   useEffect(() => {
     Promise.all([getProducts(), getCategories(), getFeaturedProducts()])
@@ -32,10 +33,20 @@ export default function Home() {
       .finally(() => setLoading(false))
   }, [])
 
-  function scrollCarousel(dir) {
-    if (!scrollRef.current) return
-    const amount = scrollRef.current.clientWidth * 0.6
-    scrollRef.current.scrollBy({ left: dir * amount, behavior: 'smooth' })
+  useEffect(() => {
+    if (featuredProducts.length < 2) return
+    timerRef.current = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % featuredProducts.length)
+    }, 3000)
+    return () => clearInterval(timerRef.current)
+  }, [featuredProducts.length])
+
+  function goSlide(dir) {
+    clearInterval(timerRef.current)
+    setCurrentSlide((prev) => {
+      const total = featuredProducts.length
+      return (prev + dir + total) % total
+    })
   }
 
   function loadProducts(params = '') {
@@ -80,42 +91,51 @@ export default function Home() {
               <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
                 <Star className="w-5 h-5 text-amber-400 fill-amber-400" /> Destacados
               </h2>
-              <div className="flex gap-2">
-                <button onClick={() => scrollCarousel(-1)}
-                  className="p-2 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors shadow-sm">
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-                <button onClick={() => scrollCarousel(1)}
-                  className="p-2 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors shadow-sm">
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </div>
             </div>
-            <div ref={scrollRef}
-              className="flex gap-4 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-2 -mx-4 sm:-mx-0 px-4 sm:px-0"
-              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-              {featuredProducts.map((product) => (
-                <div key={product.id}
-                  onClick={() => setSelectedProduct(product)}
-                  className="snap-start shrink-0 w-44 sm:w-52 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 overflow-hidden cursor-pointer hover:shadow-md hover:border-blue-200 dark:hover:border-blue-800 transition-all">
-                  <div className="aspect-square bg-gray-100 dark:bg-gray-700 overflow-hidden">
-                    {product.imageUrl ? (
-                      <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-gray-300 dark:text-gray-600">
-                        <Package className="w-10 h-10" />
+            <div className="relative max-w-lg mx-auto">
+              <div className="overflow-hidden rounded-2xl bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 shadow-sm">
+                {(() => {
+                  const product = featuredProducts[currentSlide]
+                  return (
+                    <div key={product.id} onClick={() => setSelectedProduct(product)} className="cursor-pointer">
+                      <div className="aspect-[4/3] bg-gray-100 dark:bg-gray-700 overflow-hidden">
+                        {product.imageUrl ? (
+                          <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-gray-300 dark:text-gray-600">
+                            <Package className="w-16 h-16" />
+                          </div>
+                        )}
                       </div>
-                    )}
+                      <div className="p-4 text-center">
+                        <p className="text-xs text-gray-500 dark:text-gray-400">{product.category?.name}</p>
+                        <p className="text-lg font-semibold text-gray-900 dark:text-white mt-1">{product.name}</p>
+                        <p className="text-2xl font-bold text-blue-600 dark:text-blue-400 mt-2">
+                          ${product.pricing?.price?.toLocaleString('es-CL') || product.precioBase?.toLocaleString('es-CL')}
+                        </p>
+                      </div>
+                    </div>
+                  )
+                })()}
+              </div>
+              {featuredProducts.length > 1 && (
+                <>
+                  <button onClick={() => goSlide(-1)}
+                    className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 dark:bg-gray-900/80 text-gray-700 dark:text-gray-300 hover:bg-white dark:hover:bg-gray-900 shadow-lg backdrop-blur-sm transition-all">
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                  <button onClick={() => goSlide(1)}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 dark:bg-gray-900/80 text-gray-700 dark:text-gray-300 hover:bg-white dark:hover:bg-gray-900 shadow-lg backdrop-blur-sm transition-all">
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                  <div className="flex justify-center gap-2 mt-3">
+                    {featuredProducts.map((_, i) => (
+                      <button key={i} onClick={() => { clearInterval(timerRef.current); setCurrentSlide(i) }}
+                        className={`w-2 h-2 rounded-full transition-all ${i === currentSlide ? 'bg-blue-600 w-4' : 'bg-gray-300 dark:bg-gray-600'}`} />
+                    ))}
                   </div>
-                  <div className="p-3">
-                    <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{product.category?.name}</p>
-                    <p className="text-sm font-semibold text-gray-900 dark:text-white truncate mt-0.5">{product.name}</p>
-                    <p className="text-base font-bold text-blue-600 dark:text-blue-400 mt-1">
-                      ${product.pricing?.price?.toLocaleString('es-CL') || product.precioBase?.toLocaleString('es-CL')}
-                    </p>
-                  </div>
-                </div>
-              ))}
+                </>
+              )}
             </div>
           </div>
         )}
