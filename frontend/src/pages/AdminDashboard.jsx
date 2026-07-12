@@ -640,104 +640,212 @@ export default function AdminDashboard() {
 
           {/* PRODUCTOS */}
           {activeSection === 'productos' && (
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
-              <div className="p-6 space-y-6">
-                <button onClick={() => setShowCreate(!showCreate)}
-                  className="flex items-center gap-2 bg-gray-900 dark:bg-blue-600 text-white px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-gray-800 dark:hover:bg-blue-700 transition-colors shadow-sm">
-                  <Plus className="w-4 h-4" />
-                  {showCreate ? 'Cancelar' : 'Nuevo Producto'}
-                </button>
+            <div className="space-y-6">
 
-                {showCreate && (
-                  <div className="bg-gray-50 dark:bg-gray-900/50 rounded-xl p-6">
-                    <h3 className="text-base font-bold text-gray-900 dark:text-white mb-4">Nuevo Producto</h3>
-                    <form onSubmit={handleCreate} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="sm:col-span-2">
-                        <input placeholder="Nombre *" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required
-                          className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
-                      </div>
-                      <div className="sm:col-span-2">
-                        <textarea placeholder="Descripción" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={2}
-                          className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
-                      </div>
-                      <div>
-                        <input type="number" step="0.01" placeholder="Precio Costo" value={form.precioCosto} onChange={(e) => setForm({ ...form, precioCosto: e.target.value })}
-                          className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
-                      </div>
-                      <div>
-                        <input type="number" step="0.01" placeholder="Precio Mayorista *" value={form.precioMayorista} onChange={(e) => setForm({ ...form, precioMayorista: e.target.value })} required
-                          className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
-                      </div>
-                      <div>
-                        <input type="number" step="0.01" placeholder="Precio Base *" value={form.precioBase} onChange={(e) => setForm({ ...form, precioBase: e.target.value })} required
-                          className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
-                      </div>
-                      <div>
-                        <input type="number" placeholder="Stock" value={form.stock} onChange={(e) => setForm({ ...form, stock: e.target.value })}
-                          className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
-                      </div>
-                      <div className="sm:col-span-2">
-                        <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Imagen</label>
-                        <div className="flex flex-wrap items-center gap-3">
-                          <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
-                            <Upload size={16} />
-                            {uploadingImage ? 'Subiendo...' : 'Subir imagen'}
-                            <input type="file" accept="image/*" className="hidden" disabled={uploadingImage}
-                              onChange={(e) => handleImageUpload(e, 'create')} />
-                          </label>
-                          <span className="text-xs text-gray-400">o</span>
-                          <input placeholder="URL de imagen" value={form.imageUrl} onChange={(e) => setForm((prev) => ({ ...prev, imageUrl: e.target.value }))}
-                            className="flex-1 min-w-0 sm:min-w-[200px] px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
-                        </div>
-                        {form.imageUrl && (
-                          <img src={form.imageUrl} alt="Vista previa" className="mt-2 h-20 w-20 object-cover rounded-lg border dark:border-gray-600" />
-                        )}
-                      </div>
-                      <div className="sm:col-span-2">
-                        <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Imagen destacada (opcional)</label>
-                        <div className="flex flex-wrap items-center gap-3">
-                          <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
-                            <Upload size={16} />
-                            {uploadingImage ? 'Subiendo...' : 'Subir imagen'}
-                            <input type="file" accept="image/*" className="hidden" disabled={uploadingImage}
-                              onChange={(e) => handleImageUpload(e, 'create-featured')} />
-                          </label>
-                          <span className="text-xs text-gray-400">o</span>
-                          <input placeholder="URL imagen destacada" value={form.featuredImageUrl} onChange={(e) => setForm((prev) => ({ ...prev, featuredImageUrl: e.target.value }))}
-                            className="flex-1 min-w-0 sm:min-w-[200px] px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
-                        </div>
-                        {form.featuredImageUrl && (
-                          <img src={form.featuredImageUrl} alt="Vista previa destacada" className="mt-2 h-20 w-20 object-cover rounded-lg border dark:border-gray-600" />
-                        )}
-                      </div>
-                      <div>
-                        <select value={form.categoryId} onChange={(e) => setForm({ ...form, categoryId: e.target.value })}
-                          className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
-                          <option value="">Sin categoría</option>
-                          {categories.filter((c) => c.active).map((c) => (
-                            <option key={c.id} value={c.id}>{c.name}</option>
-                          ))}
-                        </select>
-                      </div>
-                      <div className="sm:col-span-2">
-                        <button type="submit"
-                          className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold text-white bg-gray-900 dark:bg-blue-600 hover:bg-gray-800 dark:hover:bg-blue-700 transition-colors">
-                          <Package className="w-4 h-4" /> Crear Producto
-                        </button>
-                      </div>
-                    </form>
+              {/* Card: Crear Producto + Tabla */}
+              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+                <div className="p-4 sm:p-6">
+                  {/* Header */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">Todos los Productos</h3>
+                    <button onClick={() => setShowCreate(!showCreate)}
+                      className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white transition-colors shadow-sm ${showCreate ? 'bg-gray-500 hover:bg-gray-600' : 'bg-gray-900 dark:bg-blue-600 hover:bg-gray-800 dark:hover:bg-blue-700'}`}>
+                      {showCreate ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+                      {showCreate ? 'Cancelar' : 'Nuevo Producto'}
+                    </button>
                   </div>
-                )}
 
-                <div>
-                  <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-3">Categorías</h3>
-                  <div className="flex flex-col sm:flex-row gap-3 mb-3">
-                    <input placeholder="Nombre *" value={catForm.name} onChange={(e) => setCatForm({ ...catForm, name: e.target.value })}
-                      className="flex-1 px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
-                    <input placeholder="Descripción" value={catForm.description} onChange={(e) => setCatForm({ ...catForm, description: e.target.value })}
-                      className="flex-1 px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
-                    <button onClick={handleCatCreate}
-                      className="sm:self-start px-4 py-2.5 bg-gray-900 text-white rounded-xl text-sm font-semibold hover:bg-gray-800 transition-colors">Crear</button>
+                  {/* Create form */}
+                  {showCreate && (
+                    <div className="bg-gray-50 dark:bg-gray-900/50 rounded-xl p-4 sm:p-6 mb-6 border border-gray-100 dark:border-gray-700">
+                      <h4 className="text-sm font-bold text-gray-900 dark:text-white mb-4">Nuevo Producto</h4>
+                      <form onSubmit={handleCreate} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="sm:col-span-2">
+                          <input placeholder="Nombre *" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required
+                            className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                        </div>
+                        <div className="sm:col-span-2">
+                          <textarea placeholder="Descripción" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={2}
+                            className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                        </div>
+                        <div>
+                          <input type="number" step="0.01" placeholder="Precio Costo" value={form.precioCosto} onChange={(e) => setForm({ ...form, precioCosto: e.target.value })}
+                            className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                        </div>
+                        <div>
+                          <input type="number" step="0.01" placeholder="Precio Mayorista *" value={form.precioMayorista} onChange={(e) => setForm({ ...form, precioMayorista: e.target.value })} required
+                            className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                        </div>
+                        <div>
+                          <input type="number" step="0.01" placeholder="Precio Base *" value={form.precioBase} onChange={(e) => setForm({ ...form, precioBase: e.target.value })} required
+                            className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                        </div>
+                        <div>
+                          <input type="number" placeholder="Stock" value={form.stock} onChange={(e) => setForm({ ...form, stock: e.target.value })}
+                            className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                        </div>
+                        <div className="sm:col-span-2">
+                          <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Imagen</label>
+                          <div className="flex flex-wrap items-center gap-3">
+                            <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+                              <Upload size={16} />
+                              {uploadingImage ? 'Subiendo...' : 'Subir imagen'}
+                              <input type="file" accept="image/*" className="hidden" disabled={uploadingImage}
+                                onChange={(e) => handleImageUpload(e, 'create')} />
+                            </label>
+                            <span className="text-xs text-gray-400">o</span>
+                            <input placeholder="URL de imagen" value={form.imageUrl} onChange={(e) => setForm((prev) => ({ ...prev, imageUrl: e.target.value }))}
+                              className="flex-1 min-w-0 sm:min-w-[200px] px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                          </div>
+                          {form.imageUrl && (
+                            <img src={form.imageUrl} alt="Vista previa" className="mt-2 h-20 w-20 object-cover rounded-lg border dark:border-gray-600" />
+                          )}
+                        </div>
+                        <div className="sm:col-span-2">
+                          <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Imagen destacada (opcional)</label>
+                          <div className="flex flex-wrap items-center gap-3">
+                            <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+                              <Upload size={16} />
+                              {uploadingImage ? 'Subiendo...' : 'Subir imagen'}
+                              <input type="file" accept="image/*" className="hidden" disabled={uploadingImage}
+                                onChange={(e) => handleImageUpload(e, 'create-featured')} />
+                            </label>
+                            <span className="text-xs text-gray-400">o</span>
+                            <input placeholder="URL imagen destacada" value={form.featuredImageUrl} onChange={(e) => setForm((prev) => ({ ...prev, featuredImageUrl: e.target.value }))}
+                              className="flex-1 min-w-0 sm:min-w-[200px] px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                          </div>
+                          {form.featuredImageUrl && (
+                            <img src={form.featuredImageUrl} alt="Vista previa destacada" className="mt-2 h-20 w-20 object-cover rounded-lg border dark:border-gray-600" />
+                          )}
+                        </div>
+                        <div>
+                          <select value={form.categoryId} onChange={(e) => setForm({ ...form, categoryId: e.target.value })}
+                            className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+                            <option value="">Sin categoría</option>
+                            {categories.filter((c) => c.active).map((c) => (
+                              <option key={c.id} value={c.id}>{c.name}</option>
+                            ))}
+                          </select>
+                        </div>
+                        <div className="sm:col-span-2">
+                          <button type="submit"
+                            className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold text-white bg-gray-900 dark:bg-blue-600 hover:bg-gray-800 dark:hover:bg-blue-700 transition-colors">
+                            <Package className="w-4 h-4" /> Crear Producto
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  )}
+
+                  {/* Bulk selection toolbar */}
+                  {selectedIds.length > 0 && (
+                    <div className="flex items-center gap-2 px-4 py-3 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl mb-4 flex-wrap">
+                      <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">{selectedIds.length} seleccionado(s)</span>
+                      <button onClick={() => { handleBulkAction('suspend') }}
+                        className="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-amber-500 hover:bg-amber-600 transition-colors">Suspender</button>
+                      <button onClick={() => { handleBulkAction('restore') }}
+                        className="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-blue-500 hover:bg-blue-600 transition-colors">Restaurar</button>
+                      <button onClick={() => { handleBulkAction('delete') }}
+                        className="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-red-500 hover:bg-red-600 transition-colors">Eliminar</button>
+                    </div>
+                  )}
+
+                  {/* Product table */}
+                  <div className="overflow-x-auto rounded-xl border border-gray-100 dark:border-gray-700">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-700">
+                          <th className="text-left px-4 py-3 w-10">
+                            <input type="checkbox" checked={selectAll} onChange={() => setSelectAll(!selectAll)}
+                              className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                          </th>
+                          <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Producto</th>
+                          <th className="text-center px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Precios</th>
+                          <th className="text-center px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Stock</th>
+                          <th className="text-center px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Dest.</th>
+                          <th className="text-center px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Estado</th>
+                          <th className="text-right px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Acciones</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {products.length === 0 ? (
+                          <tr><td colSpan={7} className="text-center px-4 py-10 text-gray-400 dark:text-gray-500">No hay productos</td></tr>
+                        ) : (
+                          products.map((p) => (
+                            <tr key={p.id} className={`border-t border-gray-50 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors ${p.active ? '' : 'opacity-50'}`}>
+                              <td className="px-4 py-3">
+                                <input type="checkbox" checked={selectedIds.includes(p.id)} onChange={() => toggleSelect(p.id)}
+                                  className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                              </td>
+                              <td className="px-4 py-3">
+                                <div className="flex items-center gap-3">
+                                  {p.imageUrl && (
+                                    <img src={p.imageUrl} alt="" className="w-8 h-8 rounded-lg object-cover bg-gray-100 dark:bg-gray-700" />
+                                  )}
+                                  <div>
+                                    <p className="font-medium text-gray-900 dark:text-white text-sm">{p.name}</p>
+                                    <p className="text-xs text-gray-400 dark:text-gray-500">#{p.id}{p.category?.name ? ` · ${p.category.name}` : ''}</p>
+                                  </div>
+                                </div>
+                              </td>
+                              <td className="px-4 py-3 text-center">
+                                <div className="inline-flex flex-col items-center gap-0.5">
+                                  <span className="text-xs text-gray-600 dark:text-gray-400">${p.precioBase.toLocaleString('es-CL')}</span>
+                                  <span className="text-[10px] text-gray-400 dark:text-gray-500">Base · May. ${p.precioMayorista.toLocaleString('es-CL')}</span>
+                                  {p.precioCosto != null && (
+                                    <span className="text-[10px] text-gray-400 dark:text-gray-500">Costo ${p.precioCosto.toLocaleString('es-CL')}</span>
+                                  )}
+                                </div>
+                              </td>
+                              <td className="px-4 py-3 text-center text-sm text-gray-700 dark:text-gray-200">{p.stock}</td>
+                              <td className="px-4 py-3 text-center">
+                                {p.featured ? <Star className="w-4 h-4 text-amber-400 fill-amber-400 inline" /> : <span className="text-gray-300 dark:text-gray-600">-</span>}
+                              </td>
+                              <td className="px-4 py-3 text-center">
+                                <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${p.active ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300' : 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300'}`}>
+                                  {p.active ? 'Activo' : 'Inactivo'}
+                                </span>
+                              </td>
+                              <td className="px-4 py-3 text-right">
+                                <div className="inline-flex gap-1">
+                                  <button onClick={() => openEdit(p)}
+                                    className="px-2.5 py-1.5 rounded-lg text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors">Editar</button>
+                                  <button onClick={() => handleToggleFeatured(p)}
+                                    className={`px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors ${p.featured ? 'bg-amber-400 hover:bg-amber-500 text-white' : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-500 dark:text-gray-300'}`}>
+                                    <Star className={`w-3.5 h-3.5 ${p.featured ? 'fill-white' : ''}`} />
+                                  </button>
+                                  <button onClick={() => handleToggleSuspend(p)}
+                                    className={`px-2.5 py-1.5 rounded-lg text-xs font-medium text-white ${p.active ? 'bg-amber-500 hover:bg-amber-600' : 'bg-blue-500 hover:bg-blue-600'} transition-colors`}>
+                                    {p.active ? 'Susp' : 'Act'}
+                                  </button>
+                                  <button onClick={() => handleHardDelete(p)}
+                                    className="px-2.5 py-1.5 rounded-lg text-xs font-medium text-white bg-red-500 hover:bg-red-600 transition-colors">
+                                    <Trash2 className="w-3.5 h-3.5" />
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          ))
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              {/* Card: Categorías */}
+              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+                <div className="p-4 sm:p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">Categorías</h3>
+                    <div className="flex items-center gap-2">
+                      <input placeholder="Nombre *" value={catForm.name} onChange={(e) => setCatForm({ ...catForm, name: e.target.value })}
+                        className="w-40 px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                      <input placeholder="Descripción" value={catForm.description} onChange={(e) => setCatForm({ ...catForm, description: e.target.value })}
+                        className="hidden sm:block w-40 px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                      <button onClick={handleCatCreate}
+                        className="px-4 py-2 bg-gray-900 dark:bg-blue-600 text-white rounded-xl text-sm font-semibold hover:bg-gray-800 dark:hover:bg-blue-700 transition-colors shrink-0">+ Categoría</button>
+                    </div>
                   </div>
                   <div className="space-y-2">
                     {categories.length === 0 ? (
@@ -746,7 +854,7 @@ export default function AdminDashboard() {
                       categories.map((cat) => (
                         <div key={cat.id}>
                           <div
-                            className={`flex items-center justify-between gap-2 px-4 py-3 bg-gray-50 dark:bg-gray-800 rounded-xl text-sm cursor-pointer transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 flex-wrap ${cat.active ? 'opacity-100' : 'opacity-50'}`}
+                            className={`flex items-center justify-between gap-2 px-4 py-3 bg-gray-50 dark:bg-gray-800 rounded-xl text-sm cursor-pointer transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 flex-wrap ${cat.active ? '' : 'opacity-50'}`}
                             onClick={() => cat.active && toggleExpandCat(cat.id)}
                           >
                             <div className="flex items-center gap-2">
@@ -755,7 +863,7 @@ export default function AdminDashboard() {
                               <span className="text-xs text-gray-400 dark:text-gray-500">({cat._count?.products || 0})</span>
                               {!cat.active && <span className="text-xs text-red-500 dark:text-red-400 font-medium">Suspendida</span>}
                             </div>
-                            <div className="flex items-center gap-1 flex-wrap" onClick={(e) => e.stopPropagation()}>
+                            <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
                               <button onClick={() => handleCatToggleSuspend(cat)}
                                 className={`px-2.5 py-1 rounded-lg text-xs font-medium text-white ${cat.active ? 'bg-amber-500 hover:bg-amber-600' : 'bg-blue-500 hover:bg-blue-600'} transition-colors`}>
                                 {cat.active ? 'Suspender' : 'Restaurar'}
@@ -767,7 +875,7 @@ export default function AdminDashboard() {
                             </div>
                           </div>
                           {expandedCat === cat.id && (
-                            <div className="ml-0 sm:ml-6 mt-2 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl overflow-x-auto">
+                            <div className="ml-0 sm:ml-8 mt-2 border border-gray-100 dark:border-gray-700 rounded-xl overflow-x-auto">
                               {catProductsLoading ? (
                                 <div className="p-4 text-sm text-gray-400 dark:text-gray-500">Cargando...</div>
                               ) : catProducts.length === 0 ? (
@@ -787,7 +895,7 @@ export default function AdminDashboard() {
                                   </thead>
                                   <tbody>
                                     {catProducts.map((p) => (
-                                      <tr key={p.id} className={`border-t border-gray-50 dark:border-gray-700 ${p.active ? 'opacity-100' : 'opacity-50'}`}>
+                                      <tr key={p.id} className={`border-t border-gray-50 dark:border-gray-700 ${p.active ? '' : 'opacity-50'}`}>
                                         <td className="px-4 py-2 font-medium text-gray-900 dark:text-white">{p.name}</td>
                                         <td className="px-4 py-2 text-gray-600 dark:text-gray-400">${p.precioBase.toLocaleString('es-CL')}</td>
                                         <td className="px-4 py-2 text-gray-600 dark:text-gray-400">${p.precioMayorista.toLocaleString('es-CL')}</td>
@@ -830,10 +938,13 @@ export default function AdminDashboard() {
                     )}
                   </div>
                 </div>
+              </div>
 
-                <div>
-                  <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-3">Actualización Masiva de Precios</h3>
-                  <p className="text-xs text-gray-400 dark:text-gray-500 mb-3">Selecciona productos abajo, ingresa un % y aplica el cambio.</p>
+              {/* Card: Acciones Masivas */}
+              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+                <div className="p-4 sm:p-6">
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Actualización Masiva de Precios</h3>
+                  <p className="text-xs text-gray-400 dark:text-gray-500 mb-3">Selecciona productos en la tabla, ingresa un % y aplica el cambio.</p>
                   <div className="flex flex-col sm:flex-row gap-3">
                     <input type="number" placeholder="Ej: 10 para +10%, -15 para -15%"
                       value={bulkPercentage} onChange={(e) => setBulkPercentage(e.target.value)}
@@ -845,88 +956,8 @@ export default function AdminDashboard() {
                     </button>
                   </div>
                 </div>
-
-                <div className="overflow-hidden border border-gray-100 dark:border-gray-700 rounded-xl">
-                  {selectedIds.length > 0 && (
-                    <div className="flex items-center gap-2 px-5 py-3 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-700 flex-wrap">
-                      <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">{selectedIds.length} seleccionado(s)</span>
-                      <button onClick={() => { handleBulkAction('suspend') }}
-                        className="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-amber-500 hover:bg-amber-600 transition-colors">Suspender</button>
-                      <button onClick={() => { handleBulkAction('restore') }}
-                        className="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-blue-500 hover:bg-blue-600 transition-colors">Restaurar</button>
-                      <button onClick={() => { handleBulkAction('delete') }}
-                        className="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-red-500 hover:bg-red-600 transition-colors">Eliminar</button>
-                    </div>
-                  )}
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-sm">
-                      <thead>
-                        <tr className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-700">
-                          <th className="text-left px-4 py-3">
-                            <input type="checkbox" checked={selectAll} onChange={() => setSelectAll(!selectAll)}
-                              className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
-                          </th>
-                          <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">ID</th>
-                          <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Nombre</th>
-                          <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">P. Costo</th>
-                          <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">P. May.</th>
-                          <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">P. Base</th>
-                          <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Stock</th>
-                          <th className="text-center px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Destacado</th>
-                          <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Estado</th>
-                          <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Acciones</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {products.length === 0 ? (
-                          <tr><td colSpan={10} className="text-center px-4 py-10 text-gray-400 dark:text-gray-500">No hay productos</td></tr>
-                        ) : (
-                          products.map((p) => (
-                            <tr key={p.id} className={`border-t border-gray-50 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors ${p.active ? 'opacity-100' : 'opacity-50'}`}>
-                              <td className="px-4 py-3">
-                                <input type="checkbox" checked={selectedIds.includes(p.id)} onChange={() => toggleSelect(p.id)}
-                                  className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
-                              </td>
-                              <td className="px-4 py-3 text-gray-500 dark:text-gray-400 text-xs">{p.id}</td>
-                              <td className="px-4 py-3 font-medium text-gray-900 dark:text-white">{p.name}</td>
-                              <td className="px-4 py-3 text-gray-700 dark:text-gray-200">${p.precioCosto != null ? p.precioCosto.toLocaleString('es-CL') : '-'}</td>
-                              <td className="px-4 py-3 text-gray-700 dark:text-gray-200">${p.precioMayorista.toLocaleString('es-CL')}</td>
-                              <td className="px-4 py-3 text-gray-700 dark:text-gray-200">${p.precioBase.toLocaleString('es-CL')}</td>
-                              <td className="px-4 py-3 text-gray-700 dark:text-gray-200">{p.stock}</td>
-                              <td className="px-4 py-3 text-center">
-                                {p.featured ? <Star className="w-4 h-4 text-amber-400 fill-amber-400 inline" /> : <span className="text-gray-300 dark:text-gray-600">-</span>}
-                              </td>
-                              <td className="px-4 py-3">
-                                <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${p.active ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300' : 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300'}`}>
-                                  {p.active ? 'Activo' : 'Suspendido'}
-                                </span>
-                              </td>
-                              <td className="px-4 py-3">
-                                <div className="flex gap-1.5 flex-wrap">
-                                  <button onClick={() => openEdit(p)}
-                                    className="px-2.5 py-1.5 rounded-lg text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors">Editar</button>
-                                  <button onClick={() => handleToggleFeatured(p)}
-                                    className={`px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors ${p.featured ? 'bg-amber-400 hover:bg-amber-500 text-white' : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-500 dark:text-gray-300'}`}>
-                                    <Star className={`w-3.5 h-3.5 ${p.featured ? 'fill-white' : ''}`} />
-                                  </button>
-                                  <button onClick={() => handleToggleSuspend(p)}
-                                    className={`px-2.5 py-1.5 rounded-lg text-xs font-medium text-white ${p.active ? 'bg-amber-500 hover:bg-amber-600' : 'bg-blue-500 hover:bg-blue-600'} transition-colors`}>
-                                    {p.active ? 'Suspender' : 'Restaurar'}
-                                  </button>
-                                  <button onClick={() => handleHardDelete(p)}
-                                    className="px-2.5 py-1.5 rounded-lg text-xs font-medium text-white bg-red-500 hover:bg-red-600 transition-colors">
-                                    <Trash2 className="w-3.5 h-3.5" />
-                                  </button>
-                                </div>
-                              </td>
-                            </tr>
-                          ))
-                        )}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
               </div>
+
             </div>
           )}
 
