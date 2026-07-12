@@ -6,6 +6,7 @@ const productController = require('../controllers/productController')
 
 const router = Router()
 
+router.get('/featured', productController.getFeatured)
 router.get('/', authenticate, productController.list)
 router.get('/:id', authenticate, productController.getById)
 
@@ -29,6 +30,7 @@ router.post('/bulk-restore', authenticate, authorize('ADMIN'), productController
 router.post('/bulk-delete', authenticate, authorize('ADMIN'), productController.bulkDelete)
 router.patch('/:id/suspend', authenticate, authorize('ADMIN'), productController.softDelete)
 router.patch('/:id/restore', authenticate, authorize('ADMIN'), productController.restore)
+router.patch('/:id/featured', authenticate, authorize('ADMIN'), productController.toggleFeatured)
 router.delete('/:id', authenticate, authorize('ADMIN'), productController.hardDelete)
 
 module.exports = router

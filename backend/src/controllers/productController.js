@@ -254,6 +254,46 @@ async function hardDelete(req, res) {
   }
 }
 
+async function toggleFeatured(req, res) {
+  try {
+    const { id } = req.params
+    const product = await prisma.product.findUnique({ where: { id: Number(id) } })
+    if (!product) return res.status(404).json({ error: 'Producto no encontrado' })
+
+    const updated = await prisma.product.update({
+      where: { id: Number(id) },
+      data: { featured: !product.featured },
+      include: productInclude,
+    })
+
+    res.json(updated)
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Error al destacar producto' })
+  }
+}
+
+async function getFeatured(req, res) {
+  try {
+    const products = await prisma.product.findMany({
+      where: { active: true, featured: true },
+      include: productInclude,
+    })
+
+    const strategy = getPricingStrategy(req.user?.role || 'RETAIL')
+
+    const result = products.map((product) => {
+      const pricing = strategy.getPrice(product)
+      return { ...product, pricing }
+    })
+
+    res.json(result)
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Error al obtener productos destacados' })
+  }
+}
+
 async function bulkSuspend(req, res) {
   try {
     const { productIds } = req.body
@@ -323,4 +363,6 @@ module.exports = {
   bulkSuspend,
   bulkRestore,
   bulkDelete,
+  toggleFeatured,
+  getFeatured,
 }

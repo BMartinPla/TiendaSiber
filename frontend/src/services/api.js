@@ -87,6 +87,14 @@ export function deleteProduct(id) {
   return api.delete(`/products/${id}`).then((res) => res.data)
 }
 
+export function toggleFeatured(id) {
+  return api.patch(`/products/${id}/featured`).then((res) => res.data)
+}
+
+export function getFeaturedProducts() {
+  return api.get('/products/featured').then((res) => res.data)
+}
+
 export function getCart() {
   return api.get('/cart').then((res) => res.data)
 }

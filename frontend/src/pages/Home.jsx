@@ -1,13 +1,17 @@
-import React, { useState, useEffect } from 'react'
-import { getProducts, getCategories } from '../services/api'
+import React, { useState, useEffect, useRef } from 'react'
+import { getProducts, getCategories, getFeaturedProducts } from '../services/api'
 import ProductCard from '../components/ProductCard'
 import ProductModal from '../components/ProductModal'
 import Cart from '../components/Cart'
 import Navbar from '../components/Navbar'
+import { ChevronLeft, ChevronRight, Star, Package } from 'lucide-react'
+import { useAuth } from '../contexts/AuthContext'
 
 export default function Home() {
+  const { user } = useAuth()
   const [products, setProducts] = useState([])
   const [categories, setCategories] = useState([])
+  const [featuredProducts, setFeaturedProducts] = useState([])
   const [selectedCategory, setSelectedCategory] = useState('')
   const [sortBy, setSortBy] = useState('')
   const [search, setSearch] = useState('')
@@ -15,16 +19,24 @@ export default function Home() {
   const [error, setError] = useState('')
   const [cartOpen, setCartOpen] = useState(false)
   const [selectedProduct, setSelectedProduct] = useState(null)
+  const scrollRef = useRef(null)
 
   useEffect(() => {
-    Promise.all([getProducts(), getCategories()])
-      .then(([prods, cats]) => {
+    Promise.all([getProducts(), getCategories(), getFeaturedProducts()])
+      .then(([prods, cats, featured]) => {
         setProducts(prods)
         setCategories(cats)
+        setFeaturedProducts(featured)
       })
       .catch((err) => setError(err.response?.data?.error || 'Error al cargar datos'))
       .finally(() => setLoading(false))
   }, [])
+
+  function scrollCarousel(dir) {
+    if (!scrollRef.current) return
+    const amount = scrollRef.current.clientWidth * 0.6
+    scrollRef.current.scrollBy({ left: dir * amount, behavior: 'smooth' })
+  }
 
   function loadProducts(params = '') {
     setLoading(true)
@@ -62,6 +74,52 @@ export default function Home() {
       <Navbar onCartClick={() => setCartOpen(true)} search={search} onSearch={handleSearch} />
 
       <main className="pt-20 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        {featuredProducts.length > 0 && (
+          <div className="mb-10">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                <Star className="w-5 h-5 text-amber-400 fill-amber-400" /> Destacados
+              </h2>
+              <div className="flex gap-2">
+                <button onClick={() => scrollCarousel(-1)}
+                  className="p-2 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors shadow-sm">
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                <button onClick={() => scrollCarousel(1)}
+                  className="p-2 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors shadow-sm">
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+            <div ref={scrollRef}
+              className="flex gap-4 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-2 -mx-4 sm:-mx-0 px-4 sm:px-0"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+              {featuredProducts.map((product) => (
+                <div key={product.id}
+                  onClick={() => setSelectedProduct(product)}
+                  className="snap-start shrink-0 w-44 sm:w-52 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 overflow-hidden cursor-pointer hover:shadow-md hover:border-blue-200 dark:hover:border-blue-800 transition-all">
+                  <div className="aspect-square bg-gray-100 dark:bg-gray-700 overflow-hidden">
+                    {product.imageUrl ? (
+                      <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-gray-300 dark:text-gray-600">
+                        <Package className="w-10 h-10" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-3">
+                    <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{product.category?.name}</p>
+                    <p className="text-sm font-semibold text-gray-900 dark:text-white truncate mt-0.5">{product.name}</p>
+                    <p className="text-base font-bold text-blue-600 dark:text-blue-400 mt-1">
+                      ${product.pricing?.price?.toLocaleString('es-CL') || product.precioBase?.toLocaleString('es-CL')}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">Nuestros Productos</h1>
