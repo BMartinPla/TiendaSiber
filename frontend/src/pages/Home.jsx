@@ -133,9 +133,9 @@ export default function Home() {
                         <p className="text-lg sm:text-xl font-bold text-white mt-1">{product.name}</p>
                         <div className="flex items-baseline gap-2 mt-1">
                           <span className="text-xl sm:text-2xl font-bold text-yellow-400">
-                            ${(product.pricing?.price || product.precioBase).toLocaleString('es-CL')}
+                            ${(product.pricing?.unitPrice || product.precioBase).toLocaleString('es-CL')}
                           </span>
-                          {isWholesale && product.precioBase > (product.pricing?.price || 0) && (
+                          {isWholesale && product.precioBase > (product.pricing?.unitPrice || 0) && (
                             <span className="text-sm sm:text-base text-white/50 line-through">
                               ${product.precioBase.toLocaleString('es-CL')}
                             </span>
