@@ -5,7 +5,7 @@ import { useAuth } from '../contexts/AuthContext'
 import { useCart } from '../contexts/CartContext'
 import { useDarkMode } from '../contexts/DarkModeContext'
 
-export default function Navbar({ onCartClick, search, onSearch, categories, selectedCategory, onCategoryChange }) {
+export default function Navbar({ onCartClick, search, onSearch, categories, selectedCategories, onCategoryChange }) {
   const { logout, isAdmin } = useAuth()
   const { itemCount } = useCart()
   const { dark, toggleDark } = useDarkMode()
@@ -92,22 +92,12 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
         <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-sm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex gap-1 overflow-x-auto py-2 justify-center scrollbar-none" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-              <button
-                onClick={() => onCategoryChange('')}
-                className={`shrink-0 px-3 py-1.5 text-xs sm:text-sm font-medium rounded-lg whitespace-nowrap transition-colors ${
-                  !selectedCategory
-                    ? 'bg-blue-600 text-white'
-                    : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
-                }`}
-              >
-                Todos
-              </button>
               {categories.map((cat) => (
                 <button
                   key={cat.id}
                   onClick={() => onCategoryChange(cat.id)}
                   className={`shrink-0 px-3 py-1.5 text-xs sm:text-sm font-medium rounded-lg whitespace-nowrap transition-colors ${
-                    selectedCategory === cat.id
+                    selectedCategories.includes(cat.id)
                       ? 'bg-blue-600 text-white'
                       : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
                   }`}

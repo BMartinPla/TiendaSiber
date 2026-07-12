@@ -8,7 +8,11 @@ async function list(req, res) {
     const where = req.user?.role === 'ADMIN' ? {} : { active: true }
 
     if (req.query.categoryId) {
-      where.categoryId = Number(req.query.categoryId)
+      if (Array.isArray(req.query.categoryId)) {
+        where.categoryId = { in: req.query.categoryId.map(Number) }
+      } else {
+        where.categoryId = Number(req.query.categoryId)
+      }
     }
 
     if (req.query.search) {

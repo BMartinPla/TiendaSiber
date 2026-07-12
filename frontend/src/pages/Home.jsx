@@ -8,12 +8,12 @@ import { ChevronLeft, ChevronRight, Star } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 
 export default function Home() {
-  const { user } = useAuth()
+  const { user, isWholesale } = useAuth()
   const [products, setProducts] = useState([])
   const [categories, setCategories] = useState([])
   const [featuredProducts, setFeaturedProducts] = useState([])
   const [currentSlide, setCurrentSlide] = useState(0)
-  const [selectedCategory, setSelectedCategory] = useState('')
+  const [selectedCategories, setSelectedCategories] = useState([])
   const [sortBy, setSortBy] = useState('')
   const [search, setSearch] = useState('')
   const [loading, setLoading] = useState(true)
@@ -22,8 +22,8 @@ export default function Home() {
   const [selectedProduct, setSelectedProduct] = useState(null)
   const timerRef = useRef(null)
 
-  const visibleFeatured = selectedCategory
-    ? featuredProducts.filter((p) => p.category?.id === Number(selectedCategory))
+  const visibleFeatured = selectedCategories.length > 0
+    ? featuredProducts.filter((p) => selectedCategories.includes(p.category?.id))
     : featuredProducts
 
   useEffect(() => {
@@ -38,8 +38,17 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
+    setLoading(true)
+    const params = buildParams(selectedCategories, search, sortBy)
+    getProducts(params)
+      .then(setProducts)
+      .catch((err) => setError(err.response?.data?.error || 'Error al cargar productos'))
+      .finally(() => setLoading(false))
+  }, [selectedCategories, search, sortBy])
+
+  useEffect(() => {
     setCurrentSlide(0)
-  }, [selectedCategory])
+  }, [selectedCategories])
 
   useEffect(() => {
     if (visibleFeatured.length < 2) return
@@ -65,27 +74,28 @@ export default function Home() {
       .finally(() => setLoading(false))
   }
 
-  function buildParams(category, searchTerm, sort) {
+  function buildParams(categories, searchTerm, sort) {
     const params = new URLSearchParams()
-    if (category) params.set('categoryId', category)
+    if (categories.length > 0) {
+      categories.forEach((id) => params.append('categoryId', id))
+    }
     if (searchTerm) params.set('search', searchTerm)
     if (sort) params.set('sortBy', sort)
     return params.toString() ? `?${params.toString()}` : ''
   }
 
   function handleCategoryChange(categoryId) {
-    setSelectedCategory(categoryId)
-    loadProducts(buildParams(categoryId, search, sortBy))
+    setSelectedCategories((prev) =>
+      prev.includes(categoryId) ? prev.filter((id) => id !== categoryId) : [...prev, categoryId]
+    )
   }
 
   function handleSearch(value) {
     setSearch(value)
-    loadProducts(buildParams(selectedCategory, value, sortBy))
   }
 
   function handleSortChange(value) {
     setSortBy(value)
-    loadProducts(buildParams(selectedCategory, search, value))
   }
 
   return (
@@ -95,7 +105,7 @@ export default function Home() {
         search={search}
         onSearch={handleSearch}
         categories={categories}
-        selectedCategory={selectedCategory}
+        selectedCategories={selectedCategories}
         onCategoryChange={handleCategoryChange}
       />
 
@@ -118,13 +128,20 @@ export default function Home() {
                         </div>
                       )}
                     </div>
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4 sm:p-6">
-                      <p className="text-xs text-white/70">{product.category?.name}</p>
-                      <p className="text-lg sm:text-xl font-bold text-white mt-1">{product.name}</p>
-                      <p className="text-xl sm:text-2xl font-bold text-yellow-400 mt-1">
-                        ${product.pricing?.price?.toLocaleString('es-CL') || product.precioBase?.toLocaleString('es-CL')}
-                      </p>
-                    </div>
+                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4 sm:p-6">
+                        <p className="text-xs text-white/70">{product.category?.name}</p>
+                        <p className="text-lg sm:text-xl font-bold text-white mt-1">{product.name}</p>
+                        <div className="flex items-baseline gap-2 mt-1">
+                          <span className="text-xl sm:text-2xl font-bold text-yellow-400">
+                            ${(product.pricing?.price || product.precioBase).toLocaleString('es-CL')}
+                          </span>
+                          {isWholesale && product.precioBase > (product.pricing?.price || 0) && (
+                            <span className="text-sm sm:text-base text-white/50 line-through">
+                              ${product.precioBase.toLocaleString('es-CL')}
+                            </span>
+                          )}
+                        </div>
+                      </div>
                   </div>
                 )
               })()}
@@ -156,11 +173,7 @@ export default function Home() {
           {/* Section header with sort */}
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
-                {selectedCategory
-                  ? categories.find((c) => c.id === selectedCategory)?.name || 'Productos'
-                  : 'Productos'}
-              </h2>
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Productos</h2>
               <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
                 {products.length} producto{products.length !== 1 ? 's' : ''} encontrado{products.length !== 1 ? 's' : ''}
               </p>
