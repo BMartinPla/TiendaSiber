@@ -16,3 +16,7 @@ body {
 .dark {
   color-scheme: dark;
 }
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}

@@ -113,6 +113,7 @@ export default function Home() {
             <div className="relative rounded-2xl overflow-hidden bg-white dark:bg-gray-800 shadow-sm border border-gray-100 dark:border-gray-700">
               {(() => {
                 const product = visibleFeatured[currentSlide]
+                if (!product) return null
                 return (
                   <div key={product.id} onClick={() => setSelectedProduct(product)} className="cursor-pointer relative">
                     <div className="aspect-[2/1] sm:aspect-[21/9] bg-gray-100 dark:bg-gray-700/50">
