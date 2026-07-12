@@ -545,12 +545,16 @@ export default function AdminDashboard() {
         {/* CONTENT */}
         <main className="flex-1 p-4 sm:p-6 lg:p-8">
 
-          {/* Content messages */}
-      {error && !editProduct && (
-        <div className="mb-6 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl">{error}</div>
-      )}
-      {success && !editProduct && (
-        <div className="mb-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400 text-sm px-4 py-3 rounded-xl">{success}</div>
+          {/* Toast notifications */}
+      {(error || success) && (
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-[9999]">
+          {error && (
+            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-sm px-5 py-3 rounded-xl shadow-2xl">{error}</div>
+          )}
+          {success && (
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400 text-sm px-5 py-3 rounded-xl shadow-2xl">{success}</div>
+          )}
+        </div>
       )}
 
       {/* DASHBOARD */}

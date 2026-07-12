@@ -115,9 +115,9 @@ export default function Home() {
                 const product = visibleFeatured[currentSlide]
                 return (
                   <div key={product.id} onClick={() => setSelectedProduct(product)} className="cursor-pointer relative">
-                    <div className="aspect-[2/1] sm:aspect-[21/9] bg-gray-100 dark:bg-gray-700">
+                    <div className="aspect-[2/1] sm:aspect-[21/9] bg-gray-100 dark:bg-gray-700/50">
                       {product.featuredImageUrl || product.imageUrl ? (
-                          <img src={product.featuredImageUrl || product.imageUrl} alt={product.name} className="w-full h-full object-cover" />
+                          <img src={product.featuredImageUrl || product.imageUrl} alt={product.name} className="w-full h-full object-contain" />
                       ) : (
                         <div className="w-full h-full flex flex-col items-center justify-center gap-2 text-gray-300 dark:text-gray-600">
                           <Star className="w-12 h-12 text-amber-300 fill-amber-300" />

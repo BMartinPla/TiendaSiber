@@ -4,6 +4,8 @@ import { ShoppingCart, Search, LogOut, User, Moon, Sun, LayoutDashboard, Shoppin
 import { useAuth } from '../contexts/AuthContext'
 import { useCart } from '../contexts/CartContext'
 import { useDarkMode } from '../contexts/DarkModeContext'
+import ProfileModal from './ProfileModal'
+import OrdersModal from './OrdersModal'
 
 export default function Navbar({ onCartClick, search, onSearch, categories, selectedCategories, onCategoryChange }) {
   const { logout, isAdmin } = useAuth()
@@ -11,6 +13,8 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
   const { dark, toggleDark } = useDarkMode()
   const navigate = useNavigate()
   const [menuOpen, setMenuOpen] = React.useState(false)
+  const [profileOpen, setProfileOpen] = React.useState(false)
+  const [ordersOpen, setOrdersOpen] = React.useState(false)
 
   function handleLogout() {
     logout()
@@ -54,14 +58,14 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
                 {dark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
               </button>
 
-              <Link to="/profile" className="p-1.5 sm:p-2 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" title="Perfil">
+              <button onClick={() => setProfileOpen(true)} className="p-1.5 sm:p-2 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" title="Perfil">
                 <User className="w-5 h-5" />
-              </Link>
+              </button>
 
               {!isAdmin && (
-                <Link to="/mis-pedidos" className="hidden sm:block p-1.5 sm:p-2 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" title="Mis Pedidos">
+                <button onClick={() => setOrdersOpen(true)} className="hidden sm:block p-1.5 sm:p-2 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" title="Mis Pedidos">
                   <ShoppingBag className="w-5 h-5" />
-                </Link>
+                </button>
               )}
 
               {isAdmin ? (
@@ -92,15 +96,15 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
         <div className="sm:hidden bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-md">
           <div className="px-4 py-3 space-y-2">
             {!isAdmin && (
-              <Link to="/mis-pedidos" onClick={() => setMenuOpen(false)}
-                className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+              <button onClick={() => { setOrdersOpen(true); setMenuOpen(false) }}
+                className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 w-full text-left transition-colors">
                 <ShoppingBag className="w-4 h-4" /> Mis Pedidos
-              </Link>
+              </button>
             )}
-            <Link to="/profile" onClick={() => setMenuOpen(false)}
-              className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+            <button onClick={() => { setProfileOpen(true); setMenuOpen(false) }}
+              className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 w-full text-left transition-colors">
               <User className="w-4 h-4" /> Perfil
-            </Link>
+            </button>
             {isAdmin && (
               <Link to="/admin" onClick={() => setMenuOpen(false)}
                 className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
@@ -139,6 +143,8 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
           </div>
         </div>
       )}
+      {profileOpen && <ProfileModal onClose={() => setProfileOpen(false)} />}
+      {ordersOpen && <OrdersModal onClose={() => setOrdersOpen(false)} />}
     </header>
   )
 }
