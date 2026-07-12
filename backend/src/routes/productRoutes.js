@@ -1,12 +1,13 @@
 const { Router } = require('express')
 const { body } = require('express-validator')
 const authenticate = require('../middleware/authMiddleware')
+const { optionalAuth } = require('../middleware/authMiddleware')
 const authorize = require('../middleware/roleMiddleware')
 const productController = require('../controllers/productController')
 
 const router = Router()
 
-router.get('/featured', productController.getFeatured)
+router.get('/featured', optionalAuth, productController.getFeatured)
 router.get('/', authenticate, productController.list)
 router.get('/:id', authenticate, productController.getById)
 

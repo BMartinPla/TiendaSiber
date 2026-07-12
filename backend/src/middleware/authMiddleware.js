@@ -28,4 +28,25 @@ async function authenticate(req, res, next) {
   }
 }
 
+async function optionalAuth(req, res, next) {
+  try {
+    const header = req.headers.authorization
+    if (!header || !header.startsWith('Bearer ')) return next()
+
+    const token = header.split(' ')[1]
+    const decoded = jwt.verify(token, secret)
+
+    const user = await prisma.user.findUnique({
+      where: { id: decoded.id },
+      select: { id: true, name: true, email: true, role: true, active: true, phone: true },
+    })
+
+    if (user && user.active) req.user = user
+    next()
+  } catch {
+    next()
+  }
+}
+
 module.exports = authenticate
+module.exports.optionalAuth = optionalAuth
