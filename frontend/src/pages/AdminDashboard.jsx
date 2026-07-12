@@ -59,11 +59,11 @@ export default function AdminDashboard() {
 
   const [editProduct, setEditProduct] = useState(null)
   const [editForm, setEditForm] = useState({
-    name: '', description: '', precioBase: '', precioMayorista: '', precioCosto: '', stock: '', imageUrl: '', categoryId: '',
+    name: '', description: '', precioBase: '', precioMayorista: '', precioCosto: '', stock: '', imageUrl: '', featuredImageUrl: '', categoryId: '',
   })
 
   const [form, setForm] = useState({
-    name: '', description: '', precioBase: '', precioMayorista: '', precioCosto: '', stock: '', imageUrl: '', categoryId: '',
+    name: '', description: '', precioBase: '', precioMayorista: '', precioCosto: '', stock: '', imageUrl: '', featuredImageUrl: '', categoryId: '',
   })
 
   const [users, setUsers] = useState([])
@@ -309,10 +309,11 @@ export default function AdminDashboard() {
         precioCosto: form.precioCosto ? parseFloat(form.precioCosto) : undefined,
         stock: parseInt(form.stock) || 0,
         imageUrl: form.imageUrl || undefined,
+        featuredImageUrl: form.featuredImageUrl || undefined,
         categoryId: form.categoryId ? parseInt(form.categoryId) : undefined,
       })
       setShowCreate(false)
-      setForm({ name: '', description: '', precioBase: '', precioMayorista: '', precioCosto: '', stock: '', imageUrl: '', categoryId: '' })
+      setForm({ name: '', description: '', precioBase: '', precioMayorista: '', precioCosto: '', stock: '', imageUrl: '', featuredImageUrl: '', categoryId: '' })
       showMsg('Producto creado exitosamente')
       await loadProducts()
       if (expandedCat) await loadCatProducts(expandedCat)
@@ -358,6 +359,7 @@ export default function AdminDashboard() {
       precioCosto: product.precioCosto ? String(product.precioCosto) : '',
       stock: String(product.stock),
       imageUrl: product.imageUrl || '',
+      featuredImageUrl: product.featuredImageUrl || '',
       categoryId: product.categoryId ? String(product.categoryId) : '',
     })
   }
@@ -376,6 +378,7 @@ export default function AdminDashboard() {
         precioCosto: editForm.precioCosto ? parseFloat(editForm.precioCosto) : null,
         stock: parseInt(editForm.stock) || 0,
         imageUrl: editForm.imageUrl || undefined,
+        featuredImageUrl: editForm.featuredImageUrl || undefined,
         categoryId: editForm.categoryId ? parseInt(editForm.categoryId) : null,
       })
       showMsg(`"${editForm.name}" actualizado`)
@@ -678,7 +681,14 @@ export default function AdminDashboard() {
                             className="flex-1 min-w-0 sm:min-w-[200px] px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                         </div>
                         {form.imageUrl && (
-                          <img src={form.imageUrl} alt="Vista previa" className="mt-2 h-24 w-24 object-cover rounded-lg border dark:border-gray-600" />
+                          <img src={form.imageUrl} alt="Vista previa" className="mt-2 h-20 w-20 object-cover rounded-lg border dark:border-gray-600" />
+                        )}
+                      </div>
+                      <div>
+                        <input placeholder="URL imagen destacada (opcional)" value={form.featuredImageUrl} onChange={(e) => setForm((prev) => ({ ...prev, featuredImageUrl: e.target.value }))}
+                          className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                        {form.featuredImageUrl && (
+                          <img src={form.featuredImageUrl} alt="Vista previa destacada" className="mt-2 h-20 w-20 object-cover rounded-lg border dark:border-gray-600" />
                         )}
                       </div>
                       <div>
@@ -1149,7 +1159,14 @@ export default function AdminDashboard() {
                     className="flex-1 min-w-0 sm:min-w-[200px] px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                 </div>
                 {editForm.imageUrl && (
-                  <img src={editForm.imageUrl} alt="Vista previa" className="mt-2 h-24 w-24 object-cover rounded-lg border dark:border-gray-600" />
+                  <img src={editForm.imageUrl} alt="Vista previa" className="mt-2 h-20 w-20 object-cover rounded-lg border dark:border-gray-600" />
+                )}
+              </div>
+              <div>
+                <input placeholder="URL imagen destacada (opcional)" value={editForm.featuredImageUrl} onChange={(e) => setEditForm((prev) => ({ ...prev, featuredImageUrl: e.target.value }))}
+                  className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                {editForm.featuredImageUrl && (
+                  <img src={editForm.featuredImageUrl} alt="Vista previa destacada" className="mt-2 h-20 w-20 object-cover rounded-lg border dark:border-gray-600" />
                 )}
               </div>
               <select value={editForm.categoryId} onChange={(e) => setEditForm({ ...editForm, categoryId: e.target.value })}

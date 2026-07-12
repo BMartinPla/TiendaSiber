@@ -73,7 +73,7 @@ async function getById(req, res) {
 
 async function create(req, res) {
   try {
-    const { name, description, precioBase, precioMayorista, precioCosto, stock, imageUrl, categoryId } = req.body
+    const { name, description, precioBase, precioMayorista, precioCosto, stock, imageUrl, featuredImageUrl, categoryId } = req.body
 
     if (!name || precioBase == null || precioMayorista == null) {
       return res.status(400).json({ error: 'Nombre, precio_base y precio_mayorista son obligatorios' })
@@ -88,6 +88,7 @@ async function create(req, res) {
         precioCosto: precioCosto || null,
         stock: stock || 0,
         imageUrl,
+        featuredImageUrl: featuredImageUrl || null,
         categoryId: categoryId || null,
       },
       include: productInclude,
@@ -103,7 +104,7 @@ async function create(req, res) {
 async function update(req, res) {
   try {
     const { id } = req.params
-    const { name, description, precioBase, precioMayorista, precioCosto, stock, imageUrl, categoryId } = req.body
+    const { name, description, precioBase, precioMayorista, precioCosto, stock, imageUrl, featuredImageUrl, categoryId } = req.body
 
     const product = await prisma.product.findUnique({ where: { id: Number(id) } })
     if (!product) {
@@ -120,6 +121,7 @@ async function update(req, res) {
         ...(precioCosto !== undefined && { precioCosto: precioCosto || null }),
         ...(stock !== undefined && { stock }),
         ...(imageUrl !== undefined && { imageUrl }),
+        ...(featuredImageUrl !== undefined && { featuredImageUrl: featuredImageUrl || null }),
         ...(categoryId !== undefined && { categoryId: categoryId || null }),
       },
       include: productInclude,
