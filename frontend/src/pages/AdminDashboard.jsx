@@ -545,7 +545,15 @@ export default function AdminDashboard() {
         {/* CONTENT */}
         <main className="flex-1 p-4 sm:p-6 lg:p-8">
 
-          {/* DASHBOARD */}
+          {/* Content messages */}
+      {error && !editProduct && (
+        <div className="mb-6 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl">{error}</div>
+      )}
+      {success && !editProduct && (
+        <div className="mb-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400 text-sm px-4 py-3 rounded-xl">{success}</div>
+      )}
+
+      {/* DASHBOARD */}
           {activeSection === 'dashboard' && (
             <div className="space-y-6">
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -1139,6 +1147,12 @@ export default function AdminDashboard() {
               </button>
             </div>
             <form onSubmit={handleEditSave} className="space-y-4">
+              {error && (
+                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl">{error}</div>
+              )}
+              {success && (
+                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400 text-sm px-4 py-3 rounded-xl">{success}</div>
+              )}
               <input placeholder="Nombre *" value={editForm.name} onChange={(e) => setEditForm({ ...editForm, name: e.target.value })} required
                 className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
               <textarea placeholder="Descripción" value={editForm.description} onChange={(e) => setEditForm({ ...editForm, description: e.target.value })} rows={2}
@@ -1206,18 +1220,6 @@ export default function AdminDashboard() {
               </div>
             </form>
           </div>
-        </div>
-      )}
-
-      {/* Toast notifications */}
-      {(error || success) && (
-        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-[70] pointer-events-none">
-          {error && (
-            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-sm px-5 py-3 rounded-xl shadow-xl pointer-events-auto">{error}</div>
-          )}
-          {success && (
-            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400 text-sm px-5 py-3 rounded-xl shadow-xl pointer-events-auto">{success}</div>
-          )}
         </div>
       )}
     </div>
