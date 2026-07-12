@@ -22,6 +22,10 @@ export default function Home() {
   const [selectedProduct, setSelectedProduct] = useState(null)
   const timerRef = useRef(null)
 
+  const visibleFeatured = selectedCategory
+    ? featuredProducts.filter((p) => p.category?.id === Number(selectedCategory))
+    : featuredProducts
+
   useEffect(() => {
     Promise.all([getProducts(), getCategories(), getFeaturedProducts()])
       .then(([prods, cats, featured]) => {
@@ -34,17 +38,21 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
-    if (featuredProducts.length < 2) return
+    setCurrentSlide(0)
+  }, [selectedCategory])
+
+  useEffect(() => {
+    if (visibleFeatured.length < 2) return
     timerRef.current = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % featuredProducts.length)
+      setCurrentSlide((prev) => (prev + 1) % visibleFeatured.length)
     }, 4000)
     return () => clearInterval(timerRef.current)
-  }, [featuredProducts.length])
+  }, [visibleFeatured.length])
 
   function goSlide(dir) {
     clearInterval(timerRef.current)
     setCurrentSlide((prev) => {
-      const total = featuredProducts.length
+      const total = visibleFeatured.length
       return (prev + dir + total) % total
     })
   }
@@ -93,11 +101,11 @@ export default function Home() {
 
       <main className="pt-28 sm:pt-32 pb-12">
         {/* Featured Banner Carousel */}
-        {featuredProducts.length > 0 && (
+        {visibleFeatured.length > 0 && (
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
             <div className="relative rounded-2xl overflow-hidden bg-white dark:bg-gray-800 shadow-sm border border-gray-100 dark:border-gray-700">
               {(() => {
-                const product = featuredProducts[currentSlide]
+                const product = visibleFeatured[currentSlide]
                 return (
                   <div key={product.id} onClick={() => setSelectedProduct(product)} className="cursor-pointer relative">
                     <div className="aspect-[2/1] sm:aspect-[21/9] bg-gray-100 dark:bg-gray-700">
@@ -121,7 +129,7 @@ export default function Home() {
                 )
               })()}
 
-              {featuredProducts.length > 1 && (
+              {visibleFeatured.length > 1 && (
                 <>
                   <button onClick={(e) => { e.stopPropagation(); goSlide(-1) }}
                     className="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/90 dark:bg-gray-900/90 text-gray-700 dark:text-gray-300 hover:bg-white dark:hover:bg-gray-900 shadow-lg transition-all">
@@ -132,7 +140,7 @@ export default function Home() {
                     <ChevronRight className="w-5 h-5" />
                   </button>
                   <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5">
-                    {featuredProducts.map((_, i) => (
+                    {visibleFeatured.map((_, i) => (
                       <button key={i} onClick={(e) => { e.stopPropagation(); clearInterval(timerRef.current); setCurrentSlide(i) }}
                         className={`h-2 rounded-full transition-all ${i === currentSlide ? 'w-6 bg-yellow-400' : 'w-2 bg-white/60 hover:bg-white/90'}`} />
                     ))}
