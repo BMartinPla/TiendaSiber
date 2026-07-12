@@ -91,7 +91,8 @@ model Order {
   clientCondition Role       @map("client_condition")
   status         OrderStatus @default(PENDING)
   createdAt      DateTime    @default(now()) @map("created_at")
-  user           User        @relation(fields: [userId], references: [id])
+  updatedAt      DateTime    @updatedAt @map("updated_at")
+  user           User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   items          OrderItem[]
 
   @@map("orders")

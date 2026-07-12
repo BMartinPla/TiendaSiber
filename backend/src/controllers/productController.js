@@ -1,5 +1,6 @@
 const prisma = require('../config/database')
 const { getPricingStrategy } = require('../strategies/pricingStrategy')
+const { validationResult } = require('express-validator')
 
 const productInclude = { category: { select: { id: true, name: true } } }
 
@@ -73,6 +74,11 @@ async function getById(req, res) {
 
 async function create(req, res) {
   try {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ error: errors.array().map((e) => e.msg).join(', ') })
+    }
+
     const { name, description, precioBase, precioMayorista, precioCosto, stock, imageUrl, featuredImageUrl, categoryId } = req.body
 
     if (!name || precioBase == null || precioMayorista == null) {

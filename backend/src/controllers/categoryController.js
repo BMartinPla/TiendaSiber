@@ -1,4 +1,5 @@
 const prisma = require('../config/database')
+const { validationResult } = require('express-validator')
 
 async function list(req, res) {
   try {
@@ -32,6 +33,11 @@ async function getById(req, res) {
 
 async function create(req, res) {
   try {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ error: errors.array().map((e) => e.msg).join(', ') })
+    }
+
     const { name, description } = req.body
     if (!name) return res.status(400).json({ error: 'El nombre es obligatorio' })
     const category = await prisma.category.create({ data: { name, description } })
