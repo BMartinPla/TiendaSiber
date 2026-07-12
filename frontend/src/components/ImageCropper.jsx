@@ -39,7 +39,7 @@ function getCroppedImg(imageSrc, pixelCrop) {
   })
 }
 
-export default function ImageCropper({ imageUrl, onCrop, onCancel }) {
+export default function ImageCropper({ imageUrl, onCrop, onCancel, aspect = 1 }) {
   const [crop, setCrop] = useState({ x: 0, y: 0 })
   const [zoom, setZoom] = useState(1)
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null)
@@ -70,7 +70,7 @@ export default function ImageCropper({ imageUrl, onCrop, onCancel }) {
               image={imageUrl}
               crop={crop}
               zoom={zoom}
-              aspect={1}
+              aspect={aspect}
               onCropChange={setCrop}
               onZoomChange={setZoom}
               onCropComplete={onCropComplete}

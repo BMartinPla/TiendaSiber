@@ -1131,7 +1131,8 @@ export default function AdminDashboard() {
       </div>
 
       {cropImageUrl && (
-        <ImageCropper imageUrl={cropImageUrl} onCrop={handleCropConfirm} onCancel={() => setCropImageUrl(null)} />
+        <ImageCropper imageUrl={cropImageUrl} onCrop={handleCropConfirm} onCancel={() => setCropImageUrl(null)}
+          aspect={cropTarget?.includes('featured') ? 21 / 9 : 1} />
       )}
 
       {editProduct && (
