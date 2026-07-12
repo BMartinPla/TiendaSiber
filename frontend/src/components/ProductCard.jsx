@@ -25,7 +25,7 @@ export default function ProductCard({ product, onView }) {
   return (
     <div onClick={onView} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 overflow-hidden transition-all duration-200 hover:shadow-md hover:border-gray-200 dark:hover:border-gray-600 flex flex-col cursor-pointer group">
       {/* Image */}
-      <div className="relative aspect-square bg-gray-50 dark:bg-gray-700/50 flex items-center justify-center overflow-hidden">
+      <div className="relative aspect-square bg-gray-50 dark:bg-gray-700/50 flex items-center justify-center overflow-hidden rounded-lg m-1.5">
         {product.imageUrl ? (
           <img src={product.imageUrl} alt={product.name} className="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-300" />
         ) : (
