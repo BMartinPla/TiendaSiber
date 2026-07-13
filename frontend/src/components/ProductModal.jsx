@@ -23,7 +23,7 @@ export default function ProductModal({ product, onClose }) {
 
   return (
     <>
-      <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4" onClick={onClose}>
+      <div className="fixed inset-0 z-50 bg-black/60 sm:backdrop-blur-sm flex items-center justify-center p-4" onClick={onClose}>
         <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col overflow-hidden" onClick={(e) => e.stopPropagation()}>
           <button onClick={onClose} className="absolute top-4 right-4 z-10 p-2 text-gray-400 dark:text-gray-300 hover:text-gray-600 dark:hover:text-gray-100 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors bg-white/80 dark:bg-gray-900/80">
             <X className="w-5 h-5" />

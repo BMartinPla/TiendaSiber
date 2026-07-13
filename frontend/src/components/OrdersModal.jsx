@@ -42,7 +42,7 @@ export default function OrdersModal({ onClose }) {
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4" onClick={onClose}>
-      <div className="fixed inset-0 bg-black/40" />
+      <div className="fixed inset-0 bg-black/40 sm:backdrop-blur-sm" />
       <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-100 dark:border-gray-700 p-6 w-full max-w-3xl max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
         <button onClick={onClose} className="absolute top-4 right-4 p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
           <X className="w-5 h-5" />

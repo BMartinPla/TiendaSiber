@@ -1166,7 +1166,7 @@ export default function AdminDashboard() {
       )}
 
       {editProduct && (
-        <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4" onClick={closeEdit}>
+        <div className="fixed inset-0 z-50 bg-black/40 sm:backdrop-blur-sm flex items-center justify-center p-4" onClick={closeEdit}>
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto p-6" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-bold text-gray-900 dark:text-white">Editar: {editProduct.name}</h2>
