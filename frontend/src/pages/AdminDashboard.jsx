@@ -496,7 +496,7 @@ export default function AdminDashboard() {
       </aside>
 
       {/* MAIN */}
-      <div className="flex-1 lg:ml-64 flex flex-col min-h-screen">
+      <div className="flex-1 lg:ml-64 flex flex-col min-h-screen min-w-0">
         {/* HEADER */}
         <header className="sticky top-0 z-20 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
           <div className="flex items-center justify-between px-4 sm:px-6 lg:px-8 h-16">
@@ -541,7 +541,7 @@ export default function AdminDashboard() {
         </header>
 
         {/* CONTENT */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8">
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 min-w-0">
 
           {/* Toast notifications */}
       {(error || success) && (
