@@ -37,7 +37,7 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
     <>
     <header className="fixed top-0 left-0 right-0 z-50">
       {/* Main header row */}
-      <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-sm">
+      <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-sm dark:shadow-md dark:shadow-black/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-14 sm:h-16 gap-2 sm:gap-4">
             {/* Categories toggle */}

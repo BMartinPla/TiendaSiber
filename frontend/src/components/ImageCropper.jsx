@@ -57,7 +57,7 @@ export default function ImageCropper({ imageUrl, onCrop, onCancel, aspect = 1 })
   return (
     <>
       <div className="fixed inset-0 z-[60] bg-black/60 sm:backdrop-blur-sm flex items-center justify-center p-4" onClick={onCancel}>
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden" onClick={(e) => e.stopPropagation()}>
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl dark:shadow-2xl dark:shadow-black/40 w-full max-w-lg overflow-hidden" onClick={(e) => e.stopPropagation()}>
           <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100 dark:border-gray-700">
             <h2 className="text-lg font-bold text-gray-900 dark:text-white">Ajustar imagen</h2>
             <button onClick={onCancel} className="p-1.5 text-gray-400 dark:text-gray-300 hover:text-gray-600 dark:hover:text-gray-100 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">

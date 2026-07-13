@@ -561,7 +561,7 @@ export default function AdminDashboard() {
                 {statsCards.map((card, i) => {
                   const Icon = card.icon
                   return (
-                    <div key={i} className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-5">
+                    <div key={i} className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm dark:shadow-lg dark:shadow-black/30 border border-gray-100 dark:border-gray-700 p-5">
                       <div className="flex items-start justify-between">
                         <div>
                           <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">{card.label}</p>
@@ -576,7 +576,7 @@ export default function AdminDashboard() {
                 })}
               </div>
 
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-5">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm dark:shadow-lg dark:shadow-black/30 border border-gray-100 dark:border-gray-700 p-5">
                 <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-4">Ventas ({approvedOrders.length} pedidos aprobados)</h3>
                 {chartData.length === 0 ? (
                   <div className="h-64 flex items-center justify-center text-sm text-gray-400 dark:text-gray-500">Sin ventas aún</div>
@@ -640,7 +640,7 @@ export default function AdminDashboard() {
             <div className="space-y-6">
 
               {/* Card: Crear Producto + Tabla */}
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm dark:shadow-lg dark:shadow-black/30 border border-gray-100 dark:border-gray-700 overflow-hidden">
                 <div className="p-4 sm:p-6">
                   {/* Header */}
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
@@ -829,7 +829,7 @@ export default function AdminDashboard() {
               </div>
 
               {/* Card: Categorías */}
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm dark:shadow-lg dark:shadow-black/30 border border-gray-100 dark:border-gray-700 overflow-hidden">
                 <div className="p-4 sm:p-6">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
                       <h3 className="text-lg font-bold text-gray-900 dark:text-white">Categorías</h3>
@@ -934,7 +934,7 @@ export default function AdminDashboard() {
               </div>
 
               {/* Card: Acciones Masivas */}
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm dark:shadow-lg dark:shadow-black/30 border border-gray-100 dark:border-gray-700 overflow-hidden">
                 <div className="p-4 sm:p-6">
                   <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Actualización Masiva de Precios</h3>
                   <p className="text-xs text-gray-400 dark:text-gray-500 mb-3">Selecciona productos en la tabla, ingresa un % y aplica el cambio.</p>
@@ -956,7 +956,7 @@ export default function AdminDashboard() {
 
           {/* USUARIOS */}
           {activeSection === 'usuarios' && (
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm dark:shadow-lg dark:shadow-black/30 border border-gray-100 dark:border-gray-700 overflow-hidden">
               <div className="p-6">
                 <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
                   <input type="text" placeholder="Buscar por nombre o email..." value={userSearch}
@@ -1070,7 +1070,7 @@ export default function AdminDashboard() {
 
           {/* PEDIDOS */}
           {activeSection === 'pedidos' && (
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm dark:shadow-lg dark:shadow-black/30 border border-gray-100 dark:border-gray-700 overflow-hidden">
               <div className="p-6">
                 <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
                   <input type="text" placeholder="Buscar por nombre o email..." value={orderSearch}
@@ -1167,7 +1167,7 @@ export default function AdminDashboard() {
 
       {editProduct && (
         <div className="fixed inset-0 z-50 bg-black/40 sm:backdrop-blur-sm flex items-center justify-center p-4" onClick={closeEdit}>
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto p-6" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg dark:shadow-2xl dark:shadow-black/40 border border-gray-100 dark:border-gray-700 p-6 overflow-y-auto p-6" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-bold text-gray-900 dark:text-white">Editar: {editProduct.name}</h2>
               <button onClick={closeEdit} className="p-1.5 text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
