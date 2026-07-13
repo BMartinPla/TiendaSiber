@@ -104,7 +104,7 @@ export default function AdminDashboard() {
 
   async function loadProducts() {
     setLoading(true)
-    try { setProducts(await getProducts()) } catch { setError('Error al cargar productos') }
+    try { setProducts(await getProducts()) } catch { showMsg('Error al cargar productos', true) }
     finally { setLoading(false) }
   }
 
