@@ -85,7 +85,7 @@ export default function Cart({ open, onClose }) {
   return (
     <>
       {open && (
-        <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm transition-opacity" onClick={onClose} />
+        <div className="fixed inset-0 z-50 bg-black/40 transition-opacity" onClick={onClose} />
       )}
 
       <div
