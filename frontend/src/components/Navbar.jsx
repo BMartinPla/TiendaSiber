@@ -92,11 +92,11 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
       </div>
 
       {/* Categories nav bar */}
-      {categories && categories.length > 0 && (
-        <div className={`bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-sm transition-all duration-200 ${catOpen ? '' : 'overflow-hidden'}`}>
+      {categories && categories.length > 0 && catOpen && (
+        <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-sm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center gap-1 overflow-x-auto scrollbar-none" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-              <div className={`flex gap-1 mx-auto ${catOpen ? 'py-2' : 'h-0 py-0 overflow-hidden'}`}>
+            <div className="flex items-center gap-1 overflow-x-auto py-2 scrollbar-none" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+              <div className="flex gap-1 mx-auto">
                 {categories.map((cat) => (
                   <button
                     key={cat.id}
