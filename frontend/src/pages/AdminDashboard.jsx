@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { ArrowLeft, Plus, X, Save, Trash2, RefreshCw, Package, ShieldOff, Upload, ChevronDown, ChevronRight, User, ShoppingBag, Loader2, LayoutDashboard, LogOut, Moon, Sun, Settings, Star } from 'lucide-react'
+import { ArrowLeft, Plus, X, Save, Trash2, RefreshCw, Package, ShieldOff, Upload, ChevronDown, ChevronRight, User, ShoppingBag, ShoppingCart, Loader2, LayoutDashboard, LogOut, Moon, Sun, Settings, Star } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import { useDarkMode } from '../contexts/DarkModeContext'
 import ImageCropper from '../components/ImageCropper'
@@ -194,7 +194,7 @@ export default function AdminDashboard() {
 
   async function loadOrders(search = '', status = '') {
     setOrdersLoading(true)
-    try { setOrders(await getOrders(search, status)) } catch {}
+    try { setOrders(await getOrders(search, status)) } catch (err) { showMsg(err.response?.data?.error || 'Error al cargar pedidos', true) }
     finally { setOrdersLoading(false) }
   }
 
@@ -509,13 +509,11 @@ export default function AdminDashboard() {
               <button onClick={toggleDark} className="p-2 rounded-xl text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                 {dark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
               </button>
-              <Link to="/" className="flex items-center gap-1.5 px-2 sm:px-3 py-2 rounded-xl text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                <ArrowLeft className="w-4 h-4" />
-                <span className="hidden sm:inline">Tienda</span>
+              <Link to="/" className="p-2 rounded-xl text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" title="Volver a tienda">
+                <ShoppingCart className="w-5 h-5" />
               </Link>
-              <button onClick={handleLogout} className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-medium text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+              <button onClick={handleLogout} className="p-2 rounded-xl text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors" title="Cerrar sesión">
                 <LogOut className="w-4 h-4" />
-                <span className="hidden sm:inline">Salir</span>
               </button>
             </div>
           </div>
