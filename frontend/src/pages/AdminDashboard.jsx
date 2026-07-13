@@ -306,7 +306,7 @@ export default function AdminDashboard() {
         description: form.description || undefined,
         precioBase: parseFloat(form.precioBase),
         precioMayorista: parseFloat(form.precioMayorista),
-        precioCosto: form.precioCosto ? parseFloat(form.precioCosto) : undefined,
+        precioCosto: parseFloat(form.precioCosto),
         stock: parseInt(form.stock) || 0,
         imageUrl: form.imageUrl || undefined,
         featuredImageUrl: form.featuredImageUrl || undefined,
@@ -357,7 +357,7 @@ export default function AdminDashboard() {
       description: product.description || '',
       precioBase: String(product.precioBase),
       precioMayorista: String(product.precioMayorista),
-      precioCosto: product.precioCosto ? String(product.precioCosto) : '',
+      precioCosto: String(product.precioCosto ?? ''),
       stock: String(product.stock),
       imageUrl: product.imageUrl || '',
       featuredImageUrl: product.featuredImageUrl || '',
@@ -376,7 +376,7 @@ export default function AdminDashboard() {
         description: editForm.description || undefined,
         precioBase: parseFloat(editForm.precioBase),
         precioMayorista: parseFloat(editForm.precioMayorista),
-        precioCosto: editForm.precioCosto ? parseFloat(editForm.precioCosto) : null,
+        precioCosto: parseFloat(editForm.precioCosto),
         stock: parseInt(editForm.stock) || 0,
         imageUrl: editForm.imageUrl || undefined,
         featuredImageUrl: editForm.featuredImageUrl || undefined,
@@ -666,7 +666,7 @@ export default function AdminDashboard() {
                             className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                         </div>
                         <div>
-                          <input type="number" step="0.01" placeholder="Precio Costo" value={form.precioCosto} onChange={(e) => setForm({ ...form, precioCosto: e.target.value })}
+                          <input type="number" step="0.01" placeholder="Precio Costo *" value={form.precioCosto} onChange={(e) => setForm({ ...form, precioCosto: e.target.value })} required
                             className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                         </div>
                         <div>
@@ -1193,7 +1193,7 @@ export default function AdminDashboard() {
                 <input type="number" step="0.01" placeholder="Precio Mayorista *" value={editForm.precioMayorista} onChange={(e) => setEditForm({ ...editForm, precioMayorista: e.target.value })} required
                   className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
               </div>
-              <input type="number" step="0.01" placeholder="Precio Costo" value={editForm.precioCosto} onChange={(e) => setEditForm({ ...editForm, precioCosto: e.target.value })}
+              <input type="number" step="0.01" placeholder="Precio Costo *" value={editForm.precioCosto} onChange={(e) => setEditForm({ ...editForm, precioCosto: e.target.value })} required
                 className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
               <input type="number" placeholder="Stock" value={editForm.stock} onChange={(e) => setEditForm({ ...editForm, stock: e.target.value })}
                 className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />

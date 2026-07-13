@@ -81,8 +81,8 @@ async function create(req, res) {
 
     const { name, description, precioBase, precioMayorista, precioCosto, stock, imageUrl, featuredImageUrl, categoryId } = req.body
 
-    if (!name || precioBase == null || precioMayorista == null) {
-      return res.status(400).json({ error: 'Nombre, precio_base y precio_mayorista son obligatorios' })
+    if (!name || precioBase == null || precioMayorista == null || precioCosto == null) {
+      return res.status(400).json({ error: 'Nombre, precio_base, precio_mayorista y precio_costo son obligatorios' })
     }
 
     const product = await prisma.product.create({
@@ -91,7 +91,7 @@ async function create(req, res) {
         description,
         precioBase,
         precioMayorista,
-        precioCosto: precioCosto || null,
+        precioCosto,
         stock: stock || 0,
         imageUrl,
         featuredImageUrl: featuredImageUrl || null,
@@ -124,7 +124,7 @@ async function update(req, res) {
         ...(description !== undefined && { description }),
         ...(precioBase !== undefined && { precioBase }),
         ...(precioMayorista !== undefined && { precioMayorista }),
-        ...(precioCosto !== undefined && { precioCosto: precioCosto || null }),
+        ...(precioCosto !== undefined && { precioCosto }),
         ...(stock !== undefined && { stock }),
         ...(imageUrl !== undefined && { imageUrl }),
         ...(featuredImageUrl !== undefined && { featuredImageUrl: featuredImageUrl || null }),

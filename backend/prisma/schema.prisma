@@ -47,7 +47,7 @@ model Product {
   description     String?
   precioBase      Float     @map("precio_base")
   precioMayorista Float     @map("precio_mayorista")
-  precioCosto     Float?    @map("precio_costo")
+  precioCosto     Float     @map("precio_costo")
   stock           Int       @default(0)
   imageUrl        String?   @map("image_url")
   featuredImageUrl String?  @map("featured_image_url")

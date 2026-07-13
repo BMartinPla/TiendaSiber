@@ -15,7 +15,18 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
   const [catOpen, setCatOpen] = React.useState(false)
   const [profileOpen, setProfileOpen] = React.useState(false)
   const [ordersOpen, setOrdersOpen] = React.useState(false)
+  const [catOverflow, setCatOverflow] = React.useState(false)
   const catRef = React.useRef(null)
+
+  React.useEffect(() => {
+    const el = catRef.current
+    if (!el) return
+    const check = () => setCatOverflow(el.scrollWidth > el.clientWidth)
+    const ro = new ResizeObserver(check)
+    ro.observe(el)
+    check()
+    return () => ro.disconnect()
+  }, [categories])
 
   function handleLogout() {
     logout()
@@ -101,11 +112,13 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
         <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-sm transition-all duration-300 overflow-hidden"
           style={{ maxHeight: catOpen ? '300px' : '0' }}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-            <button onClick={() => { catRef.current?.scrollBy({ left: -200, behavior: 'smooth' }) }}
-              className="hidden sm:flex absolute left-1 top-1/2 -translate-y-1/2 z-10 p-0.5 rounded-full bg-white/80 dark:bg-gray-800/80 text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white">
-              <ChevronLeft className="w-3.5 h-3.5" />
-            </button>
-            <div ref={catRef} className="flex items-center gap-1 overflow-x-auto py-2 scroll-smooth scrollbar-none sm:mx-10" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+            {catOverflow && (
+              <button onClick={() => { catRef.current?.scrollBy({ left: -200, behavior: 'smooth' }) }}
+                className="hidden sm:flex absolute left-1 top-1/2 -translate-y-1/2 z-10 p-0.5 rounded-full bg-white/80 dark:bg-gray-800/80 text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white">
+                <ChevronLeft className="w-3.5 h-3.5" />
+              </button>
+            )}
+            <div ref={catRef} className={`flex items-center gap-1 overflow-x-auto py-2 scroll-smooth scrollbar-none ${catOverflow ? 'sm:mx-10' : 'justify-center'}`} style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
               {categories.map((cat) => (
                 <button
                   key={cat.id}
@@ -120,10 +133,12 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
                 </button>
               ))}
             </div>
-            <button onClick={() => { catRef.current?.scrollBy({ left: 200, behavior: 'smooth' }) }}
-              className="hidden sm:flex absolute right-1 top-1/2 -translate-y-1/2 z-10 p-0.5 rounded-full bg-white/80 dark:bg-gray-800/80 text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white">
-              <ChevronRight className="w-3.5 h-3.5" />
-            </button>
+            {catOverflow && (
+              <button onClick={() => { catRef.current?.scrollBy({ left: 200, behavior: 'smooth' }) }}
+                className="hidden sm:flex absolute right-1 top-1/2 -translate-y-1/2 z-10 p-0.5 rounded-full bg-white/80 dark:bg-gray-800/80 text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white">
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            )}
           </div>
         </div>
       )}
