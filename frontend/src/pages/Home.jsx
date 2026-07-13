@@ -46,21 +46,26 @@ export default function Home() {
       .finally(() => setLoading(false))
   }, [selectedCategories, search, sortBy])
 
-  useEffect(() => {
+  function restartTimer() {
+    clearInterval(timerRef.current)
     if (visibleFeatured.length < 2) return
     timerRef.current = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % visibleFeatured.length)
     }, 4000)
-    return () => clearInterval(timerRef.current)
-  }, [visibleFeatured.length])
+  }
 
   function goSlide(dir) {
-    clearInterval(timerRef.current)
     setCurrentSlide((prev) => {
       const total = visibleFeatured.length
       return (prev + dir + total) % total
     })
+    restartTimer()
   }
+
+  useEffect(() => {
+    restartTimer()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [visibleFeatured.length])
 
   function loadProducts(params = '') {
     setLoading(true)
@@ -156,7 +161,7 @@ export default function Home() {
                   </button>
                   <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5">
                     {visibleFeatured.map((_, i) => (
-                      <button key={i} onClick={(e) => { e.stopPropagation(); clearInterval(timerRef.current); setCurrentSlide(i) }}
+                        <button key={i} onClick={(e) => { e.stopPropagation(); setCurrentSlide(i); restartTimer() }}
                         className={`h-2 rounded-full transition-all ${i === currentSlide ? 'w-6 bg-yellow-400' : 'w-2 bg-white/60 hover:bg-white/90'}`} />
                     ))}
                   </div>
