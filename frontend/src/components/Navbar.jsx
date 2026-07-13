@@ -93,6 +93,8 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
       </div>
     </header>
 
+      <div className="h-14 sm:h-16" />
+
       {/* Categories nav bar - in normal flow, pushes page content */}
       {categories && categories.length > 0 && (
         <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-sm transition-all duration-300 overflow-hidden"
