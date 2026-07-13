@@ -84,7 +84,7 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     if (selectAll) {
-      setSelectedIds(products.filter((p) => p.active).map((p) => p.id))
+      setSelectedIds(products.map((p) => p.id))
     } else {
       setSelectedIds([])
     }
