@@ -124,7 +124,7 @@ export default function Cart({ open, onClose }) {
                 const qty = getQty(item.id)
                 const unitPrice = item.product.pricing?.unitPrice || item.product.precioBase || 0
                 return (
-                  <div key={item.id} className="flex items-center gap-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                  <div key={item.id} className="flex items-center gap-2 sm:gap-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-xl">
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">{item.product.name}</p>
                       <p className="text-sm text-gray-500 dark:text-gray-400">${unitPrice.toLocaleString('es-CL')} c/u</p>

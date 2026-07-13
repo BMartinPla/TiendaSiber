@@ -42,7 +42,7 @@ export default function ProductModal({ product, onClose }) {
             )}
           </div>
 
-          <div className="flex-1 overflow-y-auto p-6 flex flex-col">
+          <div className="flex-1 overflow-y-auto p-4 sm:p-6 flex flex-col">
             <div>
               <h2 className="text-xl font-bold text-gray-900 dark:text-white">{product.name}</h2>
               {product.description && (
