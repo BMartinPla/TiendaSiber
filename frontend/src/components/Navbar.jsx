@@ -102,10 +102,10 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
           style={{ maxHeight: catOpen ? '300px' : '0' }}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             <button onClick={() => { catRef.current?.scrollBy({ left: -200, behavior: 'smooth' }) }}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 p-1 rounded-full bg-white dark:bg-gray-800 shadow border border-gray-200 dark:border-gray-600 text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white">
+              className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 p-1 rounded-full bg-white dark:bg-gray-800 shadow border border-gray-200 dark:border-gray-600 text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white">
               <ChevronLeft className="w-4 h-4" />
             </button>
-            <div ref={catRef} className="flex items-center gap-1 overflow-hidden py-2 scroll-smooth mx-8">
+            <div ref={catRef} className="flex items-center gap-1 overflow-x-auto py-2 scroll-smooth scrollbar-none sm:mx-8" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
               {categories.map((cat) => (
                 <button
                   key={cat.id}
@@ -121,7 +121,7 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
               ))}
             </div>
             <button onClick={() => { catRef.current?.scrollBy({ left: 200, behavior: 'smooth' }) }}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 p-1 rounded-full bg-white dark:bg-gray-800 shadow border border-gray-200 dark:border-gray-600 text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white">
+              className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 p-1 rounded-full bg-white dark:bg-gray-800 shadow border border-gray-200 dark:border-gray-600 text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white">
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>
