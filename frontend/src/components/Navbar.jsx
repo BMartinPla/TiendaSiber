@@ -22,6 +22,7 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
   }
 
   return (
+    <>
     <header className="fixed top-0 left-0 right-0 z-50">
       {/* Main header row */}
       <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-sm">
@@ -90,10 +91,12 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
           </div>
         </div>
       </div>
+    </header>
 
-      {/* Categories nav bar */}
-      {categories && categories.length > 0 && catOpen && (
-        <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-sm">
+      {/* Categories nav bar - in normal flow, pushes page content */}
+      {categories && categories.length > 0 && (
+        <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-sm transition-all duration-300 overflow-hidden"
+          style={{ maxHeight: catOpen ? '200px' : '0' }}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center gap-1 overflow-x-auto py-2 scrollbar-none" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
               <div className="flex gap-1 mx-auto">
@@ -117,6 +120,6 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
       )}
       {profileOpen && <ProfileModal onClose={() => setProfileOpen(false)} />}
       {ordersOpen && <OrdersModal onClose={() => setOrdersOpen(false)} />}
-    </header>
+    </>
   )
 }
