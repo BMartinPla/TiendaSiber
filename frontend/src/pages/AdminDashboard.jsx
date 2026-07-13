@@ -749,7 +749,7 @@ export default function AdminDashboard() {
 
                   {/* Product table */}
                   <div className="overflow-x-auto rounded-xl border border-gray-100 dark:border-gray-700">
-                    <table className="w-full text-sm">
+                    <table className="min-w-full text-sm">
                       <thead>
                         <tr className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-700">
                           <th className="text-left px-4 py-3 w-10">
@@ -878,7 +878,7 @@ export default function AdminDashboard() {
                               ) : catProducts.length === 0 ? (
                                 <div className="p-4 text-sm text-gray-400 dark:text-gray-500">Sin productos</div>
                               ) : (
-                                <table className="w-full text-xs">
+                                <table className="min-w-full text-xs">
                                   <thead>
                                     <tr className="bg-gray-50 dark:bg-gray-800/50">
                                       <th className="text-left px-4 py-2 font-semibold text-gray-500 dark:text-gray-400">Producto</th>
@@ -986,7 +986,7 @@ export default function AdminDashboard() {
                   <div className="text-sm text-gray-400 dark:text-gray-500 py-4">Sin resultados</div>
                 ) : (
                   <div className="overflow-x-auto">
-                    <table className="w-full text-sm">
+                    <table className="min-w-full text-sm">
                       <thead>
                         <tr className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-700">
                           <th className="text-left px-4 py-3">
@@ -1132,7 +1132,7 @@ export default function AdminDashboard() {
 
                         {expandedOrder === order.id && (
                           <div className="border-t border-gray-100 dark:border-gray-700 p-4 overflow-x-auto">
-                            <table className="w-full text-sm">
+                    <table className="min-w-full text-sm">
                               <thead>
                                 <tr className="text-left text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">
                                   <th className="pb-2 font-medium">Producto</th>

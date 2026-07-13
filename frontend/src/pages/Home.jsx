@@ -106,7 +106,7 @@ export default function Home() {
         onCategoryChange={handleCategoryChange}
       />
 
-      <main className="pb-12">
+      <main className="pt-3 pb-12">
         {/* Featured Banner Carousel */}
         {visibleFeatured.length > 0 && (
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
