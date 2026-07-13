@@ -288,7 +288,7 @@ async function toggleFeatured(req, res) {
 async function getFeatured(req, res) {
   try {
     const products = await prisma.product.findMany({
-      where: { active: true, featured: true },
+      where: { active: true, featured: true, stock: { gt: 0 } },
       include: productInclude,
     })
 
