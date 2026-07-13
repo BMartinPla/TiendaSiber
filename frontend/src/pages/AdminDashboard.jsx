@@ -50,7 +50,7 @@ export default function AdminDashboard() {
 
   const [categories, setCategories] = useState([])
   const [showCategoryForm, setShowCategoryForm] = useState(false)
-  const [catForm, setCatForm] = useState({ name: '', description: '' })
+  const [catForm, setCatForm] = useState({ name: '' })
   const [expandedCat, setExpandedCat] = useState(null)
   const [catProducts, setCatProducts] = useState([])
   const [catProductsLoading, setCatProductsLoading] = useState(false)
@@ -255,9 +255,9 @@ export default function AdminDashboard() {
   async function handleCatCreate(e) {
     e.preventDefault()
     try {
-      await createCategory({ name: catForm.name, description: catForm.description || undefined })
+      await createCategory({ name: catForm.name })
       setShowCategoryForm(false)
-      setCatForm({ name: '', description: '' })
+      setCatForm({ name: '' })
       showMsg('Categoría creada')
       await loadCategories()
     } catch (err) {
@@ -833,13 +833,11 @@ export default function AdminDashboard() {
               {/* Card: Categorías */}
               <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
                 <div className="p-4 sm:p-6">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">Categorías</h3>
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <input placeholder="Nombre *" value={catForm.name} onChange={(e) => setCatForm({ ...catForm, name: e.target.value })}
-                        className="w-full sm:w-40 px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
-                      <input placeholder="Descripción" value={catForm.description} onChange={(e) => setCatForm({ ...catForm, description: e.target.value })}
-                        className="hidden sm:block w-40 px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                      <h3 className="text-lg font-bold text-gray-900 dark:text-white">Categorías</h3>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <input placeholder="Nombre *" value={catForm.name} onChange={(e) => setCatForm({ ...catForm, name: e.target.value })}
+                          className="w-full sm:w-40 px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                       <button onClick={handleCatCreate}
                         className="shrink-0 px-4 py-2 bg-gray-900 dark:bg-blue-600 text-white rounded-xl text-sm font-semibold hover:bg-gray-800 dark:hover:bg-blue-700 transition-colors">+ Categoría</button>
                     </div>

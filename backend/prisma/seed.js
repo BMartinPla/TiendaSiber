@@ -9,22 +9,22 @@ async function main() {
   const catRopa = await prisma.category.upsert({
     where: { name: 'Ropa y Accesorios' },
     update: {},
-    create: { name: 'Ropa y Accesorios', description: 'Prendas de vestir y accesorios' },
+    create: { name: 'Ropa y Accesorios' },
   })
   const catCalzado = await prisma.category.upsert({
     where: { name: 'Calzado' },
     update: {},
-    create: { name: 'Calzado', description: 'Zapatillas, zapatos y más' },
+    create: { name: 'Calzado' },
   })
   const catElectro = await prisma.category.upsert({
     where: { name: 'Electrónica' },
     update: {},
-    create: { name: 'Electrónica', description: 'Dispositivos y tecnología' },
+    create: { name: 'Electrónica' },
   })
   const catMochilas = await prisma.category.upsert({
     where: { name: 'Mochilas y Bolsos' },
     update: {},
-    create: { name: 'Mochilas y Bolsos', description: 'Mochilas, carteras y bolsos' },
+    create: { name: 'Mochilas y Bolsos' },
   })
 
   const admin = await prisma.user.upsert({

@@ -64,7 +64,6 @@ export default function Home() {
 
   useEffect(() => {
     restartTimer()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visibleFeatured.length])
 
   function loadProducts(params = '') {

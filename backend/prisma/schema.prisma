@@ -31,13 +31,12 @@ model User {
 }
 
 model Category {
-  id          Int       @id @default(autoincrement())
-  name        String    @unique
-  description String?
-  active      Boolean   @default(true)
-  createdAt   DateTime  @default(now()) @map("created_at")
-  updatedAt   DateTime  @updatedAt @map("updated_at")
-  products    Product[]
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  active    Boolean   @default(true)
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  products  Product[]
 
   @@map("categories")
 }

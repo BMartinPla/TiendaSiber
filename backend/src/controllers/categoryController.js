@@ -38,9 +38,9 @@ async function create(req, res) {
       return res.status(400).json({ error: errors.array().map((e) => e.msg).join(', ') })
     }
 
-    const { name, description } = req.body
+    const { name } = req.body
     if (!name) return res.status(400).json({ error: 'El nombre es obligatorio' })
-    const category = await prisma.category.create({ data: { name, description } })
+    const category = await prisma.category.create({ data: { name } })
     res.status(201).json(category)
   } catch (error) {
     console.error(error)
@@ -52,14 +52,13 @@ async function create(req, res) {
 async function update(req, res) {
   try {
     const { id } = req.params
-    const { name, description } = req.body
+    const { name } = req.body
     const category = await prisma.category.findUnique({ where: { id: Number(id) } })
     if (!category) return res.status(404).json({ error: 'Categoría no encontrada' })
     const updated = await prisma.category.update({
       where: { id: Number(id) },
       data: {
         ...(name !== undefined && { name }),
-        ...(description !== undefined && { description }),
       },
     })
     res.json(updated)

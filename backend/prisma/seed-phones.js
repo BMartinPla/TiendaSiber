@@ -6,7 +6,7 @@ async function main() {
   const catCelulares = await prisma.category.upsert({
     where: { name: 'Teléfonos' },
     update: {},
-    create: { name: 'Teléfonos', description: 'Celulares y smartphones de última generación' },
+    create: { name: 'Teléfonos' },
   })
 
   const phones = [
