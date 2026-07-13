@@ -3,6 +3,10 @@ import { X, ShoppingBag, ChevronDown, ChevronRight, XCircle } from 'lucide-react
 import { getMyOrders, cancelMyOrder } from '../services/api'
 
 export default function OrdersModal({ onClose }) {
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = '' }
+  }, [])
   const [orders, setOrders] = useState([])
   const [loading, setLoading] = useState(true)
   const [expandedOrder, setExpandedOrder] = useState(null)

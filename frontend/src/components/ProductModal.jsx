@@ -1,9 +1,13 @@
 import { X, ShoppingCart, Check, Package } from 'lucide-react'
 import { useCart } from '../contexts/CartContext'
 import { useAuth } from '../contexts/AuthContext'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function ProductModal({ product, onClose }) {
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = '' }
+  }, [])
   const { add } = useCart()
   const { isWholesale, isAdmin } = useAuth()
   const [added, setAdded] = useState(false)

@@ -15,6 +15,15 @@ export default function Cart({ open, onClose }) {
     if (!open) { setLocalQtys({}); setOrderError('') }
   }, [open])
 
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => { document.body.style.overflow = '' }
+  }, [open])
+
   function getQty(itemId) {
     if (localQtys[itemId] !== undefined) return localQtys[itemId]
     const item = items.find((i) => i.id === itemId)

@@ -1,9 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { X, User, Mail, Phone, Save } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import { updateProfile } from '../services/api'
 
 export default function ProfileModal({ onClose }) {
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = '' }
+  }, [])
   const { user, loginUser } = useAuth()
   const [name, setName] = useState(user?.name || '')
   const [phone, setPhone] = useState(user?.phone || '')
