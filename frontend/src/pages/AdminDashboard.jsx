@@ -1145,7 +1145,7 @@ export default function AdminDashboard() {
 
       {editProduct && (
         <div className="fixed inset-0 z-50 bg-black/40 sm:backdrop-blur-sm flex items-center justify-center p-4" onClick={closeEdit}>
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg dark:shadow-2xl dark:shadow-black/40 border border-gray-100 dark:border-gray-700 p-6 overflow-y-auto p-6" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg dark:shadow-2xl dark:shadow-black/40 border border-gray-100 dark:border-gray-700 w-full max-w-lg max-h-[90vh] overflow-y-auto p-6" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-bold text-gray-900 dark:text-white">Editar: {editProduct.name}</h2>
               <button onClick={closeEdit} className="p-1.5 text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
