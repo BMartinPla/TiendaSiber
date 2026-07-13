@@ -40,15 +40,15 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
             </Link>
 
             {/* Search bar */}
-            <div className="flex-1 max-w-xl mx-2 sm:mx-4">
+            <div className="flex-1 min-w-0 max-w-[100px] sm:max-w-xl mx-1 sm:mx-4">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-400" />
                 <input
                   type="text"
-                  placeholder="Buscar productos..."
+                  placeholder="Buscar..."
                   value={search}
                   onChange={(e) => onSearch(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 sm:py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400"
+                  className="w-full pl-8 sm:pl-10 pr-2 sm:pr-4 py-1.5 sm:py-2.5 text-xs sm:text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400"
                 />
               </div>
             </div>
@@ -64,7 +64,7 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
               </button>
 
               {!isAdmin && (
-                <button onClick={() => setOrdersOpen(true)} className="hidden sm:block p-1.5 sm:p-2 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" title="Mis Pedidos">
+                <button onClick={() => setOrdersOpen(true)} className="p-1.5 sm:p-2 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" title="Mis Pedidos">
                   <ShoppingBag className="w-5 h-5" />
                 </button>
               )}
