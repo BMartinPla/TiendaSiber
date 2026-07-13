@@ -609,29 +609,7 @@ export default function AdminDashboard() {
                 )}
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <button onClick={() => setActiveSection('productos')} className="flex items-center gap-3 p-4 bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-left">
-                  <div className="p-2.5 bg-blue-100 dark:bg-blue-900/30 rounded-xl"><Package className="w-5 h-5 text-blue-600 dark:text-blue-400" /></div>
-                  <div>
-                    <p className="text-sm font-semibold text-gray-900 dark:text-white">Gestionar Productos</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">{products.length} productos</p>
-                  </div>
-                </button>
-                <button onClick={() => setActiveSection('pedidos')} className="flex items-center gap-3 p-4 bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-left">
-                  <div className="p-2.5 bg-amber-100 dark:bg-amber-900/30 rounded-xl"><ShoppingBag className="w-5 h-5 text-amber-600 dark:text-amber-400" /></div>
-                  <div>
-                    <p className="text-sm font-semibold text-gray-900 dark:text-white">Gestionar Pedidos</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">{orders.length} pedidos</p>
-                  </div>
-                </button>
-                <button onClick={() => setActiveSection('usuarios')} className="flex items-center gap-3 p-4 bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-left">
-                  <div className="p-2.5 bg-purple-100 dark:bg-purple-900/30 rounded-xl"><User className="w-5 h-5 text-purple-600 dark:text-purple-400" /></div>
-                  <div>
-                    <p className="text-sm font-semibold text-gray-900 dark:text-white">Gestionar Usuarios</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">{users.length} usuarios</p>
-                  </div>
-                </button>
-              </div>
+
             </div>
           )}
 
