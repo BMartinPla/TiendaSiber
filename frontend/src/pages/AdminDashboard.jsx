@@ -367,7 +367,7 @@ export default function AdminDashboard() {
       precioBase: product.precioBase ? String(product.precioBase) : '',
       precioMayorista: product.precioMayorista ? String(product.precioMayorista) : '',
       precioCosto: product.precioCosto ? String(product.precioCosto) : '',
-      stock: String(product.stock),
+      stock: product.stock ? String(product.stock) : '',
       imageUrl: product.imageUrl || '',
       featuredImageUrl: product.featuredImageUrl || '',
       categoryId: product.categoryId ? String(product.categoryId) : '',
