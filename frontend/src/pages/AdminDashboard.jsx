@@ -565,7 +565,7 @@ export default function AdminDashboard() {
 
       {/* DASHBOARD */}
           {activeSection === 'dashboard' && (
-            <div className="space-y-6">
+            <div className="space-y-6 animate-slideUp">
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 {statsCards.map((card, i) => {
                   const Icon = card.icon
@@ -624,7 +624,7 @@ export default function AdminDashboard() {
 
           {/* PRODUCTOS */}
           {activeSection === 'productos' && (
-            <div className="space-y-6">
+            <div className="space-y-6 animate-slideUp">
 
               {/* Card: Crear Producto + Tabla */}
               <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm dark:shadow-lg dark:shadow-black/30 border border-gray-100 dark:border-gray-700 overflow-hidden">
@@ -753,7 +753,13 @@ export default function AdminDashboard() {
                       </thead>
                       <tbody>
                         {products.length === 0 ? (
-                          <tr><td colSpan={7} className="text-center px-4 py-10 text-gray-400 dark:text-gray-500">No hay productos</td></tr>
+                          <tr><td colSpan={7} className="text-center px-4 py-12">
+                            <div className="flex flex-col items-center text-gray-400 dark:text-gray-500">
+                              <Package className="w-10 h-10 mb-2 text-gray-300 dark:text-gray-600" />
+                              <p className="text-sm font-medium">No hay productos</p>
+                              <p className="text-xs mt-0.5">Creá tu primer producto arriba</p>
+                            </div>
+                          </td></tr>
                         ) : (
                           products.map((p) => (
                             <tr key={p.id} className={`border-t border-gray-50 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors ${p.active ? '' : 'opacity-50'}`}>
@@ -829,7 +835,11 @@ export default function AdminDashboard() {
                   </div>
                   <div className="space-y-2">
                     {categories.length === 0 ? (
-                      <p className="text-sm text-gray-400 dark:text-gray-500">Sin categorías</p>
+                      <div className="flex flex-col items-center py-8 text-gray-400 dark:text-gray-500">
+                        <Settings className="w-10 h-10 mb-2 text-gray-300 dark:text-gray-600" />
+                        <p className="text-sm font-medium">Sin categorías</p>
+                        <p className="text-xs mt-0.5">Creá una categoría para organizar productos</p>
+                      </div>
                     ) : (
                       categories.map((cat) => (
                         <div key={cat.id}>
@@ -943,7 +953,7 @@ export default function AdminDashboard() {
 
           {/* USUARIOS */}
           {activeSection === 'usuarios' && (
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm dark:shadow-lg dark:shadow-black/30 border border-gray-100 dark:border-gray-700 overflow-hidden">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm dark:shadow-lg dark:shadow-black/30 border border-gray-100 dark:border-gray-700 overflow-hidden animate-slideUp">
               <div className="p-6">
                 <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
                   <input type="text" placeholder="Buscar por nombre o email..." value={userSearch}
@@ -964,9 +974,23 @@ export default function AdminDashboard() {
                   )}
                 </div>
                 {usersLoading ? (
-                  <div className="text-sm text-gray-400 dark:text-gray-500 py-4">Cargando usuarios...</div>
+                  <div className="space-y-3 py-4">
+                    {Array.from({ length: 4 }).map((_, i) => (
+                      <div key={i} className="flex items-center gap-3 px-4 py-3">
+                        <div className="w-8 h-8 rounded-full animate-shimmer" />
+                        <div className="flex-1 space-y-1.5">
+                          <div className="h-3 animate-shimmer rounded w-32" />
+                          <div className="h-3 animate-shimmer rounded w-48" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 ) : users.length === 0 ? (
-                  <div className="text-sm text-gray-400 dark:text-gray-500 py-4">Sin resultados</div>
+                  <div className="flex flex-col items-center py-10 text-gray-400 dark:text-gray-500">
+                    <User className="w-10 h-10 mb-2 text-gray-300 dark:text-gray-600" />
+                    <p className="text-sm font-medium">Sin usuarios</p>
+                    <p className="text-xs mt-0.5">No se encontraron usuarios</p>
+                  </div>
                 ) : (
                   <div className="overflow-x-auto">
                     <table className="min-w-full text-sm">
@@ -1057,7 +1081,7 @@ export default function AdminDashboard() {
 
           {/* PEDIDOS */}
           {activeSection === 'pedidos' && (
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm dark:shadow-lg dark:shadow-black/30 border border-gray-100 dark:border-gray-700 overflow-hidden">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm dark:shadow-lg dark:shadow-black/30 border border-gray-100 dark:border-gray-700 overflow-hidden animate-slideUp">
               <div className="p-6">
                 <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
                   <input type="text" placeholder="Buscar por nombre o email..." value={orderSearch}
@@ -1072,9 +1096,21 @@ export default function AdminDashboard() {
                   </select>
                 </div>
                 {ordersLoading ? (
-                  <div className="text-sm text-gray-400 dark:text-gray-500 py-4">Cargando pedidos...</div>
+                  <div className="space-y-3 py-4">
+                    {Array.from({ length: 3 }).map((_, i) => (
+                      <div key={i} className="border border-gray-100 dark:border-gray-700 rounded-xl overflow-hidden animate-pulse-soft">
+                        <div className="px-4 py-3 bg-gray-50 dark:bg-gray-800/50">
+                          <div className="h-4 animate-shimmer rounded w-48" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 ) : orders.length === 0 ? (
-                  <div className="text-sm text-gray-400 dark:text-gray-500 py-4">Sin pedidos</div>
+                  <div className="flex flex-col items-center py-10 text-gray-400 dark:text-gray-500">
+                    <ShoppingBag className="w-10 h-10 mb-2 text-gray-300 dark:text-gray-600" />
+                    <p className="text-sm font-medium">Sin pedidos</p>
+                    <p className="text-xs mt-0.5">Los pedidos aparecerán aquí</p>
+                  </div>
                 ) : (
                   <div className="space-y-3">
                     {orders.map((order) => (

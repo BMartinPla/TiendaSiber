@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { UserPlus } from 'lucide-react'
+import { UserPlus, Loader2 } from 'lucide-react'
 import { register } from '../services/api'
 import { useAuth } from '../contexts/AuthContext'
 
@@ -39,7 +39,7 @@ export default function Register() {
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Regístrate para empezar a comprar</p>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm dark:shadow-lg dark:shadow-black/30 border border-gray-100 dark:border-gray-700 p-6 sm:p-8">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm dark:shadow-lg dark:shadow-black/30 border border-gray-100 dark:border-gray-700 p-6 sm:p-8 animate-slideUp">
           {error && (
             <div className="mb-5 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl">
               {error}
@@ -76,7 +76,7 @@ export default function Register() {
 
             <button type="submit" disabled={loading}
               className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 transition-colors">
-              <UserPlus className="w-4 h-4" />
+              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <UserPlus className="w-4 h-4" />}
               {loading ? 'Creando cuenta...' : 'Crear Cuenta'}
             </button>
           </form>

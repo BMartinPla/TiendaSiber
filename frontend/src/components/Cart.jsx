@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { X, Minus, Plus, Trash2, MessageCircle, CheckCircle, XCircle } from 'lucide-react'
+import { X, Minus, Plus, Trash2, MessageCircle, CheckCircle, XCircle, ShoppingCart } from 'lucide-react'
 import { useCart } from '../contexts/CartContext'
 import { useAuth } from '../contexts/AuthContext'
 import { createOrderFromCart } from '../services/api'
@@ -121,11 +121,19 @@ export default function Cart({ open, onClose }) {
 
         <div className="flex-1 overflow-y-auto px-5 py-4">
           {loading && items.length === 0 ? (
-            <div className="flex items-center justify-center h-full text-gray-400 dark:text-gray-500 text-sm">Cargando...</div>
+            <div className="flex items-center justify-center h-full text-gray-400 dark:text-gray-500 text-sm">
+              <div className="flex flex-col items-center gap-2">
+                <div className="w-8 h-8 rounded-full border-2 border-gray-300 dark:border-gray-600 border-t-transparent animate-spin" />
+                <span>Cargando...</span>
+              </div>
+            </div>
           ) : items.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-gray-400 dark:text-gray-500 gap-3">
-              <ShoppingCartIcon className="w-12 h-12" />
-              <p className="text-sm">Tu carrito está vacío</p>
+              <ShoppingCart className="w-14 h-14 text-gray-300 dark:text-gray-600" />
+              <div className="text-center">
+                <p className="text-sm font-medium">Tu carrito está vacío</p>
+                <p className="text-xs mt-1">Agregá productos para empezar</p>
+              </div>
             </div>
           ) : (
             <div className="space-y-4">
@@ -220,13 +228,5 @@ export default function Cart({ open, onClose }) {
         )}
       </div>
     </>
-  )
-}
-
-function ShoppingCartIcon({ className }) {
-  return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
-    </svg>
   )
 }

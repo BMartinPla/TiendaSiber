@@ -3,7 +3,9 @@ import { ShoppingCart, Check, Package } from 'lucide-react'
 import { useCart } from '../contexts/CartContext'
 import { useAuth } from '../contexts/AuthContext'
 
-export default function ProductCard({ product, onView }) {
+const staggerMs = [50, 100, 150, 200, 250, 300, 350, 400]
+
+export default function ProductCard({ product, onView, index = 0 }) {
   const { add } = useCart()
   const { isWholesale, isAdmin } = useAuth()
   const [added, setAdded] = useState(false)
@@ -23,7 +25,7 @@ export default function ProductCard({ product, onView }) {
   }
 
   return (
-    <div onClick={onView} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 overflow-hidden transition-all duration-200 hover:shadow-md dark:hover:shadow-lg dark:hover:shadow-black/30 hover:border-gray-200 dark:hover:border-gray-600 hover:-translate-y-0.5 flex flex-col cursor-pointer group">
+    <div onClick={onView} className="animate-fadeIn bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 overflow-hidden transition-all duration-200 hover:shadow-md dark:hover:shadow-lg dark:hover:shadow-black/30 hover:border-gray-200 dark:hover:border-gray-600 hover:-translate-y-0.5 flex flex-col cursor-pointer group" style={{ animationDelay: `${staggerMs[index % 8]}ms` }}>
       {/* Image */}
       <div className="relative aspect-square bg-gray-50 dark:bg-gray-700/50 flex items-center justify-center overflow-hidden rounded-lg m-1.5">
         {product.imageUrl ? (

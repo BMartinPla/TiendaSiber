@@ -49,7 +49,7 @@ export default function OrdersModal({ onClose }) {
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4" onClick={onClose}>
       <div className="fixed inset-0 bg-black/40 sm:backdrop-blur-sm" />
-      <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl dark:shadow-2xl dark:shadow-black/40 border border-gray-100 dark:border-gray-700 p-4 sm:p-6 w-full max-w-3xl max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+      <div className="animate-scaleIn relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl dark:shadow-2xl dark:shadow-black/40 border border-gray-100 dark:border-gray-700 p-4 sm:p-6 w-full max-w-3xl max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
         <button onClick={onClose} className="absolute top-4 right-4 p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
           <X className="w-5 h-5" />
         </button>
@@ -65,9 +65,21 @@ export default function OrdersModal({ onClose }) {
         </div>
 
         {loading ? (
-          <div className="text-sm text-gray-400 dark:text-gray-500 py-8 text-center">Cargando pedidos...</div>
+          <div className="space-y-3 py-4">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="border border-gray-100 dark:border-gray-700 rounded-xl overflow-hidden animate-pulse-soft">
+                <div className="px-4 py-3 bg-gray-50 dark:bg-gray-800/50">
+                  <div className="h-4 animate-shimmer rounded w-24" />
+                </div>
+              </div>
+            ))}
+          </div>
         ) : orders.length === 0 ? (
-          <div className="text-sm text-gray-400 dark:text-gray-500 py-8 text-center">No tienes pedidos aún</div>
+          <div className="flex flex-col items-center justify-center py-12 text-gray-400 dark:text-gray-500">
+            <ShoppingBag className="w-12 h-12 mb-3 text-gray-300 dark:text-gray-600" />
+            <p className="text-sm font-medium">No tienes pedidos aún</p>
+            <p className="text-xs mt-1">Tus pedidos aparecerán aquí</p>
+          </div>
         ) : (
           <div className="space-y-3">
             {orders.map((order) => (

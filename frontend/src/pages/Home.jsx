@@ -4,7 +4,7 @@ import ProductCard from '../components/ProductCard'
 import ProductModal from '../components/ProductModal'
 import Cart from '../components/Cart'
 import Navbar from '../components/Navbar'
-import { ChevronLeft, ChevronRight, Star } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Star, Package } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 
 export default function Home() {
@@ -203,25 +203,26 @@ export default function Home() {
           {loading ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
               {Array.from({ length: 10 }).map((_, i) => (
-                <div key={i} className="bg-white dark:bg-gray-800 rounded-xl h-64 animate-pulse border border-gray-100 dark:border-gray-700">
-                  <div className="h-36 bg-gray-100 dark:bg-gray-700 rounded-t-xl" />
+                <div key={i} className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden border border-gray-100 dark:border-gray-700">
+                  <div className="h-36 animate-shimmer" />
                   <div className="p-3 space-y-2">
-                    <div className="h-3 bg-gray-100 dark:bg-gray-700 rounded w-3/4" />
-                    <div className="h-5 bg-gray-100 dark:bg-gray-700 rounded w-1/3" />
-                    <div className="h-3 bg-gray-100 dark:bg-gray-700 rounded w-1/2" />
+                    <div className="h-3 animate-shimmer rounded w-3/4" />
+                    <div className="h-5 animate-shimmer rounded w-1/3" />
+                    <div className="h-3 animate-shimmer rounded w-1/2" />
                   </div>
                 </div>
               ))}
             </div>
           ) : products.length === 0 ? (
-            <div className="text-center py-20 text-gray-400 dark:text-gray-500">
+            <div className="flex flex-col items-center justify-center py-20 text-gray-400 dark:text-gray-500">
+              <Package className="w-16 h-16 mb-4 text-gray-300 dark:text-gray-600" />
               <p className="text-lg font-medium">Sin productos</p>
               <p className="text-sm mt-1">No hay productos en esta categoría</p>
             </div>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
-              {[...products].sort((a, b) => (b.stock > 0 ? 1 : 0) - (a.stock > 0 ? 1 : 0)).map((product) => (
-                <ProductCard key={product.id} product={product} onView={() => setSelectedProduct(product)} />
+              {[...products].sort((a, b) => (b.stock > 0 ? 1 : 0) - (a.stock > 0 ? 1 : 0)).map((product, i) => (
+                <ProductCard key={product.id} product={product} index={i} onView={() => setSelectedProduct(product)} />
               ))}
             </div>
           )}
