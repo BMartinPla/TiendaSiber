@@ -12,7 +12,9 @@ export default function OrdersModal({ onClose }) {
       try {
         const res = await getMyOrders()
         setOrders(res)
-      } catch {}
+      } catch (err) {
+        console.error('Error al cargar pedidos:', err)
+      }
       finally { setLoading(false) }
     }
     fetchOrders()

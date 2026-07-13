@@ -127,7 +127,10 @@ export default function Cart({ open, onClose }) {
                   <div key={item.id} className="flex items-center gap-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-xl">
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">{item.product.name}</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">${unitPrice.toLocaleString('es-CL')} c/u</p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">${unitPrice.toLocaleString('es-CL')} c/u</p>
+                  <p className={`text-xs ${item.product.stock > 0 ? 'text-green-500' : 'text-red-400'}`}>
+                    {item.product.stock > 0 ? `En stock (${item.product.stock})` : 'Sin stock'}
+                  </p>
                     </div>
 
                     <div className="flex items-center gap-1">
@@ -178,20 +181,6 @@ export default function Cart({ open, onClose }) {
               </div>
             )}
 
-            {orderSuccess && (
-              <div className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 px-4 py-2.5 rounded-xl">
-                <CheckCircle className="w-4 h-4 shrink-0" />
-                Pedido registrado. Revisa WhatsApp para enviarlo.
-              </div>
-            )}
-
-            {orderError && (
-              <div className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 px-4 py-2.5 rounded-xl">
-                <XCircle className="w-4 h-4 shrink-0" />
-                {orderError}
-              </div>
-            )}
-
             <button
               onClick={handleWhatsApp}
               disabled={syncing}
@@ -200,6 +189,24 @@ export default function Cart({ open, onClose }) {
               <MessageCircle className={`w-5 h-5 ${syncing ? 'animate-pulse' : ''}`} />
               {syncing ? 'Sincronizando...' : 'Enviar pedido por WhatsApp'}
             </button>
+          </div>
+        )}
+
+        {orderSuccess && (
+          <div className="border-t border-gray-100 dark:border-gray-700 px-5 py-4 bg-white dark:bg-gray-900">
+            <div className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 px-4 py-2.5 rounded-xl">
+              <CheckCircle className="w-4 h-4 shrink-0" />
+              Pedido registrado. Revisa WhatsApp para enviarlo.
+            </div>
+          </div>
+        )}
+
+        {orderError && (
+          <div className="border-t border-gray-100 dark:border-gray-700 px-5 py-4 bg-white dark:bg-gray-900">
+            <div className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 px-4 py-2.5 rounded-xl">
+              <XCircle className="w-4 h-4 shrink-0" />
+              {orderError}
+            </div>
           </div>
         )}
       </div>

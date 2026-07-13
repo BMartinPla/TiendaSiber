@@ -84,10 +84,10 @@ export default function ProductModal({ product, onClose }) {
                 )}
               </div>
 
-              <div className="flex items-center gap-1.5">
-                <span className={`text-sm ${product.stock > 0 ? 'text-red-600 dark:text-red-400' : 'text-red-500 dark:text-red-400'}`}>
-                  {product.stock > 0 ? `📦 ${product.stock} disponibles` : '❌ Agotado'}
-                </span>
+                <div className="flex items-center gap-1.5">
+                  <span className={`text-sm ${(product.stock ?? 0) > 0 ? 'text-green-600 dark:text-green-400' : 'text-red-500 dark:text-red-400'}`}>
+                    {(product.stock ?? 0) > 0 ? `En stock (${product.stock})` : 'Agotado'}
+                  </span>
               </div>
 
               {!isAdmin && (

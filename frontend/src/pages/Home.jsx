@@ -64,6 +64,7 @@ export default function Home() {
 
   useEffect(() => {
     restartTimer()
+    return () => clearInterval(timerRef.current)
   }, [visibleFeatured.length])
 
   function loadProducts(params = '') {
@@ -110,7 +111,7 @@ export default function Home() {
         onCategoryChange={handleCategoryChange}
       />
 
-      <main className="pt-6 pb-12">
+      <main className="pt-6 pb-12 animate-fadeIn">
         {/* Featured Banner Carousel */}
         {visibleFeatured.length > 0 && (
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
