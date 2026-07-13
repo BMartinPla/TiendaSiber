@@ -98,6 +98,15 @@ export default function AdminDashboard() {
     }
   }, [selectAllUsers, users, currentUser])
 
+  useEffect(() => {
+    if (editProduct || cropImageUrl) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => { document.body.style.overflow = '' }
+  }, [editProduct, cropImageUrl])
+
   async function loadCategories() {
     try { setCategories(await getCategories()) } catch { showMsg('Error al cargar categorías', true) }
   }
