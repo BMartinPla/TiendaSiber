@@ -66,7 +66,7 @@ export default function ProductCard({ product, onView }) {
                 May: ${wholesalePrice.toLocaleString('es-CL')}
               </span>
               <span className="text-[10px] bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 px-1.5 py-0.5 rounded font-medium">
-                Base: ${basePrice.toLocaleString('es-CL')}
+                Minorista: ${basePrice.toLocaleString('es-CL')}
               </span>
             </div>
           ) : (

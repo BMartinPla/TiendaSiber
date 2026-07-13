@@ -674,7 +674,7 @@ export default function AdminDashboard() {
                             className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                         </div>
                         <div>
-                          <input type="number" step="0.01" placeholder="Precio Base *" value={form.precioBase} onChange={(e) => setForm({ ...form, precioBase: e.target.value })} required
+                          <input type="number" step="0.01" placeholder="Precio Minorista *" value={form.precioBase} onChange={(e) => setForm({ ...form, precioBase: e.target.value })} required
                             className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                         </div>
                         <div>
@@ -789,7 +789,7 @@ export default function AdminDashboard() {
                                 <div className="inline-flex flex-col items-center gap-0.5">
                                   <span className="text-xs text-gray-600 dark:text-gray-400">Costo ${p.precioCosto.toLocaleString('es-CL')}</span>
                                   <span className="text-xs text-gray-600 dark:text-gray-400">May. ${p.precioMayorista.toLocaleString('es-CL')}</span>
-                                  <span className="text-xs text-gray-600 dark:text-gray-400">Base ${p.precioBase.toLocaleString('es-CL')}</span>
+                                  <span className="text-xs text-gray-600 dark:text-gray-400">Minorista ${p.precioBase.toLocaleString('es-CL')}</span>
                                 </div>
                               </td>
                               <td className="px-4 py-3 text-center text-sm text-gray-700 dark:text-gray-200">{p.stock}</td>
@@ -1186,7 +1186,7 @@ export default function AdminDashboard() {
               <textarea placeholder="Descripción" value={editForm.description} onChange={(e) => setEditForm({ ...editForm, description: e.target.value })} rows={2}
                 className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <input type="number" step="0.01" placeholder="Precio Base *" value={editForm.precioBase} onChange={(e) => setEditForm({ ...editForm, precioBase: e.target.value })} required
+                <input type="number" step="0.01" placeholder="Precio Minorista *" value={editForm.precioBase} onChange={(e) => setEditForm({ ...editForm, precioBase: e.target.value })} required
                   className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                 <input type="number" step="0.01" placeholder="Precio Mayorista *" value={editForm.precioMayorista} onChange={(e) => setEditForm({ ...editForm, precioMayorista: e.target.value })} required
                   className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />

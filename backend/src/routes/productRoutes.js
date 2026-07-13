@@ -17,8 +17,9 @@ router.post(
   authorize('ADMIN'),
   [
     body('name').notEmpty().withMessage('El nombre es obligatorio'),
-    body('precioBase').isFloat({ min: 0 }).withMessage('precio_base debe ser un número positivo'),
+    body('precioBase').isFloat({ min: 0 }).withMessage('precio_minorista debe ser un número positivo'),
     body('precioMayorista').isFloat({ min: 0 }).withMessage('precio_mayorista debe ser un número positivo'),
+    body('precioCosto').isFloat({ min: 0 }).withMessage('precio_costo debe ser un número positivo'),
   ],
   productController.create
 )
