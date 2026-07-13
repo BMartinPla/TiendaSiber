@@ -787,11 +787,9 @@ export default function AdminDashboard() {
                               </td>
                               <td className="px-4 py-3 text-center">
                                 <div className="inline-flex flex-col items-center gap-0.5">
-                                  <span className="text-xs text-gray-600 dark:text-gray-400">${p.precioBase.toLocaleString('es-CL')}</span>
-                                  <span className="text-[10px] text-gray-400 dark:text-gray-500">Base · May. ${p.precioMayorista.toLocaleString('es-CL')}</span>
-                                  {p.precioCosto != null && (
-                                    <span className="text-[10px] text-gray-400 dark:text-gray-500">Costo ${p.precioCosto.toLocaleString('es-CL')}</span>
-                                  )}
+                                  <span className="text-[10px] text-gray-400 dark:text-gray-500">Costo ${p.precioCosto.toLocaleString('es-CL')}</span>
+                                  <span className="text-[10px] text-gray-400 dark:text-gray-500">May. ${p.precioMayorista.toLocaleString('es-CL')}</span>
+                                  <span className="text-xs text-gray-600 dark:text-gray-400">Base ${p.precioBase.toLocaleString('es-CL')}</span>
                                 </div>
                               </td>
                               <td className="px-4 py-3 text-center text-sm text-gray-700 dark:text-gray-200">{p.stock}</td>
