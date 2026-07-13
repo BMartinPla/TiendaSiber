@@ -364,9 +364,9 @@ export default function AdminDashboard() {
     setEditForm({
       name: product.name,
       description: product.description || '',
-      precioBase: String(product.precioBase),
-      precioMayorista: String(product.precioMayorista),
-      precioCosto: String(product.precioCosto ?? ''),
+      precioBase: product.precioBase ? String(product.precioBase) : '',
+      precioMayorista: product.precioMayorista ? String(product.precioMayorista) : '',
+      precioCosto: product.precioCosto ? String(product.precioCosto) : '',
       stock: String(product.stock),
       imageUrl: product.imageUrl || '',
       featuredImageUrl: product.featuredImageUrl || '',
