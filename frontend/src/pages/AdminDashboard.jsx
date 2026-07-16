@@ -1249,7 +1249,7 @@ export default function AdminDashboard() {
       )}
 
       {editProduct && (
-        <div className="fixed inset-0 z-50 bg-black/40 sm:backdrop-blur-sm flex items-center justify-center p-4" onClick={closeEdit}>
+        <div className="fixed inset-0 z-50 bg-black/40 sm:backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg dark:shadow-2xl dark:shadow-black/40 border border-gray-100 dark:border-gray-700 w-full max-w-lg max-h-[90vh] overflow-y-auto p-6" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-bold text-gray-900 dark:text-white">Editar: {editProduct.name}</h2>
@@ -1335,7 +1335,7 @@ export default function AdminDashboard() {
       )}
 
       {showManualOrder && (
-        <div className="fixed inset-0 z-50 bg-black/40 sm:backdrop-blur-sm flex items-center justify-center p-4" onClick={() => setShowManualOrder(false)}>
+        <div className="fixed inset-0 z-50 bg-black/40 sm:backdrop-blur-sm flex items-center justify-center p-4">
           <div className="animate-scaleIn bg-white dark:bg-gray-800 rounded-2xl shadow-2xl dark:shadow-2xl dark:shadow-black/40 border border-gray-100 dark:border-gray-700 w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-bold text-gray-900 dark:text-white">Crear Pedido Manual</h2>
@@ -1427,12 +1427,16 @@ export default function AdminDashboard() {
                           <X className="w-4 h-4" />
                         </button>
                       )}
-                      {manualOrderProductOpen === idx && (
+                      {manualOrderProductOpen === idx && (() => {
+                        const selectedIds = new Set(manualOrderItems.map((i) => i.productId).filter(Boolean))
+                        selectedIds.delete(item.productId) // allow current selection
+                        const available = products.filter((p) => p.active && (!item.search || p.name.toLowerCase().includes(item.search.toLowerCase())) && !selectedIds.has(p.id))
+                        return (
                         <div className="absolute z-10 top-full mt-1 left-0 right-0 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl max-h-48 overflow-y-auto" onMouseDown={(e) => e.preventDefault()}>
-                          {products.filter((p) => p.active && (!item.search || p.name.toLowerCase().includes(item.search.toLowerCase()))).length === 0 ? (
+                          {available.length === 0 ? (
                             <div className="px-4 py-3 text-sm text-gray-400 dark:text-gray-500">Sin resultados</div>
                           ) : (
-                            products.filter((p) => p.active && (!item.search || p.name.toLowerCase().includes(item.search.toLowerCase()))).map((p) => (
+                            available.map((p) => (
                               <button key={p.id} type="button" onClick={() => {
                                 const newItems = [...manualOrderItems]
                                 newItems[idx] = { ...newItems[idx], productId: p.id, search: '' }
@@ -1448,7 +1452,8 @@ export default function AdminDashboard() {
                             ))
                           )}
                         </div>
-                      )}
+                        )
+                      })()}
                     </div>
                     <input type="number" min="1" value={item.quantity} onChange={(e) => {
                       const newItems = [...manualOrderItems]
@@ -1497,7 +1502,7 @@ export default function AdminDashboard() {
       )}
 
       {showCreateUser && (
-        <div className="fixed inset-0 z-50 bg-black/40 sm:backdrop-blur-sm flex items-center justify-center p-4" onClick={() => setShowCreateUser(false)}>
+        <div className="fixed inset-0 z-50 bg-black/40 sm:backdrop-blur-sm flex items-center justify-center p-4">
           <div className="animate-scaleIn bg-white dark:bg-gray-800 rounded-2xl shadow-2xl dark:shadow-2xl dark:shadow-black/40 border border-gray-100 dark:border-gray-700 w-full max-w-lg max-h-[90vh] overflow-y-auto p-6" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-bold text-gray-900 dark:text-white">Crear Usuario</h2>
