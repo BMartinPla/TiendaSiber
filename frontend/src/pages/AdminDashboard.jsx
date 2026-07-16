@@ -227,6 +227,8 @@ export default function AdminDashboard() {
   const [manualOrderItems, setManualOrderItems] = useState([{ productId: '', quantity: 1, search: '' }])
   const [manualOrderSearchProduct, setManualOrderSearchProduct] = useState('')
   const [manualOrderSearchUser, setManualOrderSearchUser] = useState('')
+  const [manualOrderUserOpen, setManualOrderUserOpen] = useState(false)
+  const [manualOrderProductOpen, setManualOrderProductOpen] = useState(null)
   const [manualOrderSubmitting, setManualOrderSubmitting] = useState(false)
 
   async function loadOrders(search = '', status = '') {
@@ -1348,8 +1350,9 @@ export default function AdminDashboard() {
               <div className="relative">
                 <input type="text" placeholder="Buscar usuario por nombre o email..." autoComplete="off"
                   value={manualOrderUser ? (users.find((u) => u.id === manualOrderUser)?.name || '') : manualOrderSearchUser}
-                  onChange={(e) => { setManualOrderSearchUser(e.target.value); if (!e.target.value) setManualOrderUser('') }}
-                  onFocus={() => { if (manualOrderUser) { setManualOrderUser(''); setManualOrderSearchUser('') } }}
+                  onChange={(e) => { setManualOrderSearchUser(e.target.value); if (!e.target.value) setManualOrderUser(''); setManualOrderUserOpen(true) }}
+                  onFocus={() => { if (manualOrderUser) { setManualOrderUser(''); setManualOrderSearchUser('') }; setManualOrderUserOpen(true) }}
+                  onBlur={() => setTimeout(() => setManualOrderUserOpen(false), 200)}
                   className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                 {manualOrderUser && (
                   <button onClick={() => { setManualOrderUser(''); setManualOrderSearchUser('') }}
@@ -1357,13 +1360,13 @@ export default function AdminDashboard() {
                     <X className="w-4 h-4" />
                   </button>
                 )}
-                {manualOrderSearchUser && (
-                  <div className="absolute z-10 top-full mt-1 left-0 right-0 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl max-h-48 overflow-y-auto">
-                    {users.filter((u) => u.active && (u.name.toLowerCase().includes(manualOrderSearchUser.toLowerCase()) || u.email.toLowerCase().includes(manualOrderSearchUser.toLowerCase()))).length === 0 ? (
+                {manualOrderUserOpen && (
+                  <div className="absolute z-10 top-full mt-1 left-0 right-0 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl max-h-48 overflow-y-auto" onMouseDown={(e) => e.preventDefault()}>
+                    {users.filter((u) => u.active && (!manualOrderSearchUser || u.name.toLowerCase().includes(manualOrderSearchUser.toLowerCase()) || u.email.toLowerCase().includes(manualOrderSearchUser.toLowerCase()))).length === 0 ? (
                       <div className="px-4 py-3 text-sm text-gray-400 dark:text-gray-500">Sin resultados</div>
                     ) : (
-                      users.filter((u) => u.active && (u.name.toLowerCase().includes(manualOrderSearchUser.toLowerCase()) || u.email.toLowerCase().includes(manualOrderSearchUser.toLowerCase()))).map((u) => (
-                        <button key={u.id} type="button" onClick={() => { setManualOrderUser(u.id); setManualOrderSearchUser('') }}
+                      users.filter((u) => u.active && (!manualOrderSearchUser || u.name.toLowerCase().includes(manualOrderSearchUser.toLowerCase()) || u.email.toLowerCase().includes(manualOrderSearchUser.toLowerCase()))).map((u) => (
+                        <button key={u.id} type="button" onClick={() => { setManualOrderUser(u.id); setManualOrderSearchUser(''); setManualOrderUserOpen(false) }}
                           className="w-full text-left px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                           {u.name} <span className="text-gray-400 dark:text-gray-500">{u.email}</span>
                         </button>
@@ -1402,6 +1405,7 @@ export default function AdminDashboard() {
                           const newItems = [...manualOrderItems]
                           newItems[idx] = { ...newItems[idx], search: e.target.value, productId: '' }
                           setManualOrderItems(newItems)
+                          setManualOrderProductOpen(idx)
                         }}
                         onFocus={() => {
                           if (item.productId) {
@@ -1409,7 +1413,9 @@ export default function AdminDashboard() {
                             newItems[idx] = { ...newItems[idx], productId: '', search: '' }
                             setManualOrderItems(newItems)
                           }
+                          setManualOrderProductOpen(idx)
                         }}
+                        onBlur={() => setTimeout(() => setManualOrderProductOpen(null), 200)}
                         className="w-full px-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                       {item.productId && (
                         <button onClick={() => {
@@ -1421,16 +1427,17 @@ export default function AdminDashboard() {
                           <X className="w-4 h-4" />
                         </button>
                       )}
-                      {item.search && (
-                        <div className="absolute z-10 top-full mt-1 left-0 right-0 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl max-h-48 overflow-y-auto">
-                          {products.filter((p) => p.active && p.name.toLowerCase().includes(item.search.toLowerCase())).length === 0 ? (
+                      {manualOrderProductOpen === idx && (
+                        <div className="absolute z-10 top-full mt-1 left-0 right-0 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl max-h-48 overflow-y-auto" onMouseDown={(e) => e.preventDefault()}>
+                          {products.filter((p) => p.active && (!item.search || p.name.toLowerCase().includes(item.search.toLowerCase()))).length === 0 ? (
                             <div className="px-4 py-3 text-sm text-gray-400 dark:text-gray-500">Sin resultados</div>
                           ) : (
-                            products.filter((p) => p.active && p.name.toLowerCase().includes(item.search.toLowerCase())).map((p) => (
+                            products.filter((p) => p.active && (!item.search || p.name.toLowerCase().includes(item.search.toLowerCase()))).map((p) => (
                               <button key={p.id} type="button" onClick={() => {
                                 const newItems = [...manualOrderItems]
                                 newItems[idx] = { ...newItems[idx], productId: p.id, search: '' }
                                 setManualOrderItems(newItems)
+                                setManualOrderProductOpen(null)
                               }}
                                 className="w-full text-left px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center justify-between">
                                 <span>{p.name}</span>
