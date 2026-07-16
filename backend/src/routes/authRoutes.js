@@ -1,7 +1,8 @@
 const { Router } = require('express')
 const { body } = require('express-validator')
-const { register, login, profile, updateProfile } = require('../controllers/authController')
+const { register, login, profile, updateProfile, adminCreateUser } = require('../controllers/authController')
 const authenticate = require('../middleware/authMiddleware')
+const authorize = require('../middleware/roleMiddleware')
 
 const router = Router()
 
@@ -37,6 +38,19 @@ router.patch(
   authenticate,
   [body('name').optional().notEmpty().withMessage('El nombre no puede estar vacío')],
   updateProfile
+)
+
+router.post(
+  '/admin-create',
+  authenticate,
+  authorize('ADMIN'),
+  [
+    body('name').notEmpty().withMessage('El nombre es obligatorio'),
+    body('email').isEmail().withMessage('Email inválido'),
+    body('password').isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres'),
+    body('role').optional().isIn(['RETAIL', 'WHOLESALE', 'ADMIN']).withMessage('Rol inválido'),
+  ],
+  adminCreateUser
 )
 
 module.exports = router

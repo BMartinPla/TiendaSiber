@@ -120,4 +120,38 @@ async function updateProfile(req, res) {
   }
 }
 
-module.exports = { register, login, profile, updateProfile }
+async function adminCreateUser(req, res) {
+  try {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() })
+    }
+
+    const { name, email, password, role, phone } = req.body
+
+    const exists = await prisma.user.findUnique({ where: { email } })
+    if (exists) {
+      return res.status(409).json({ error: 'El email ya está registrado' })
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10)
+
+    const user = await prisma.user.create({
+      data: {
+        name,
+        email,
+        password: hashedPassword,
+        role: role || 'RETAIL',
+        phone,
+      },
+      select: { id: true, name: true, email: true, role: true, phone: true, active: true },
+    })
+
+    res.status(201).json({ user })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Error al crear usuario' })
+  }
+}
+
+module.exports = { register, login, profile, updateProfile, adminCreateUser }

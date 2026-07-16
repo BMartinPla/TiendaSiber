@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { ArrowLeft, Plus, X, Save, Trash2, RefreshCw, Package, ShieldOff, Upload, ChevronDown, ChevronRight, User, ShoppingBag, ShoppingCart, Loader2, LayoutDashboard, LogOut, Moon, Sun, Settings, Star } from 'lucide-react'
+import { ArrowLeft, Plus, X, Save, Trash2, RefreshCw, Package, ShieldOff, Upload, ChevronDown, ChevronRight, User, UserPlus, ShoppingBag, ShoppingCart, Loader2, LayoutDashboard, LogOut, Moon, Sun, Settings, Star } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import { useDarkMode } from '../contexts/DarkModeContext'
 import ImageCropper from '../components/ImageCropper'
@@ -33,6 +33,7 @@ import {
   createManualOrder,
   uploadImage,
   toggleFeatured,
+  adminCreateUser,
 } from '../services/api'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts'
 
@@ -71,6 +72,9 @@ export default function AdminDashboard() {
   const [selectedUserIds, setSelectedUserIds] = useState([])
   const [selectAllUsers, setSelectAllUsers] = useState(false)
   const [bulkUserRole, setBulkUserRole] = useState('RETAIL')
+  const [showCreateUser, setShowCreateUser] = useState(false)
+  const [createUserForm, setCreateUserForm] = useState({ name: '', email: '', password: '', phone: '', role: 'RETAIL' })
+  const [createUserSubmitting, setCreateUserSubmitting] = useState(false)
   const [uploadingImage, setUploadingImage] = useState(false)
   const [cropImageUrl, setCropImageUrl] = useState(null)
   const [cropTarget, setCropTarget] = useState(null)
@@ -187,6 +191,22 @@ export default function AdminDashboard() {
       loadUsers(userSearch)
     } catch (err) {
       showMsg(err.response?.data?.error || 'Error al eliminar usuario', true)
+    }
+  }
+
+  async function handleCreateUser(e) {
+    e.preventDefault()
+    setCreateUserSubmitting(true)
+    try {
+      await adminCreateUser(createUserForm)
+      showMsg('Usuario creado exitosamente')
+      setShowCreateUser(false)
+      setCreateUserForm({ name: '', email: '', password: '', phone: '', role: 'RETAIL' })
+      loadUsers(userSearch)
+    } catch (err) {
+      showMsg(err.response?.data?.error || err.response?.data?.errors?.[0]?.msg || 'Error al crear usuario', true)
+    } finally {
+      setCreateUserSubmitting(false)
     }
   }
 
@@ -1001,6 +1021,10 @@ export default function AdminDashboard() {
                         className="px-4 py-2 rounded-lg text-sm font-semibold text-white bg-gray-900 hover:bg-gray-800 transition-colors">Cambiar Rol</button>
                     </div>
                   )}
+                  <button onClick={() => setShowCreateUser(true)}
+                    className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-colors shrink-0 ml-auto">
+                    <Plus className="w-4 h-4" /> Crear Usuario
+                  </button>
                 </div>
                 {usersLoading ? (
                   <div className="space-y-3 py-4">
@@ -1407,6 +1431,41 @@ export default function AdminDashboard() {
               {manualOrderSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
               {manualOrderSubmitting ? 'Creando...' : 'Crear Pedido'}
             </button>
+          </div>
+        </div>
+      )}
+
+      {showCreateUser && (
+        <div className="fixed inset-0 z-50 bg-black/40 sm:backdrop-blur-sm flex items-center justify-center p-4" onClick={() => setShowCreateUser(false)}>
+          <div className="animate-scaleIn bg-white dark:bg-gray-800 rounded-2xl shadow-2xl dark:shadow-2xl dark:shadow-black/40 border border-gray-100 dark:border-gray-700 w-full max-w-lg max-h-[90vh] overflow-y-auto p-6" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-lg font-bold text-gray-900 dark:text-white">Crear Usuario</h2>
+              <button onClick={() => setShowCreateUser(false)} className="p-1.5 text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleCreateUser} className="space-y-4">
+              <input placeholder="Nombre *" value={createUserForm.name} onChange={(e) => setCreateUserForm({ ...createUserForm, name: e.target.value })} required
+                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+              <input type="email" placeholder="Email *" value={createUserForm.email} onChange={(e) => setCreateUserForm({ ...createUserForm, email: e.target.value })} required
+                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+              <input type="password" placeholder="Contraseña * (mín. 6 caracteres)" value={createUserForm.password} onChange={(e) => setCreateUserForm({ ...createUserForm, password: e.target.value })} required minLength={6}
+                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+              <input placeholder="Teléfono (opcional)" value={createUserForm.phone} onChange={(e) => setCreateUserForm({ ...createUserForm, phone: e.target.value })}
+                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+              <select value={createUserForm.role} onChange={(e) => setCreateUserForm({ ...createUserForm, role: e.target.value })}
+                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+                <option value="RETAIL">Minorista</option>
+                <option value="WHOLESALE">Mayorista</option>
+                <option value="ADMIN">Admin</option>
+              </select>
+              <button type="submit" disabled={createUserSubmitting}
+                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold text-white bg-gray-900 dark:bg-blue-600 hover:bg-gray-800 dark:hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
+                {createUserSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <UserPlus className="w-4 h-4" />}
+                {createUserSubmitting ? 'Creando...' : 'Crear Usuario'}
+              </button>
+            </form>
           </div>
         </div>
       )}
