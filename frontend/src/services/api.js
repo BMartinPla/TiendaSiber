@@ -190,6 +190,10 @@ export function createOrderFromCart() {
   return api.post('/orders/from-cart').then((res) => res.data)
 }
 
+export function createManualOrder(data) {
+  return api.post('/orders/manual', data).then((res) => res.data)
+}
+
 export function getOrders(search = '', status = '') {
   const params = new URLSearchParams()
   if (search) params.set('search', search)

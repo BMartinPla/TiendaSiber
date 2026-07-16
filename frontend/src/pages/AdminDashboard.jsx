@@ -30,6 +30,7 @@ import {
   approveOrder,
   deleteOrder,
   downloadOrderPdf,
+  createManualOrder,
   uploadImage,
   toggleFeatured,
 } from '../services/api'
@@ -200,6 +201,12 @@ export default function AdminDashboard() {
   const [orderSearch, setOrderSearch] = useState('')
   const [orderStatusFilter, setOrderStatusFilter] = useState('')
   const [expandedOrder, setExpandedOrder] = useState(null)
+  const [showManualOrder, setShowManualOrder] = useState(false)
+  const [manualOrderUser, setManualOrderUser] = useState('')
+  const [manualOrderCondition, setManualOrderCondition] = useState('RETAIL')
+  const [manualOrderItems, setManualOrderItems] = useState([{ productId: '', quantity: 1 }])
+  const [manualOrderSearchProduct, setManualOrderSearchProduct] = useState('')
+  const [manualOrderSubmitting, setManualOrderSubmitting] = useState(false)
 
   async function loadOrders(search = '', status = '') {
     setOrdersLoading(true)
@@ -225,6 +232,28 @@ export default function AdminDashboard() {
       loadOrders(orderSearch, orderStatusFilter)
     } catch (err) {
       showMsg(err.response?.data?.error || 'Error al eliminar pedido', true)
+    }
+  }
+
+  async function handleCreateManualOrder() {
+    if (!manualOrderUser || manualOrderItems.every((i) => !i.productId)) return
+    setManualOrderSubmitting(true)
+    try {
+      await createManualOrder({
+        userId: Number(manualOrderUser),
+        condition: manualOrderCondition,
+        items: manualOrderItems.filter((i) => i.productId).map((i) => ({ productId: Number(i.productId), quantity: i.quantity })),
+      })
+      showMsg('Pedido creado exitosamente')
+      setShowManualOrder(false)
+      setManualOrderUser('')
+      setManualOrderCondition('RETAIL')
+      setManualOrderItems([{ productId: '', quantity: 1 }])
+      loadOrders(orderSearch, orderStatusFilter)
+    } catch (err) {
+      showMsg(err.response?.data?.error || 'Error al crear pedido', true)
+    } finally {
+      setManualOrderSubmitting(false)
     }
   }
 
@@ -1094,6 +1123,10 @@ export default function AdminDashboard() {
                     <option value="PENDING">Pendientes</option>
                     <option value="APPROVED">Aprobados</option>
                   </select>
+                  <button onClick={() => setShowManualOrder(true)}
+                    className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-colors shrink-0">
+                    <Plus className="w-4 h-4" /> Pedido Manual
+                  </button>
                 </div>
                 {ordersLoading ? (
                   <div className="space-y-3 py-4">
@@ -1270,6 +1303,110 @@ export default function AdminDashboard() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {showManualOrder && (
+        <div className="fixed inset-0 z-50 bg-black/40 sm:backdrop-blur-sm flex items-center justify-center p-4" onClick={() => setShowManualOrder(false)}>
+          <div className="animate-scaleIn bg-white dark:bg-gray-800 rounded-2xl shadow-2xl dark:shadow-2xl dark:shadow-black/40 border border-gray-100 dark:border-gray-700 w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-lg font-bold text-gray-900 dark:text-white">Crear Pedido Manual</h2>
+              <button onClick={() => setShowManualOrder(false)} className="p-1.5 text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* User */}
+            <div className="mb-4">
+              <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1.5">Usuario *</label>
+              <select value={manualOrderUser} onChange={(e) => setManualOrderUser(e.target.value)} required
+                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+                <option value="">Seleccionar usuario</option>
+                {users.filter((u) => u.active).map((u) => (
+                  <option key={u.id} value={u.id}>{u.name} ({u.email})</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Condition */}
+            <div className="mb-4">
+              <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1.5">Condición de precio *</label>
+              <div className="flex gap-2">
+                <button type="button" onClick={() => setManualOrderCondition('RETAIL')}
+                  className={`flex-1 py-2.5 rounded-xl text-sm font-semibold transition-colors ${manualOrderCondition === 'RETAIL' ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'}`}>
+                  Minorista
+                </button>
+                <button type="button" onClick={() => setManualOrderCondition('WHOLESALE')}
+                  className={`flex-1 py-2.5 rounded-xl text-sm font-semibold transition-colors ${manualOrderCondition === 'WHOLESALE' ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'}`}>
+                  Mayorista
+                </button>
+              </div>
+            </div>
+
+            {/* Items */}
+            <div className="mb-4">
+              <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1.5">Productos *</label>
+              <div className="space-y-3">
+                {manualOrderItems.map((item, idx) => (
+                  <div key={idx} className="flex items-start gap-2">
+                    <div className="flex-1">
+                      <select value={item.productId} onChange={(e) => {
+                        const newItems = [...manualOrderItems]
+                        newItems[idx] = { ...newItems[idx], productId: Number(e.target.value) }
+                        setManualOrderItems(newItems)
+                      }} required
+                        className="w-full px-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+                        <option value="">Seleccionar producto</option>
+                        {products.filter((p) => p.active).map((p) => (
+                          <option key={p.id} value={p.id}>
+                            {p.name} — ${(manualOrderCondition === 'WHOLESALE' ? p.precioMayorista : p.precioBase).toLocaleString('es-CL')} (stock: {p.stock})
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <input type="number" min="1" value={item.quantity} onChange={(e) => {
+                      const newItems = [...manualOrderItems]
+                      newItems[idx] = { ...newItems[idx], quantity: Math.max(1, parseInt(e.target.value) || 1) }
+                      setManualOrderItems(newItems)
+                    }} required
+                      className="w-20 px-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-center" />
+                    {manualOrderItems.length > 1 && (
+                      <button onClick={() => setManualOrderItems(manualOrderItems.filter((_, i) => i !== idx))}
+                        className="p-2.5 text-red-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors">
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+              <button onClick={() => setManualOrderItems([...manualOrderItems, { productId: '', quantity: 1 }])}
+                className="mt-2 flex items-center gap-1.5 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 font-medium">
+                <Plus className="w-4 h-4" /> Agregar producto
+              </button>
+            </div>
+
+            {/* Total preview */}
+            {manualOrderItems.some((i) => i.productId) && (
+              <div className="mb-4 p-3 bg-gray-50 dark:bg-gray-900/50 rounded-xl text-sm">
+                <span className="text-gray-500 dark:text-gray-400">Total estimado: </span>
+                <span className="font-bold text-gray-900 dark:text-white">
+                  ${manualOrderItems.reduce((sum, item) => {
+                    const p = products.find((x) => x.id === item.productId)
+                    if (!p || !item.productId) return sum
+                    const price = manualOrderCondition === 'WHOLESALE' ? (p.precioMayorista || 0) : (p.precioBase || 0)
+                    return sum + price * item.quantity
+                  }, 0).toLocaleString('es-CL')}
+                </span>
+                <span className="text-gray-400 dark:text-gray-500"> ({manualOrderCondition === 'WHOLESALE' ? 'Mayorista' : 'Minorista'})</span>
+              </div>
+            )}
+
+            <button onClick={handleCreateManualOrder} disabled={!manualOrderUser || manualOrderItems.every((i) => !i.productId) || manualOrderSubmitting}
+              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold text-white bg-gray-900 dark:bg-blue-600 hover:bg-gray-800 dark:hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
+              {manualOrderSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
+              {manualOrderSubmitting ? 'Creando...' : 'Crear Pedido'}
+            </button>
           </div>
         </div>
       )}

@@ -5,6 +5,7 @@ const orderController = require('../controllers/orderController')
 
 const router = Router()
 
+router.post('/manual', authenticate, authorize('ADMIN'), orderController.createManual)
 router.post('/from-cart', authenticate, orderController.createFromCart)
 router.get('/', authenticate, authorize('ADMIN'), orderController.list)
 router.get('/mine', authenticate, orderController.listMyOrders)

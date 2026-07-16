@@ -264,4 +264,75 @@ async function cancelMyOrder(req, res) {
   }
 }
 
-module.exports = { createFromCart, list, listMyOrders, getById, approve, remove, downloadPdf, cancelMyOrder }
+async function createManual(req, res) {
+  try {
+    const { userId, condition, items } = req.body
+
+    if (!userId || !condition || !items || items.length === 0) {
+      return res.status(400).json({ error: 'Faltan datos: userId, condition, items requeridos' })
+    }
+
+    if (!['RETAIL', 'WHOLESALE'].includes(condition)) {
+      return res.status(400).json({ error: 'La condición debe ser RETAIL o WHOLESALE' })
+    }
+
+    const user = await prisma.user.findUnique({ where: { id: userId } })
+    if (!user) {
+      return res.status(404).json({ error: 'Usuario no encontrado' })
+    }
+
+    const productIds = items.map((i) => i.productId)
+    const products = await prisma.product.findMany({ where: { id: { in: productIds } } })
+    const productMap = {}
+    for (const p of products) { productMap[p.id] = p }
+
+    for (const item of items) {
+      const product = productMap[item.productId]
+      if (!product) {
+        return res.status(404).json({ error: `Producto ID ${item.productId} no encontrado` })
+      }
+      if (item.quantity > product.stock) {
+        return res.status(400).json({
+          error: `Stock insuficiente para "${product.name}". Disponible: ${product.stock}, solicitado: ${item.quantity}`,
+        })
+      }
+    }
+
+    const strategy = getPricingStrategy(condition)
+    let total = 0
+    const orderItems = items.map((item) => {
+      const product = productMap[item.productId]
+      const pricing = strategy.getPrice(product)
+      const unitPrice = pricing.unitPrice
+      const subtotal = unitPrice * item.quantity
+      total += subtotal
+      return {
+        productId: product.id,
+        productName: product.name,
+        quantity: item.quantity,
+        unitPrice,
+        subtotal,
+      }
+    })
+
+    const order = await prisma.order.create({
+      data: {
+        userId,
+        total,
+        clientCondition: condition,
+        items: { create: orderItems },
+      },
+      include: {
+        items: true,
+        user: { select: { id: true, name: true, email: true, role: true } },
+      },
+    })
+
+    res.status(201).json(order)
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Error al crear pedido manual' })
+  }
+}
+
+module.exports = { createFromCart, createManual, list, listMyOrders, getById, approve, remove, downloadPdf, cancelMyOrder }
