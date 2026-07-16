@@ -224,8 +224,9 @@ export default function AdminDashboard() {
   const [showManualOrder, setShowManualOrder] = useState(false)
   const [manualOrderUser, setManualOrderUser] = useState('')
   const [manualOrderCondition, setManualOrderCondition] = useState('RETAIL')
-  const [manualOrderItems, setManualOrderItems] = useState([{ productId: '', quantity: 1 }])
+  const [manualOrderItems, setManualOrderItems] = useState([{ productId: '', quantity: 1, search: '' }])
   const [manualOrderSearchProduct, setManualOrderSearchProduct] = useState('')
+  const [manualOrderSearchUser, setManualOrderSearchUser] = useState('')
   const [manualOrderSubmitting, setManualOrderSubmitting] = useState(false)
 
   async function loadOrders(search = '', status = '') {
@@ -268,7 +269,7 @@ export default function AdminDashboard() {
       setShowManualOrder(false)
       setManualOrderUser('')
       setManualOrderCondition('RETAIL')
-      setManualOrderItems([{ productId: '', quantity: 1 }])
+      setManualOrderItems([{ productId: '', quantity: 1, search: '' }])
       loadOrders(orderSearch, orderStatusFilter)
     } catch (err) {
       showMsg(err.response?.data?.error || 'Error al crear pedido', true)
@@ -1344,13 +1345,33 @@ export default function AdminDashboard() {
             {/* User */}
             <div className="mb-4">
               <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1.5">Usuario *</label>
-              <select value={manualOrderUser} onChange={(e) => setManualOrderUser(e.target.value)} required
-                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
-                <option value="">Seleccionar usuario</option>
-                {users.filter((u) => u.active).map((u) => (
-                  <option key={u.id} value={u.id}>{u.name} ({u.email})</option>
-                ))}
-              </select>
+              <div className="relative">
+                <input type="text" placeholder="Buscar usuario por nombre o email..." autoComplete="off"
+                  value={manualOrderUser ? (users.find((u) => u.id === manualOrderUser)?.name || '') : manualOrderSearchUser}
+                  onChange={(e) => { setManualOrderSearchUser(e.target.value); if (!e.target.value) setManualOrderUser('') }}
+                  onFocus={() => { if (manualOrderUser) { setManualOrderUser(''); setManualOrderSearchUser('') } }}
+                  className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                {manualOrderUser && (
+                  <button onClick={() => { setManualOrderUser(''); setManualOrderSearchUser('') }}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
+                {manualOrderSearchUser && (
+                  <div className="absolute z-10 top-full mt-1 left-0 right-0 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl max-h-48 overflow-y-auto">
+                    {users.filter((u) => u.active && (u.name.toLowerCase().includes(manualOrderSearchUser.toLowerCase()) || u.email.toLowerCase().includes(manualOrderSearchUser.toLowerCase()))).length === 0 ? (
+                      <div className="px-4 py-3 text-sm text-gray-400 dark:text-gray-500">Sin resultados</div>
+                    ) : (
+                      users.filter((u) => u.active && (u.name.toLowerCase().includes(manualOrderSearchUser.toLowerCase()) || u.email.toLowerCase().includes(manualOrderSearchUser.toLowerCase()))).map((u) => (
+                        <button key={u.id} type="button" onClick={() => { setManualOrderUser(u.id); setManualOrderSearchUser('') }}
+                          className="w-full text-left px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                          {u.name} <span className="text-gray-400 dark:text-gray-500">{u.email}</span>
+                        </button>
+                      ))
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Condition */}
@@ -1374,20 +1395,53 @@ export default function AdminDashboard() {
               <div className="space-y-3">
                 {manualOrderItems.map((item, idx) => (
                   <div key={idx} className="flex items-start gap-2">
-                    <div className="flex-1">
-                      <select value={item.productId} onChange={(e) => {
-                        const newItems = [...manualOrderItems]
-                        newItems[idx] = { ...newItems[idx], productId: Number(e.target.value) }
-                        setManualOrderItems(newItems)
-                      }} required
-                        className="w-full px-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
-                        <option value="">Seleccionar producto</option>
-                        {products.filter((p) => p.active).map((p) => (
-                          <option key={p.id} value={p.id}>
-                            {p.name} — ${(manualOrderCondition === 'WHOLESALE' ? p.precioMayorista : p.precioBase).toLocaleString('es-CL')} (stock: {p.stock})
-                          </option>
-                        ))}
-                      </select>
+                    <div className="flex-1 relative">
+                      <input type="text" placeholder="Buscar producto..." autoComplete="off"
+                        value={item.productId ? (products.find((p) => p.id === item.productId)?.name || '') : item.search}
+                        onChange={(e) => {
+                          const newItems = [...manualOrderItems]
+                          newItems[idx] = { ...newItems[idx], search: e.target.value, productId: '' }
+                          setManualOrderItems(newItems)
+                        }}
+                        onFocus={() => {
+                          if (item.productId) {
+                            const newItems = [...manualOrderItems]
+                            newItems[idx] = { ...newItems[idx], productId: '', search: '' }
+                            setManualOrderItems(newItems)
+                          }
+                        }}
+                        className="w-full px-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                      {item.productId && (
+                        <button onClick={() => {
+                          const newItems = [...manualOrderItems]
+                          newItems[idx] = { ...newItems[idx], productId: '', search: '' }
+                          setManualOrderItems(newItems)
+                        }}
+                          className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                          <X className="w-4 h-4" />
+                        </button>
+                      )}
+                      {item.search && (
+                        <div className="absolute z-10 top-full mt-1 left-0 right-0 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl max-h-48 overflow-y-auto">
+                          {products.filter((p) => p.active && p.name.toLowerCase().includes(item.search.toLowerCase())).length === 0 ? (
+                            <div className="px-4 py-3 text-sm text-gray-400 dark:text-gray-500">Sin resultados</div>
+                          ) : (
+                            products.filter((p) => p.active && p.name.toLowerCase().includes(item.search.toLowerCase())).map((p) => (
+                              <button key={p.id} type="button" onClick={() => {
+                                const newItems = [...manualOrderItems]
+                                newItems[idx] = { ...newItems[idx], productId: p.id, search: '' }
+                                setManualOrderItems(newItems)
+                              }}
+                                className="w-full text-left px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center justify-between">
+                                <span>{p.name}</span>
+                                <span className="text-xs text-gray-400 dark:text-gray-500">
+                                  ${(manualOrderCondition === 'WHOLESALE' ? p.precioMayorista : p.precioBase).toLocaleString('es-CL')} · stock: {p.stock}
+                                </span>
+                              </button>
+                            ))
+                          )}
+                        </div>
+                      )}
                     </div>
                     <input type="number" min="1" value={item.quantity} onChange={(e) => {
                       const newItems = [...manualOrderItems]
@@ -1404,7 +1458,7 @@ export default function AdminDashboard() {
                   </div>
                 ))}
               </div>
-              <button onClick={() => setManualOrderItems([...manualOrderItems, { productId: '', quantity: 1 }])}
+              <button onClick={() => setManualOrderItems([...manualOrderItems, { productId: '', quantity: 1, search: '' }])}
                 className="mt-2 flex items-center gap-1.5 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 font-medium">
                 <Plus className="w-4 h-4" /> Agregar producto
               </button>
