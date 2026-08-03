@@ -40,7 +40,8 @@ function invalidateCache(prefix) {
 }
 
 function invalidateProducts() {
-  invalidateProducts()
+  invalidateCache('/products')
+  invalidateCache('/products/featured')
   invalidateCache('/categories')
 }
 
