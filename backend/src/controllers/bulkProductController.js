@@ -178,21 +178,23 @@ const precioBase = parsePrice(pick(row, ['precio venta', 'venta', 'precio base',
     }
 
     if (updated.length > 0) {
-      for (const u of updated) {
-        await prisma.product.update({
-          where: { id: u.id },
-          data: {
-            name: u.name,
-            ...(u.sku ? { sku: u.sku } : {}),
-            ...(u.proveedor ? { proveedor: u.proveedor } : {}),
-            ...(u.categoryId ? { categoryId: u.categoryId } : {}),
-            precioBase: u.precioBase,
-            precioMayorista: u.precioMayorista,
-            precioCosto: u.precioCosto,
-          },
-        })
-        updatedCount++
-      }
+      await prisma.$transaction(async (tx) => {
+        for (const u of updated) {
+          await tx.product.update({
+            where: { id: u.id },
+            data: {
+              name: u.name,
+              ...(u.sku ? { sku: u.sku } : {}),
+              ...(u.proveedor ? { proveedor: u.proveedor } : {}),
+              ...(u.categoryId ? { categoryId: u.categoryId } : {}),
+              precioBase: u.precioBase,
+              precioMayorista: u.precioMayorista,
+              precioCosto: u.precioCosto,
+            },
+          })
+        }
+      }, { timeout: 120000 })
+      updatedCount = updated.length
     }
 
     invalidateProductsAndCategories()
