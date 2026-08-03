@@ -5,11 +5,13 @@ const { optionalAuth } = require('../middleware/authMiddleware')
 const authorize = require('../middleware/roleMiddleware')
 const { cacheMiddleware } = require('../middleware/cacheMiddleware')
 const productController = require('../controllers/productController')
+const bulkProductController = require('../controllers/bulkProductController')
 
 const router = Router()
 
 router.get('/featured', optionalAuth, cacheMiddleware(), productController.getFeatured)
 router.get('/', authenticate, cacheMiddleware(), productController.list)
+router.post('/bulk-upload', authenticate, authorize('ADMIN'), bulkProductController.upload.single('file'), bulkProductController.bulkUpload)
 router.get('/:id', authenticate, cacheMiddleware(), productController.getById)
 
 router.post(

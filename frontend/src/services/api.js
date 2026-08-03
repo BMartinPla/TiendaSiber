@@ -139,6 +139,12 @@ export function getFeaturedProducts() {
   return cachedGet('/products/featured')
 }
 
+export function bulkUploadProducts(file) {
+  const formData = new FormData()
+  formData.append('file', file)
+  return api.post('/products/bulk-upload', formData).then((res) => { invalidateProducts(); return res.data })
+}
+
 export function getCart() {
   return api.get('/cart').then((res) => res.data)
 }

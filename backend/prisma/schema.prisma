@@ -43,6 +43,7 @@ model Category {
 
 model Product {
   id              Int       @id @default(autoincrement())
+  sku             String?   @unique
   name            String
   description     String?
   precioBase      Float     @map("precio_base")

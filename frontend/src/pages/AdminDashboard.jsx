@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { ArrowLeft, Plus, X, Save, Trash2, RefreshCw, Package, ShieldOff, Upload, ChevronDown, ChevronRight, User, UserPlus, ShoppingBag, ShoppingCart, Loader2, LayoutDashboard, LogOut, Moon, Sun, Settings, Star } from 'lucide-react'
+import { ArrowLeft, Plus, X, Save, Trash2, RefreshCw, Package, ShieldOff, Upload, ChevronDown, ChevronRight, User, UserPlus, ShoppingBag, ShoppingCart, Loader2, LayoutDashboard, LogOut, Moon, Sun, Settings, Star, FileSpreadsheet } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import { useDarkMode } from '../contexts/DarkModeContext'
 import ImageCropper from '../components/ImageCropper'
 import {
   getProducts,
   getProduct,
+  bulkUploadProducts,
   createProduct,
   updateProduct,
   bulkUpdatePrices,
@@ -50,6 +51,8 @@ export default function AdminDashboard() {
   const [bulkPercentage, setBulkPercentage] = useState('')
   const [selectedIds, setSelectedIds] = useState([])
   const [selectAll, setSelectAll] = useState(false)
+  const [bulkUploading, setBulkUploading] = useState(false)
+  const [bulkResult, setBulkResult] = useState(null)
 
   const [categories, setCategories] = useState([])
   const [showCategoryForm, setShowCategoryForm] = useState(false)
@@ -121,6 +124,25 @@ export default function AdminDashboard() {
     setLoading(true)
     try { setProducts(await getProducts()) } catch { showMsg('Error al cargar productos', true) }
     finally { setLoading(false) }
+  }
+
+  async function handleBulkUpload(e) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setBulkUploading(true)
+    setBulkResult(null)
+    try {
+      const res = await bulkUploadProducts(file)
+      setBulkResult(res)
+      showMsg(res.message, res.errors?.length > 0)
+      loadProducts()
+      loadCategories()
+    } catch (err) {
+      showMsg(err.response?.data?.error || 'Error al cargar productos desde el archivo', true)
+    } finally {
+      setBulkUploading(false)
+      e.target.value = ''
+    }
   }
 
   async function loadUsers(search = '') {
@@ -688,12 +710,37 @@ export default function AdminDashboard() {
                   {/* Header */}
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
                     <h3 className="text-lg font-bold text-gray-900 dark:text-white">Todos los Productos</h3>
-                    <button onClick={() => setShowCreate(!showCreate)}
-                      className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white transition-colors shadow-sm ${showCreate ? 'bg-gray-500 hover:bg-gray-600' : 'bg-gray-900 dark:bg-blue-600 hover:bg-gray-800 dark:hover:bg-blue-700'}`}>
-                      {showCreate ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
-                      {showCreate ? 'Cancelar' : 'Nuevo Producto'}
-                    </button>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-900/30 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors border border-blue-100 dark:border-blue-800">
+                        <FileSpreadsheet className="w-4 h-4" />
+                        {bulkUploading ? 'Cargando...' : 'Carga Masiva'}
+                        <input type="file" accept=".xlsx,.xls,.csv" className="hidden" disabled={bulkUploading}
+                          onChange={handleBulkUpload} />
+                      </label>
+                      <button onClick={() => setShowCreate(!showCreate)}
+                        className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white transition-colors shadow-sm ${showCreate ? 'bg-gray-500 hover:bg-gray-600' : 'bg-gray-900 dark:bg-blue-600 hover:bg-gray-800 dark:hover:bg-blue-700'}`}>
+                        {showCreate ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+                        {showCreate ? 'Cancelar' : 'Nuevo Producto'}
+                      </button>
+                    </div>
                   </div>
+
+                  {/* Bulk upload result */}
+                  {bulkResult && (
+                    <div className={`mb-4 rounded-xl border p-4 text-sm ${bulkResult.errors?.length > 0 ? 'bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-300' : 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 text-green-700 dark:text-green-300'}`}>
+                      <p className="font-semibold mb-1">{bulkResult.message}</p>
+                      <p className="text-xs">
+                        Creados: {bulkResult.created} · Actualizados: {bulkResult.updated} · Errores: {bulkResult.errors?.length || 0}
+                      </p>
+                      {bulkResult.errors?.length > 0 && (
+                        <div className="mt-2 max-h-28 overflow-y-auto space-y-0.5">
+                          {bulkResult.errors.map((err, i) => (
+                            <p key={i} className="text-xs">Fila {err.row || '?'}: {err.reason}</p>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
 
                   {/* Create form */}
                   {showCreate && (
