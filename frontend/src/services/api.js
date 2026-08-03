@@ -42,6 +42,7 @@ function invalidateCache(prefix) {
 function invalidateProducts() {
   invalidateCache('/products')
   invalidateCache('/products/featured')
+  invalidateCache('/products/proveedores')
   invalidateCache('/categories')
 }
 
@@ -138,6 +139,10 @@ export function toggleFeatured(id) {
 
 export function getFeaturedProducts() {
   return cachedGet('/products/featured')
+}
+
+export function getProveedores() {
+  return cachedGet('/products/proveedores')
 }
 
 export function bulkUploadProducts(file) {

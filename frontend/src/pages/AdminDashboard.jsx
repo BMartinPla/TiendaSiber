@@ -18,6 +18,7 @@ import {
   restoreProduct,
   deleteProduct,
   getCategories,
+  getProveedores,
   createCategory,
   suspendCategory,
   restoreCategory,
@@ -55,6 +56,8 @@ export default function AdminDashboard() {
   const [bulkResult, setBulkResult] = useState(null)
 
   const [categories, setCategories] = useState([])
+  const [proveedores, setProveedores] = useState([])
+  const [proveedorFilter, setProveedorFilter] = useState('')
   const [showCategoryForm, setShowCategoryForm] = useState(false)
   const [catForm, setCatForm] = useState({ name: '' })
   const [expandedCat, setExpandedCat] = useState(null)
@@ -63,11 +66,11 @@ export default function AdminDashboard() {
 
   const [editProduct, setEditProduct] = useState(null)
   const [editForm, setEditForm] = useState({
-    name: '', description: '', precioBase: '', precioMayorista: '', precioCosto: '', stock: '', imageUrl: '', featuredImageUrl: '', categoryId: '',
+    name: '', description: '', precioBase: '', precioMayorista: '', precioCosto: '', stock: '', imageUrl: '', featuredImageUrl: '', categoryId: '', proveedor: '',
   })
 
   const [form, setForm] = useState({
-    name: '', description: '', precioBase: '', precioMayorista: '', precioCosto: '', stock: '', imageUrl: '', featuredImageUrl: '', categoryId: '',
+    name: '', description: '', precioBase: '', precioMayorista: '', precioCosto: '', stock: '', imageUrl: '', featuredImageUrl: '', categoryId: '', proveedor: '',
   })
 
   const [users, setUsers] = useState([])
@@ -89,6 +92,10 @@ export default function AdminDashboard() {
     loadCategories()
     loadUsers()
     loadOrders()
+  }, [])
+
+  useEffect(() => {
+    getProveedores().then(setProveedores).catch(() => {})
   }, [])
 
   useEffect(() => {
@@ -395,9 +402,10 @@ export default function AdminDashboard() {
         imageUrl: form.imageUrl || undefined,
         featuredImageUrl: form.featuredImageUrl || undefined,
         categoryId: form.categoryId ? parseInt(form.categoryId) : undefined,
+        proveedor: form.proveedor || null,
       })
       setShowCreate(false)
-      setForm({ name: '', description: '', precioBase: '', precioMayorista: '', precioCosto: '', stock: '', imageUrl: '', featuredImageUrl: '', categoryId: '' })
+      setForm({ name: '', description: '', precioBase: '', precioMayorista: '', precioCosto: '', stock: '', imageUrl: '', featuredImageUrl: '', categoryId: '', proveedor: '' })
       showMsg('Producto creado exitosamente')
       await loadProducts()
       if (expandedCat) await loadCatProducts(expandedCat)
@@ -451,6 +459,7 @@ export default function AdminDashboard() {
       imageUrl: product.imageUrl || '',
       featuredImageUrl: product.featuredImageUrl || '',
       categoryId: product.categoryId ? String(product.categoryId) : '',
+      proveedor: product.proveedor || '',
     })
   }
 
@@ -470,6 +479,7 @@ export default function AdminDashboard() {
         imageUrl: editForm.imageUrl || undefined,
         featuredImageUrl: editForm.featuredImageUrl || undefined,
         categoryId: editForm.categoryId ? parseInt(editForm.categoryId) : null,
+        proveedor: editForm.proveedor || null,
       })
       showMsg(`"${editForm.name}" actualizado`)
       closeEdit()
@@ -542,6 +552,8 @@ export default function AdminDashboard() {
     { label: 'Usuarios', value: users.length, icon: User, color: 'bg-purple-500' },
     { label: 'Categorías', value: categories.length, icon: Settings, color: 'bg-red-500' },
   ]
+
+  const visibleProducts = proveedorFilter ? products.filter((p) => p.proveedor === proveedorFilter) : products
 
   if (loading && products.length === 0) return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex items-center justify-center">
@@ -713,6 +725,13 @@ export default function AdminDashboard() {
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
                     <h3 className="text-lg font-bold text-gray-900 dark:text-white">Todos los Productos</h3>
                     <div className="flex flex-wrap items-center gap-2">
+                      <select value={proveedorFilter} onChange={(e) => setProveedorFilter(e.target.value)}
+                        className="px-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+                        <option value="">Todos los proveedores</option>
+                        {proveedores.map((prov) => (
+                          <option key={prov} value={prov}>{prov}</option>
+                        ))}
+                      </select>
                       <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-900/30 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors border border-blue-100 dark:border-blue-800">
                         <FileSpreadsheet className="w-4 h-4" />
                         {bulkUploading ? 'Cargando...' : 'Carga Masiva'}
@@ -771,6 +790,10 @@ export default function AdminDashboard() {
                         </div>
                         <div>
                           <input type="number" placeholder="Stock" value={form.stock} onChange={(e) => setForm({ ...form, stock: e.target.value })}
+                            className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                        </div>
+                        <div>
+                          <input placeholder="Proveedor" value={form.proveedor} onChange={(e) => setForm({ ...form, proveedor: e.target.value })}
                             className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                         </div>
                         <div className="sm:col-span-2">
@@ -849,6 +872,7 @@ export default function AdminDashboard() {
                               className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
                           </th>
                           <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Producto</th>
+                          <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Proveedor</th>
                           <th className="text-center px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Precios</th>
                           <th className="text-center px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Stock</th>
                           <th className="text-center px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Dest.</th>
@@ -857,8 +881,8 @@ export default function AdminDashboard() {
                         </tr>
                       </thead>
                       <tbody>
-                        {products.length === 0 ? (
-                          <tr><td colSpan={7} className="text-center px-4 py-12">
+                        {visibleProducts.length === 0 ? (
+                          <tr><td colSpan={8} className="text-center px-4 py-12">
                             <div className="flex flex-col items-center text-gray-400 dark:text-gray-500">
                               <Package className="w-10 h-10 mb-2 text-gray-300 dark:text-gray-600" />
                               <p className="text-sm font-medium">No hay productos</p>
@@ -866,7 +890,7 @@ export default function AdminDashboard() {
                             </div>
                           </td></tr>
                         ) : (
-                          products.map((p) => (
+                          visibleProducts.map((p) => (
                             <tr key={p.id} className={`border-t border-gray-50 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors ${p.active ? '' : 'opacity-50'}`}>
                               <td className="px-4 py-3">
                                 <input type="checkbox" checked={selectedIds.includes(p.id)} onChange={() => toggleSelect(p.id)}
@@ -882,6 +906,11 @@ export default function AdminDashboard() {
                                     <p className="text-xs text-gray-400 dark:text-gray-500">#{p.id}{p.category?.name ? ` · ${p.category.name}` : ''}</p>
                                   </div>
                                 </div>
+                              </td>
+                              <td className="px-4 py-3">
+                                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
+                                  {p.proveedor || '—'}
+                                </span>
                               </td>
                               <td className="px-4 py-3 text-center">
                                 <div className="inline-flex flex-col items-center gap-0.5">
@@ -1331,6 +1360,17 @@ export default function AdminDashboard() {
                 className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
               <input type="number" placeholder="Stock" value={editForm.stock} onChange={(e) => setEditForm({ ...editForm, stock: e.target.value })}
                 className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <input placeholder="Proveedor" value={editForm.proveedor} onChange={(e) => setEditForm({ ...editForm, proveedor: e.target.value })}
+                  className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                <select value={editForm.categoryId} onChange={(e) => setEditForm({ ...editForm, categoryId: e.target.value })}
+                  className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+                  <option value="">Sin categoría</option>
+                  {categories.filter((c) => c.active).map((c) => (
+                    <option key={c.id} value={c.id}>{c.name}</option>
+                  ))}
+                </select>
+              </div>
               <div>
                 <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Imagen</label>
                 <div className="flex flex-wrap items-center gap-3">
@@ -1365,13 +1405,6 @@ export default function AdminDashboard() {
                   <img src={editForm.featuredImageUrl} alt="Vista previa destacada" className="mt-2 h-20 w-20 object-cover rounded-lg border dark:border-gray-600" />
                 )}
               </div>
-              <select value={editForm.categoryId} onChange={(e) => setEditForm({ ...editForm, categoryId: e.target.value })}
-                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
-                <option value="">Sin categoría</option>
-                {categories.filter((c) => c.active).map((c) => (
-                  <option key={c.id} value={c.id}>{c.name}</option>
-                ))}
-              </select>
               <div className="flex flex-col sm:flex-row gap-3 pt-2">
                 <button type="submit"
                   className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold text-white bg-gray-900 hover:bg-gray-800 transition-colors">
