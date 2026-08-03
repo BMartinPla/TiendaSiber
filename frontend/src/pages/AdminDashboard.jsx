@@ -419,6 +419,8 @@ export default function AdminDashboard() {
     try {
       const updated = await toggleFeatured(product.id)
       showMsg(updated.featured ? `"${product.name}" destacado` : `"${product.name}" ya no está destacado`)
+      setProducts((prev) => prev.map((p) => (p.id === updated.id ? updated : p)))
+      setCatProducts((prev) => prev.map((p) => (p.id === updated.id ? updated : p)))
       await loadProducts()
       if (expandedCat) await loadCatProducts(expandedCat)
     } catch { showMsg('Error al destacar producto', true) }
