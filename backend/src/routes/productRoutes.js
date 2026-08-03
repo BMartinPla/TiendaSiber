@@ -3,13 +3,14 @@ const { body } = require('express-validator')
 const authenticate = require('../middleware/authMiddleware')
 const { optionalAuth } = require('../middleware/authMiddleware')
 const authorize = require('../middleware/roleMiddleware')
+const { cacheMiddleware } = require('../middleware/cacheMiddleware')
 const productController = require('../controllers/productController')
 
 const router = Router()
 
-router.get('/featured', optionalAuth, productController.getFeatured)
-router.get('/', authenticate, productController.list)
-router.get('/:id', authenticate, productController.getById)
+router.get('/featured', optionalAuth, cacheMiddleware(), productController.getFeatured)
+router.get('/', authenticate, cacheMiddleware(), productController.list)
+router.get('/:id', authenticate, cacheMiddleware(), productController.getById)
 
 router.post(
   '/',

@@ -6,6 +6,7 @@ import { useDarkMode } from '../contexts/DarkModeContext'
 import ImageCropper from '../components/ImageCropper'
 import {
   getProducts,
+  getProduct,
   createProduct,
   updateProduct,
   bulkUpdatePrices,
@@ -411,7 +412,10 @@ export default function AdminDashboard() {
     } catch { showMsg('Error al eliminar producto', true) }
   }
 
-  function openEdit(product) {
+  async function openEdit(product) {
+    try {
+      product = await getProduct(product.id)
+    } catch { /* usa los datos del listado */ }
     setEditProduct(product)
     setEditForm({
       name: product.name,

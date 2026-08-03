@@ -1,5 +1,6 @@
 const prisma = require('../config/database')
 const { validationResult } = require('express-validator')
+const { invalidateProductsAndCategories } = require('../middleware/cacheMiddleware')
 
 async function list(req, res) {
   try {
@@ -41,6 +42,7 @@ async function create(req, res) {
     const { name } = req.body
     if (!name) return res.status(400).json({ error: 'El nombre es obligatorio' })
     const category = await prisma.category.create({ data: { name } })
+    invalidateProductsAndCategories()
     res.status(201).json(category)
   } catch (error) {
     console.error(error)
@@ -61,6 +63,7 @@ async function update(req, res) {
         ...(name !== undefined && { name }),
       },
     })
+    invalidateProductsAndCategories()
     res.json(updated)
   } catch (error) {
     console.error(error)
@@ -75,6 +78,7 @@ async function softDelete(req, res) {
     const category = await prisma.category.findUnique({ where: { id: Number(id) } })
     if (!category) return res.status(404).json({ error: 'Categoría no encontrada' })
     const updated = await prisma.category.update({ where: { id: Number(id) }, data: { active: false } })
+    invalidateProductsAndCategories()
     res.json({ message: 'Categoría suspendida', category: updated })
   } catch (error) {
     console.error(error)
@@ -88,6 +92,7 @@ async function restore(req, res) {
     const category = await prisma.category.findUnique({ where: { id: Number(id) } })
     if (!category) return res.status(404).json({ error: 'Categoría no encontrada' })
     const updated = await prisma.category.update({ where: { id: Number(id) }, data: { active: true } })
+    invalidateProductsAndCategories()
     res.json({ message: 'Categoría restaurada', category: updated })
   } catch (error) {
     console.error(error)
@@ -107,6 +112,7 @@ async function hardDelete(req, res) {
       })
     }
     await prisma.category.delete({ where: { id: Number(id) } })
+    invalidateProductsAndCategories()
     res.json({ message: 'Categoría eliminada permanentemente' })
   } catch (error) {
     console.error(error)

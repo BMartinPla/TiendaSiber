@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { getProducts, getCategories, getFeaturedProducts } from '../services/api'
+import { getProducts, getProduct, getCategories, getFeaturedProducts } from '../services/api'
 import ProductCard from '../components/ProductCard'
 import ProductModal from '../components/ProductModal'
 import Cart from '../components/Cart'
@@ -27,14 +27,12 @@ export default function Home() {
     : featuredProducts
 
   useEffect(() => {
-    Promise.all([getProducts(), getCategories(), getFeaturedProducts()])
-      .then(([prods, cats, featured]) => {
-        setProducts(prods)
+    Promise.all([getCategories(), getFeaturedProducts()])
+      .then(([cats, featured]) => {
         setCategories(cats)
         setFeaturedProducts(featured)
       })
       .catch((err) => setError(err.response?.data?.error || 'Error al cargar datos'))
-      .finally(() => setLoading(false))
   }, [])
 
   useEffect(() => {
@@ -73,6 +71,13 @@ export default function Home() {
       .then(setProducts)
       .catch((err) => setError(err.response?.data?.error || 'Error al cargar productos'))
       .finally(() => setLoading(false))
+  }
+
+  function openProduct(product) {
+    setSelectedProduct(product)
+    getProduct(product.id)
+      .then(setSelectedProduct)
+      .catch(() => {})
   }
 
   function buildParams(categories, searchTerm, sort) {
@@ -120,10 +125,10 @@ export default function Home() {
                 const product = visibleFeatured[currentSlide]
                 if (!product) return null
                 return (
-                  <div key={product.id} onClick={() => setSelectedProduct(product)} className="cursor-pointer relative">
+                  <div key={product.id} onClick={() => openProduct(product)} className="cursor-pointer relative">
                     <div className="aspect-[2/1] sm:aspect-[21/9] bg-gray-100 dark:bg-gray-700/50">
                       {product.featuredImageUrl || product.imageUrl ? (
-                          <img src={product.featuredImageUrl || product.imageUrl} alt={product.name} className="w-full h-full object-contain" />
+                          <img src={product.featuredImageUrl || product.imageUrl} alt={product.name} loading="lazy" className="w-full h-full object-contain" />
                       ) : (
                         <div className="w-full h-full flex flex-col items-center justify-center gap-2 text-gray-300 dark:text-gray-600">
                           <Star className="w-12 h-12 text-amber-300 fill-amber-300" />
@@ -222,7 +227,7 @@ export default function Home() {
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
               {[...products].sort((a, b) => (b.stock > 0 ? 1 : 0) - (a.stock > 0 ? 1 : 0)).map((product, i) => (
-                <ProductCard key={product.id} product={product} index={i} onView={() => setSelectedProduct(product)} />
+                <ProductCard key={product.id} product={product} index={i} onView={() => openProduct(product)} />
               ))}
             </div>
           )}

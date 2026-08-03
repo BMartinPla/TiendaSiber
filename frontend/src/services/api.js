@@ -5,6 +5,45 @@ const api = axios.create({
   timeout: 15000,
 })
 
+const cache = new Map()
+const CACHE_TTL = 5 * 60 * 1000
+
+function currentRole() {
+  try {
+    const stored = localStorage.getItem('user')
+    return stored ? JSON.parse(stored)?.role || 'GUEST' : 'GUEST'
+  } catch {
+    return 'GUEST'
+  }
+}
+
+function cacheKey(url) {
+  return `${url}|${currentRole()}`
+}
+
+function cachedGet(url, ttl = CACHE_TTL) {
+  const key = cacheKey(url)
+  const entry = cache.get(key)
+  if (entry && Date.now() - entry.ts < ttl) {
+    return Promise.resolve(entry.data)
+  }
+  return api.get(url).then((res) => {
+    cache.set(key, { ts: Date.now(), data: res.data })
+    return res.data
+  })
+}
+
+function invalidateCache(prefix) {
+  for (const key of [...cache.keys()]) {
+    if (!prefix || key.startsWith(prefix)) cache.delete(key)
+  }
+}
+
+function invalidateProducts() {
+  invalidateProducts()
+  invalidateCache('/categories')
+}
+
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token')
   if (token) {
@@ -45,59 +84,59 @@ export function getProfile() {
 }
 
 export function getProducts(query = '') {
-  return api.get(`/products${query}`).then((res) => res.data)
+  return cachedGet(`/products${query}`)
 }
 
 export function getProduct(id) {
-  return api.get(`/products/${id}`).then((res) => res.data)
+  return cachedGet(`/products/${id}`)
 }
 
 export function createProduct(data) {
-  return api.post('/products', data).then((res) => res.data)
+  return api.post('/products', data).then((res) => { invalidateProducts(); return res.data })
 }
 
 export function updateProduct(id, data) {
-  return api.put(`/products/${id}`, data).then((res) => res.data)
+  return api.put(`/products/${id}`, data).then((res) => { invalidateProducts(); return res.data })
 }
 
 export function updateProductPrice(id, data) {
-  return api.patch(`/products/${id}/price`, data).then((res) => res.data)
+  return api.patch(`/products/${id}/price`, data).then((res) => { invalidateProducts(); return res.data })
 }
 
 export function bulkUpdatePrices(productIds, percentage) {
-  return api.post('/products/bulk-update-prices', { productIds, percentage }).then((res) => res.data)
+  return api.post('/products/bulk-update-prices', { productIds, percentage }).then((res) => { invalidateProducts(); return res.data })
 }
 
 export function bulkSuspendProducts(productIds) {
-  return api.post('/products/bulk-suspend', { productIds }).then((res) => res.data)
+  return api.post('/products/bulk-suspend', { productIds }).then((res) => { invalidateProducts(); return res.data })
 }
 
 export function bulkRestoreProducts(productIds) {
-  return api.post('/products/bulk-restore', { productIds }).then((res) => res.data)
+  return api.post('/products/bulk-restore', { productIds }).then((res) => { invalidateProducts(); return res.data })
 }
 
 export function bulkDeleteProducts(productIds) {
-  return api.post('/products/bulk-delete', { productIds }).then((res) => res.data)
+  return api.post('/products/bulk-delete', { productIds }).then((res) => { invalidateProducts(); return res.data })
 }
 
 export function suspendProduct(id) {
-  return api.patch(`/products/${id}/suspend`).then((res) => res.data)
+  return api.patch(`/products/${id}/suspend`).then((res) => { invalidateProducts(); return res.data })
 }
 
 export function restoreProduct(id) {
-  return api.patch(`/products/${id}/restore`).then((res) => res.data)
+  return api.patch(`/products/${id}/restore`).then((res) => { invalidateProducts(); return res.data })
 }
 
 export function deleteProduct(id) {
-  return api.delete(`/products/${id}`).then((res) => res.data)
+  return api.delete(`/products/${id}`).then((res) => { invalidateProducts(); return res.data })
 }
 
 export function toggleFeatured(id) {
-  return api.patch(`/products/${id}/featured`).then((res) => res.data)
+  return api.patch(`/products/${id}/featured`).then((res) => { invalidateProducts(); return res.data })
 }
 
 export function getFeaturedProducts() {
-  return api.get('/products/featured').then((res) => res.data)
+  return cachedGet('/products/featured')
 }
 
 export function getCart() {
@@ -129,31 +168,31 @@ export function getWhatsAppLink() {
 }
 
 export function getCategories() {
-  return api.get('/categories').then((res) => res.data)
+  return cachedGet('/categories')
 }
 
 export function getCategory(id) {
-  return api.get(`/categories/${id}`).then((res) => res.data)
+  return cachedGet(`/categories/${id}`)
 }
 
 export function createCategory(data) {
-  return api.post('/categories', data).then((res) => res.data)
+  return api.post('/categories', data).then((res) => { invalidateCache('/categories'); return res.data })
 }
 
 export function updateCategory(id, data) {
-  return api.put(`/categories/${id}`, data).then((res) => res.data)
+  return api.put(`/categories/${id}`, data).then((res) => { invalidateCache('/categories'); return res.data })
 }
 
 export function suspendCategory(id) {
-  return api.patch(`/categories/${id}/suspend`).then((res) => res.data)
+  return api.patch(`/categories/${id}/suspend`).then((res) => { invalidateCache('/categories'); return res.data })
 }
 
 export function restoreCategory(id) {
-  return api.patch(`/categories/${id}/restore`).then((res) => res.data)
+  return api.patch(`/categories/${id}/restore`).then((res) => { invalidateCache('/categories'); return res.data })
 }
 
 export function deleteCategory(id) {
-  return api.delete(`/categories/${id}`).then((res) => res.data)
+  return api.delete(`/categories/${id}`).then((res) => { invalidateCache('/categories'); return res.data })
 }
 
 export function getUsers(search = '') {

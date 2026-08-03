@@ -1,8 +1,24 @@
 const prisma = require('../config/database')
 const { getPricingStrategy } = require('../strategies/pricingStrategy')
 const { validationResult } = require('express-validator')
+const { invalidateProductsAndCategories } = require('../middleware/cacheMiddleware')
 
 const productInclude = { category: { select: { id: true, name: true } } }
+
+const productListSelect = {
+  id: true,
+  name: true,
+  precioBase: true,
+  precioMayorista: true,
+  precioCosto: true,
+  stock: true,
+  imageUrl: true,
+  featuredImageUrl: true,
+  featured: true,
+  active: true,
+  createdAt: true,
+  category: { select: { id: true, name: true } },
+}
 
 async function list(req, res) {
   try {
@@ -26,7 +42,7 @@ async function list(req, res) {
 
     const products = await prisma.product.findMany({
       where,
-      include: productInclude,
+      select: productListSelect,
       orderBy,
     })
 
@@ -100,6 +116,7 @@ async function create(req, res) {
       include: productInclude,
     })
 
+    invalidateProductsAndCategories()
     res.status(201).json(product)
   } catch (error) {
     console.error(error)
@@ -133,6 +150,7 @@ async function update(req, res) {
       include: productInclude,
     })
 
+    invalidateProductsAndCategories()
     res.json(updated)
   } catch (error) {
     console.error(error)
@@ -162,6 +180,7 @@ async function updatePrice(req, res) {
       },
     })
 
+    invalidateProductsAndCategories()
     res.json({ message: 'Precio actualizado', product: updated })
   } catch (error) {
     console.error(error)
@@ -195,6 +214,7 @@ async function bulkUpdatePrices(req, res) {
       where: { id: { in: productIds.map(Number) } },
     })
 
+    invalidateProductsAndCategories()
     res.json({
       message: `Precios actualizados: ${percentage >= 0 ? '+' : ''}${percentage}%`,
       affectedCount: result.count,
@@ -220,6 +240,7 @@ async function softDelete(req, res) {
       data: { active: false },
     })
 
+    invalidateProductsAndCategories()
     res.json({ message: 'Producto suspendido (borrado lógico)', product: updated })
   } catch (error) {
     console.error(error)
@@ -241,6 +262,7 @@ async function restore(req, res) {
       data: { active: true },
     })
 
+    invalidateProductsAndCategories()
     res.json({ message: 'Producto restaurado', product: updated })
   } catch (error) {
     console.error(error)
@@ -259,6 +281,7 @@ async function hardDelete(req, res) {
 
     await prisma.product.delete({ where: { id: Number(id) } })
 
+    invalidateProductsAndCategories()
     res.json({ message: 'Producto eliminado permanentemente' })
   } catch (error) {
     console.error(error)
@@ -278,6 +301,7 @@ async function toggleFeatured(req, res) {
       include: productInclude,
     })
 
+    invalidateProductsAndCategories()
     res.json(updated)
   } catch (error) {
     console.error(error)
@@ -289,7 +313,7 @@ async function getFeatured(req, res) {
   try {
     const products = await prisma.product.findMany({
       where: { active: true, featured: true, stock: { gt: 0 } },
-      include: productInclude,
+      select: productListSelect,
     })
 
     const strategy = getPricingStrategy(req.user?.role || 'RETAIL')
@@ -318,6 +342,7 @@ async function bulkSuspend(req, res) {
       data: { active: false },
     })
 
+    invalidateProductsAndCategories()
     res.json({ message: `${result.count} producto(s) suspendido(s)`, count: result.count })
   } catch (error) {
     console.error(error)
@@ -337,6 +362,7 @@ async function bulkRestore(req, res) {
       data: { active: true },
     })
 
+    invalidateProductsAndCategories()
     res.json({ message: `${result.count} producto(s) restaurado(s)`, count: result.count })
   } catch (error) {
     console.error(error)
@@ -355,6 +381,7 @@ async function bulkDelete(req, res) {
       where: { id: { in: productIds.map(Number) } },
     })
 
+    invalidateProductsAndCategories()
     res.json({ message: `${result.count} producto(s) eliminado(s) permanentemente`, count: result.count })
   } catch (error) {
     console.error(error)

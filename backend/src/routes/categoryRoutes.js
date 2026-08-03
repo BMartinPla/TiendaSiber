@@ -2,12 +2,13 @@ const { Router } = require('express')
 const { body } = require('express-validator')
 const authenticate = require('../middleware/authMiddleware')
 const authorize = require('../middleware/roleMiddleware')
+const { cacheMiddleware } = require('../middleware/cacheMiddleware')
 const categoryController = require('../controllers/categoryController')
 
 const router = Router()
 
-router.get('/', authenticate, categoryController.list)
-router.get('/:id', authenticate, categoryController.getById)
+router.get('/', authenticate, cacheMiddleware(), categoryController.list)
+router.get('/:id', authenticate, cacheMiddleware(), categoryController.getById)
 
 router.post(
   '/',
