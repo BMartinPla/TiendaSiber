@@ -108,11 +108,11 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     if (selectAll) {
-      setSelectedIds(products.map((p) => p.id))
+      setSelectedIds(visibleProducts.map((p) => p.id))
     } else {
       setSelectedIds([])
     }
-  }, [selectAll, products])
+  }, [selectAll, products, categoryFilter, proveedorFilter, searchQuery])
 
   useEffect(() => {
     if (selectAllUsers) {
