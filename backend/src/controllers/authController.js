@@ -13,7 +13,11 @@ async function register(req, res) {
 
     const { name, email, password, role, phone } = req.body
 
-    const exists = await prisma.user.findUnique({ where: { email } })
+    const normalizedEmail = String(email || '').trim().toLowerCase()
+
+    const exists = await prisma.user.findFirst({
+      where: { email: { equals: normalizedEmail, mode: 'insensitive' } },
+    })
     if (exists) {
       return res.status(409).json({ error: 'El email ya está registrado' })
     }
@@ -23,7 +27,7 @@ async function register(req, res) {
     const user = await prisma.user.create({
       data: {
         name,
-        email,
+        email: normalizedEmail,
         password: hashedPassword,
         role: role || 'RETAIL',
         phone,
@@ -53,7 +57,11 @@ async function login(req, res) {
 
     const { email, password } = req.body
 
-    const user = await prisma.user.findUnique({ where: { email } })
+    const normalizedEmail = String(email || '').trim().toLowerCase()
+
+    const user = await prisma.user.findFirst({
+      where: { email: { equals: normalizedEmail, mode: 'insensitive' } },
+    })
     if (!user) {
       return res.status(401).json({ error: 'Credenciales inválidas' })
     }
@@ -129,7 +137,11 @@ async function adminCreateUser(req, res) {
 
     const { name, email, password, role, phone } = req.body
 
-    const exists = await prisma.user.findUnique({ where: { email } })
+    const normalizedEmail = String(email || '').trim().toLowerCase()
+
+    const exists = await prisma.user.findFirst({
+      where: { email: { equals: normalizedEmail, mode: 'insensitive' } },
+    })
     if (exists) {
       return res.status(409).json({ error: 'El email ya está registrado' })
     }
@@ -139,7 +151,7 @@ async function adminCreateUser(req, res) {
     const user = await prisma.user.create({
       data: {
         name,
-        email,
+        email: normalizedEmail,
         password: hashedPassword,
         role: role || 'RETAIL',
         phone,
