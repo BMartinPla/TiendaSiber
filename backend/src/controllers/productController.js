@@ -9,6 +9,7 @@ const productInclude = { category: { select: { id: true, name: true } } }
 const productListSelect = {
   id: true,
   sku: true,
+  categoryId: true,
   proveedor: true,
   name: true,
   precioBase: true,

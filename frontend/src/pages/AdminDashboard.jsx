@@ -594,7 +594,7 @@ export default function AdminDashboard() {
 
   const visibleProducts = products.filter((p) => {
     if (proveedorFilter && p.proveedor !== proveedorFilter) return false
-    if (categoryFilter && String(p.categoryId) !== String(categoryFilter)) return false
+    if (categoryFilter && String(p.categoryId ?? p.category?.id) !== String(categoryFilter)) return false
     if (searchQuery) {
       const q = searchQuery.toLowerCase()
       const hay = [p.name, p.sku, p.proveedor, p.category?.name].filter(Boolean).join(' ').toLowerCase()
