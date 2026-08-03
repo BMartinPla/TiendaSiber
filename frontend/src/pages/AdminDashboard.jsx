@@ -4,6 +4,7 @@ import { ArrowLeft, Plus, X, Save, Trash2, RefreshCw, Package, ShieldOff, Upload
 import { useAuth } from '../contexts/AuthContext'
 import { useDarkMode } from '../contexts/DarkModeContext'
 import ImageCropper from '../components/ImageCropper'
+import CategorySelect from '../components/CategorySelect'
 import {
   getProducts,
   getProduct,
@@ -831,13 +832,7 @@ export default function AdminDashboard() {
                           )}
                         </div>
                         <div>
-                          <select value={form.categoryId} onChange={(e) => setForm({ ...form, categoryId: e.target.value })}
-                            className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
-                            <option value="">Sin categoría</option>
-                            {categories.filter((c) => c.active).map((c) => (
-                              <option key={c.id} value={c.id}>{c.name}</option>
-                            ))}
-                          </select>
+                          <CategorySelect value={form.categoryId} onChange={(id) => setForm({ ...form, categoryId: id })} categories={categories} />
                         </div>
                         <div className="sm:col-span-2">
                           <button type="submit"
@@ -1363,13 +1358,7 @@ export default function AdminDashboard() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <input placeholder="Proveedor" value={editForm.proveedor} onChange={(e) => setEditForm({ ...editForm, proveedor: e.target.value })}
                   className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
-                <select value={editForm.categoryId} onChange={(e) => setEditForm({ ...editForm, categoryId: e.target.value })}
-                  className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
-                  <option value="">Sin categoría</option>
-                  {categories.filter((c) => c.active).map((c) => (
-                    <option key={c.id} value={c.id}>{c.name}</option>
-                  ))}
-                </select>
+                <CategorySelect value={editForm.categoryId} onChange={(id) => setEditForm({ ...editForm, categoryId: id })} categories={categories} />
               </div>
               <div>
                 <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Imagen</label>
