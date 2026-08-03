@@ -84,15 +84,6 @@ export default function Login() {
               Regístrate
             </Link>
           </p>
-
-          <div className="mt-6 pt-5 border-t border-gray-100 dark:border-gray-700">
-            <p className="text-xs font-medium text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-2">Credenciales de prueba</p>
-            <div className="space-y-1 text-xs text-gray-500 dark:text-gray-400">
-              <p><span className="font-medium text-gray-600 dark:text-gray-300">Admin:</span> admin@tiendasiper.com / admin123</p>
-              <p><span className="font-medium text-gray-600 dark:text-gray-300">Cliente:</span> cliente@tiendasiper.com / admin123</p>
-              <p><span className="font-medium text-gray-600 dark:text-gray-300">Mayorista:</span> mayorista@tiendasiper.com / admin123</p>
-            </div>
-          </div>
         </div>
       </div>
     </div>

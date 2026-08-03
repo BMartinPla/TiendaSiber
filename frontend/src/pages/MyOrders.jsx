@@ -83,7 +83,7 @@ export default function MyOrders() {
                       <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">{new Date(order.createdAt).toLocaleDateString('es-AR')}</span>
                       <span className="text-sm font-bold text-gray-900 dark:text-white">${order.total.toLocaleString('es-CL')}</span>
                       {order.status === 'PENDING' && (
-                        <button onClick={() => handleCancel(order.id)}
+                        <button onClick={(e) => { e.stopPropagation(); handleCancel(order.id) }}
                           className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium text-white bg-red-500 hover:bg-red-600 transition-colors">
                           <XCircle className="w-3 h-3" /> Cancelar
                         </button>
