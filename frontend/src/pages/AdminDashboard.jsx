@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { ArrowLeft, Plus, X, Save, Trash2, RefreshCw, Package, ShieldOff, Upload, ChevronDown, ChevronRight, User, UserPlus, ShoppingBag, ShoppingCart, Loader2, LayoutDashboard, LogOut, Moon, Sun, Settings, Star, FileSpreadsheet } from 'lucide-react'
+import { ArrowLeft, Plus, X, Save, Trash2, RefreshCw, Package, ShieldOff, Upload, ChevronDown, ChevronRight, User, UserPlus, ShoppingBag, ShoppingCart, Loader2, LayoutDashboard, LogOut, Moon, Sun, Settings, Star, FileSpreadsheet, Download } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import { useDarkMode } from '../contexts/DarkModeContext'
 import ImageCropper from '../components/ImageCropper'
 import CategorySelect from '../components/CategorySelect'
+import ProveedorSelect from '../components/ProveedorSelect'
 import {
   getProducts,
   getProduct,
   bulkUploadProducts,
+  exportProducts,
   createProduct,
   updateProduct,
   bulkUpdatePrices,
@@ -53,6 +55,9 @@ export default function AdminDashboard() {
   const [showCreate, setShowCreate] = useState(false)
   const [bulkPercentage, setBulkPercentage] = useState('')
   const [bulkStockValue, setBulkStockValue] = useState('')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [categoryFilter, setCategoryFilter] = useState('')
+  const [productSectionOpen, setProductSectionOpen] = useState(true)
   const [selectedIds, setSelectedIds] = useState([])
   const [selectAll, setSelectAll] = useState(false)
   const [bulkUploading, setBulkUploading] = useState(false)
@@ -130,6 +135,10 @@ export default function AdminDashboard() {
     try { setCategories(await getCategories()) } catch { showMsg('Error al cargar categorías', true) }
   }
 
+  async function loadProveedores() {
+    try { setProveedores(await getProveedores()) } catch {}
+  }
+
   async function loadProducts() {
     setLoading(true)
     try { setProducts(await getProducts()) } catch { showMsg('Error al cargar productos', true) }
@@ -147,11 +156,20 @@ export default function AdminDashboard() {
       showMsg(res.message, res.errors?.length > 0)
       loadProducts()
       loadCategories()
+      loadProveedores()
     } catch (err) {
       showMsg(err.response?.data?.error || 'Error al cargar productos desde el archivo', true)
     } finally {
       setBulkUploading(false)
       e.target.value = ''
+    }
+  }
+
+  async function handleExport() {
+    try {
+      await exportProducts()
+    } catch {
+      showMsg('Error al exportar productos', true)
     }
   }
 
@@ -411,6 +429,7 @@ export default function AdminDashboard() {
       setForm({ name: '', description: '', precioBase: '', precioMayorista: '', precioCosto: '', stock: '', imageUrl: '', featuredImageUrl: '', categoryId: '', proveedor: '' })
       showMsg('Producto creado exitosamente')
       await loadProducts()
+      loadProveedores()
       if (expandedCat) await loadCatProducts(expandedCat)
     } catch (err) {
       showMsg(err.response?.data?.error || 'Error al crear producto', true)
@@ -487,6 +506,7 @@ export default function AdminDashboard() {
       showMsg(`"${editForm.name}" actualizado`)
       closeEdit()
       await loadProducts()
+      loadProveedores()
       if (expandedCat) await loadCatProducts(expandedCat)
     } catch { showMsg('Error al actualizar', true) }
   }
@@ -572,7 +592,16 @@ export default function AdminDashboard() {
     { label: 'Categorías', value: categories.length, icon: Settings, color: 'bg-red-500' },
   ]
 
-  const visibleProducts = proveedorFilter ? products.filter((p) => p.proveedor === proveedorFilter) : products
+  const visibleProducts = products.filter((p) => {
+    if (proveedorFilter && p.proveedor !== proveedorFilter) return false
+    if (categoryFilter && String(p.categoryId) !== String(categoryFilter)) return false
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase()
+      const hay = [p.name, p.sku, p.proveedor, p.category?.name].filter(Boolean).join(' ').toLowerCase()
+      if (!hay.includes(q)) return false
+    }
+    return true
+  })
 
   if (loading && products.length === 0) return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex items-center justify-center">
@@ -742,15 +771,20 @@ export default function AdminDashboard() {
                 <div className="p-4 sm:p-6">
                   {/* Header */}
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">Todos los Productos</h3>
+                    <div className="flex items-center gap-2">
+                      <button onClick={() => setProductSectionOpen(!productSectionOpen)}
+                        className="p-1.5 rounded-lg text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" title={productSectionOpen ? 'Minimizar' : 'Expandir'}>
+                        <ChevronDown className={`w-5 h-5 transition-transform ${productSectionOpen ? '' : '-rotate-90'}`} />
+                      </button>
+                      <h3 className="text-lg font-bold text-gray-900 dark:text-white">Todos los Productos</h3>
+                      <span className="text-xs text-gray-400 dark:text-gray-500 font-medium">({visibleProducts.length}/{products.length})</span>
+                    </div>
                     <div className="flex flex-wrap items-center gap-2">
-                      <select value={proveedorFilter} onChange={(e) => setProveedorFilter(e.target.value)}
-                        className="px-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
-                        <option value="">Todos los proveedores</option>
-                        {proveedores.map((prov) => (
-                          <option key={prov} value={prov}>{prov}</option>
-                        ))}
-                      </select>
+                      <button onClick={handleExport}
+                        className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-green-700 dark:text-green-300 bg-green-50 dark:bg-green-900/30 hover:bg-green-100 dark:hover:bg-green-900/50 transition-colors border border-green-100 dark:border-green-800">
+                        <Download className="w-4 h-4" />
+                        Exportar
+                      </button>
                       <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-900/30 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors border border-blue-100 dark:border-blue-800">
                         <FileSpreadsheet className="w-4 h-4" />
                         {bulkUploading ? 'Cargando...' : 'Carga Masiva'}
@@ -765,6 +799,28 @@ export default function AdminDashboard() {
                     </div>
                   </div>
 
+                  {/* Filtros */}
+                  <div className="flex flex-col sm:flex-row gap-2 mb-6">
+                    <input placeholder="Buscar producto, código, proveedor o categoría..."
+                      value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
+                      className="flex-1 min-w-0 px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                    <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)}
+                      className="px-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+                      <option value="">Todas las categorías</option>
+                      {categories.map((c) => (
+                        <option key={c.id} value={c.id}>{c.name}</option>
+                      ))}
+                    </select>
+                    <select value={proveedorFilter} onChange={(e) => setProveedorFilter(e.target.value)}
+                      className="px-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+                      <option value="">Todos los proveedores</option>
+                      {proveedores.map((prov) => (
+                        <option key={prov} value={prov}>{prov}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {productSectionOpen && (<>
                   {/* Bulk upload result */}
                   {bulkResult && (
                     <div className={`mb-4 rounded-xl border p-4 text-sm ${bulkResult.errors?.length > 0 ? 'bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-300' : 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 text-green-700 dark:text-green-300'}`}>
@@ -812,8 +868,7 @@ export default function AdminDashboard() {
                             className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                         </div>
                         <div>
-                          <input placeholder="Proveedor" value={form.proveedor} onChange={(e) => setForm({ ...form, proveedor: e.target.value })}
-                            className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                          <ProveedorSelect value={form.proveedor} onChange={(v) => setForm({ ...form, proveedor: v })} proveedores={proveedores} />
                         </div>
                         <div className="sm:col-span-2">
                           <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Imagen</label>
@@ -972,6 +1027,7 @@ export default function AdminDashboard() {
                       </tbody>
                     </table>
                   </div>
+                  </>)}
                 </div>
               </div>
 
@@ -1381,8 +1437,7 @@ export default function AdminDashboard() {
               <input type="number" placeholder="Stock" value={editForm.stock} onChange={(e) => setEditForm({ ...editForm, stock: e.target.value })}
                 className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <input placeholder="Proveedor" value={editForm.proveedor} onChange={(e) => setEditForm({ ...editForm, proveedor: e.target.value })}
-                  className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                <ProveedorSelect value={editForm.proveedor} onChange={(v) => setEditForm({ ...editForm, proveedor: v })} proveedores={proveedores} />
                 <CategorySelect value={editForm.categoryId} onChange={(id) => setEditForm({ ...editForm, categoryId: id })} categories={categories} />
               </div>
               <div>

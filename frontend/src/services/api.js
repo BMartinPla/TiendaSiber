@@ -155,6 +155,18 @@ export function bulkUploadProducts(file) {
   return api.post('/products/bulk-upload', formData).then((res) => { invalidateProducts(); return res.data })
 }
 
+export async function exportProducts() {
+  const res = await api.get('/products/export', { responseType: 'blob' })
+  const url = URL.createObjectURL(res.data)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `productos-${new Date().toISOString().slice(0, 10)}.xlsx`
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(url)
+}
+
 export function getCart() {
   return api.get('/cart').then((res) => res.data)
 }

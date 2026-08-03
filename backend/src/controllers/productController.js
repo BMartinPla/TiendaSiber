@@ -1,4 +1,5 @@
 const prisma = require('../config/database')
+const XLSX = require('xlsx')
 const { getPricingStrategy } = require('../strategies/pricingStrategy')
 const { validationResult } = require('express-validator')
 const { invalidateProductsAndCategories } = require('../middleware/cacheMiddleware')
@@ -298,6 +299,38 @@ async function bulkUpdateStock(req, res) {
   }
 }
 
+async function exportProducts(req, res) {
+  try {
+    const products = await prisma.product.findMany({
+      include: { category: { select: { name: true } } },
+      orderBy: { name: 'asc' },
+    })
+
+    const rows = products.map((p) => ({
+      PROVEEDOR: p.proveedor || '',
+      CODIGO: p.sku || '',
+      CATEGORIA: p.category?.name || '',
+      PRODUCTO: p.name,
+      'PRECIO VENTA': p.precioBase,
+      'PRECIO COSTO': p.precioMayorista,
+      'COSTO PURO': p.precioCosto,
+      STOCK: p.stock,
+    }))
+
+    const ws = XLSX.utils.json_to_sheet(rows)
+    const wb = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(wb, ws, 'Productos')
+    const buf = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' })
+
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    res.setHeader('Content-Disposition', `attachment; filename="productos-${new Date().toISOString().slice(0, 10)}.xlsx"`)
+    res.send(buf)
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Error al exportar productos' })
+  }
+}
+
 async function softDelete(req, res) {
   try {
     const { id } = req.params
@@ -470,6 +503,7 @@ module.exports = {
   updatePrice,
   bulkUpdatePrices,
   bulkUpdateStock,
+  exportProducts,
   softDelete,
   restore,
   hardDelete,
