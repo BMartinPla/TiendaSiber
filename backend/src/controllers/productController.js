@@ -8,6 +8,7 @@ const productInclude = { category: { select: { id: true, name: true } } }
 const productListSelect = {
   id: true,
   sku: true,
+  proveedor: true,
   name: true,
   precioBase: true,
   precioMayorista: true,
@@ -37,6 +38,10 @@ async function list(req, res) {
       where.name = { contains: req.query.search, mode: 'insensitive' }
     }
 
+    if (req.query.proveedor) {
+      where.proveedor = { contains: req.query.proveedor, mode: 'insensitive' }
+    }
+
     let orderBy = { name: 'asc' }
     if (req.query.sortBy === 'price_asc') orderBy = { precioBase: 'asc' }
     else if (req.query.sortBy === 'price_desc') orderBy = { precioBase: 'desc' }
@@ -63,6 +68,21 @@ async function list(req, res) {
   } catch (error) {
     console.error(error)
     res.status(500).json({ error: 'Error al obtener productos' })
+  }
+}
+
+async function getProveedores(req, res) {
+  try {
+    const rows = await prisma.product.findMany({
+      where: { proveedor: { not: null } },
+      select: { proveedor: true },
+      distinct: ['proveedor'],
+      orderBy: { proveedor: 'asc' },
+    })
+    res.json(rows.map((r) => r.proveedor))
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Error al obtener proveedores' })
   }
 }
 
@@ -96,7 +116,7 @@ async function create(req, res) {
       return res.status(400).json({ error: errors.array().map((e) => e.msg).join(', ') })
     }
 
-    const { name, description, precioBase, precioMayorista, precioCosto, stock, imageUrl, featuredImageUrl, categoryId } = req.body
+    const { name, description, precioBase, precioMayorista, precioCosto, stock, imageUrl, featuredImageUrl, categoryId, proveedor } = req.body
 
     if (!name || precioBase == null || precioMayorista == null || precioCosto == null) {
       return res.status(400).json({ error: 'Nombre, precio_minorista, precio_mayorista y precio_costo son obligatorios' })
@@ -113,6 +133,7 @@ async function create(req, res) {
         imageUrl,
         featuredImageUrl: featuredImageUrl || null,
         categoryId: categoryId || null,
+        proveedor: proveedor || null,
       },
       include: productInclude,
     })
@@ -128,7 +149,7 @@ async function create(req, res) {
 async function update(req, res) {
   try {
     const { id } = req.params
-    const { name, description, precioBase, precioMayorista, precioCosto, stock, imageUrl, featuredImageUrl, categoryId } = req.body
+    const { name, description, precioBase, precioMayorista, precioCosto, stock, imageUrl, featuredImageUrl, categoryId, proveedor } = req.body
 
     const product = await prisma.product.findUnique({ where: { id: Number(id) } })
     if (!product) {
@@ -147,6 +168,7 @@ async function update(req, res) {
         ...(imageUrl !== undefined && { imageUrl }),
         ...(featuredImageUrl !== undefined && { featuredImageUrl: featuredImageUrl || null }),
         ...(categoryId !== undefined && { categoryId: categoryId || null }),
+        ...(proveedor !== undefined && { proveedor: proveedor || null }),
       },
       include: productInclude,
     })
@@ -392,6 +414,7 @@ async function bulkDelete(req, res) {
 
 module.exports = {
   list,
+  getProveedores,
   getById,
   create,
   update,

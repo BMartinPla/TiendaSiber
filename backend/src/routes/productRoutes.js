@@ -10,6 +10,7 @@ const bulkProductController = require('../controllers/bulkProductController')
 const router = Router()
 
 router.get('/featured', optionalAuth, cacheMiddleware(), productController.getFeatured)
+router.get('/proveedores', authenticate, cacheMiddleware(), productController.getProveedores)
 router.get('/', authenticate, cacheMiddleware(), productController.list)
 router.post('/bulk-upload', authenticate, authorize('ADMIN'), bulkProductController.upload.single('file'), bulkProductController.bulkUpload)
 router.get('/:id', authenticate, cacheMiddleware(), productController.getById)

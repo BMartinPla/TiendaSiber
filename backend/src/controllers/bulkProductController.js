@@ -24,9 +24,13 @@ function normalizeHeader(h) {
 function pick(row, candidates) {
   for (const key of Object.keys(row)) {
     const nk = normalizeHeader(key)
-    if (candidates.includes(nk)) {
-      return row[key]
+    let best = null
+    for (const c of candidates) {
+      if (nk === c || nk.startsWith(c + ' ')) {
+        if (!best || c.length > best.length) best = c
+      }
     }
+    if (best) return row[key]
   }
   return null
 }
@@ -80,6 +84,26 @@ async function bulkUpload(req, res) {
       if (p.sku) bySku.set(normalizeHeader(p.sku), p.id)
     }
 
+    const existingCats = await prisma.category.findMany({ select: { id: true, name: true } })
+    const catByName = new Map(existingCats.map((c) => [normalizeHeader(c.name), c.id]))
+    const wantedCatNames = new Map()
+    for (const row of rows) {
+      const name = parseText(pick(row, ['nombre', 'name', 'producto', 'product']))
+      const precioBase = parsePrice(pick(row, ['precio venta', 'venta', 'precio base', 'preciobase', 'precio_base', 'precio minorista', 'preciominorista', 'precio_minorista']))
+      const precioMayorista = parsePrice(pick(row, ['precio costo', 'precio mayorista', 'preciomayorista', 'precio_mayorista', 'precio mayor']))
+      const precioCosto = parsePrice(pick(row, ['costo puro', 'costo puro (usd)', 'precio costo puro', 'preciocosto', 'precio_costo', 'costo', 'cost']))
+      if (!name || precioBase == null || precioMayorista == null || precioCosto == null) continue
+      const cat = parseText(pick(row, ['categoria', 'category', 'rubro', 'tipo']))
+      if (!cat) continue
+      const normCat = normalizeHeader(cat)
+      if (!wantedCatNames.has(normCat)) wantedCatNames.set(normCat, cat)
+    }
+    for (const [normCat, origName] of wantedCatNames) {
+      if (catByName.has(normCat)) continue
+      const createdCat = await prisma.category.create({ data: { name: origName } })
+      catByName.set(normCat, createdCat.id)
+    }
+
     const created = []
     const updated = []
     const errors = []
@@ -91,9 +115,12 @@ async function bulkUpload(req, res) {
       try {
         const name = parseText(pick(row, ['nombre', 'name', 'producto', 'product']))
         const sku = parseText(pick(row, ['sku', 'codigo', 'code', 'id', 'ref'])) || null
-        const precioBase = parsePrice(pick(row, ['precio base', 'preciobase', 'precio_base', 'precio minorista', 'preciominorista', 'precio_minorista', 'precio']))
-        const precioMayorista = parsePrice(pick(row, ['precio mayorista', 'preciomayorista', 'precio_mayorista', 'precio mayor']))
-        const precioCosto = parsePrice(pick(row, ['precio costo', 'preciocosto', 'precio_costo', 'costo', 'cost']))
+        const proveedor = parseText(pick(row, ['proveedor', 'supplier', 'vendedor'])) || null
+        const categoria = parseText(pick(row, ['categoria', 'category', 'rubro', 'tipo'])) || null
+        const categoryId = categoria ? catByName.get(normalizeHeader(categoria)) || null : null
+const precioBase = parsePrice(pick(row, ['precio venta', 'venta', 'precio base', 'preciobase', 'precio_base', 'precio minorista', 'preciominorista', 'precio_minorista']))
+        const precioMayorista = parsePrice(pick(row, ['precio costo', 'precio mayorista', 'preciomayorista', 'precio_mayorista', 'precio mayor']))
+        const precioCosto = parsePrice(pick(row, ['costo puro', 'costo puro (usd)', 'precio costo puro', 'preciocosto', 'precio_costo', 'costo', 'cost']))
 
         if (!name) throw new Error('falta el nombre')
         if (precioBase == null || precioMayorista == null || precioCosto == null) {
@@ -118,9 +145,9 @@ async function bulkUpload(req, res) {
 
         const existingId = byName.get(normName) || (sku && bySku.get(normalizeHeader(sku)))
         if (existingId) {
-          updated.push({ id: existingId, name, sku, precioBase, precioMayorista, precioCosto })
+          updated.push({ id: existingId, name, sku, proveedor, categoryId, precioBase, precioMayorista, precioCosto })
         } else {
-          created.push({ name, sku, precioBase, precioMayorista, precioCosto, stock: 0, active: true })
+          created.push({ name, sku, proveedor, categoryId, precioBase, precioMayorista, precioCosto, stock: 0, active: true })
         }
       } catch (err) {
         errors.push({ row: rowNum, reason: err.message })
@@ -157,6 +184,8 @@ async function bulkUpload(req, res) {
           data: {
             name: u.name,
             ...(u.sku ? { sku: u.sku } : {}),
+            ...(u.proveedor ? { proveedor: u.proveedor } : {}),
+            ...(u.categoryId ? { categoryId: u.categoryId } : {}),
             precioBase: u.precioBase,
             precioMayorista: u.precioMayorista,
             precioCosto: u.precioCosto,
