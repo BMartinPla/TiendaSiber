@@ -855,17 +855,20 @@ export default function AdminDashboard() {
                           <textarea placeholder="Descripción" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={2}
                             className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                         </div>
-                        <div>
+                        <div className="relative">
                           <input type="number" step="0.01" placeholder="Precio Costo *" value={form.precioCosto} onChange={(e) => setForm({ ...form, precioCosto: e.target.value })} required
-                            className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                            className="w-full px-4 py-2.5 pr-20 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                          <span className="absolute inset-y-0 right-3 flex items-center text-xs text-gray-400 dark:text-gray-500 pointer-events-none">Costo</span>
                         </div>
-                        <div>
+                        <div className="relative">
                           <input type="number" step="0.01" placeholder="Precio Mayorista *" value={form.precioMayorista} onChange={(e) => setForm({ ...form, precioMayorista: e.target.value })} required
-                            className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                            className="w-full px-4 py-2.5 pr-24 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                          <span className="absolute inset-y-0 right-3 flex items-center text-xs text-gray-400 dark:text-gray-500 pointer-events-none">Mayorista</span>
                         </div>
-                        <div>
+                        <div className="relative">
                           <input type="number" step="0.01" placeholder="Precio Minorista *" value={form.precioBase} onChange={(e) => setForm({ ...form, precioBase: e.target.value })} required
-                            className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                            className="w-full px-4 py-2.5 pr-20 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                          <span className="absolute inset-y-0 right-3 flex items-center text-xs text-gray-400 dark:text-gray-500 pointer-events-none">Minorista</span>
                         </div>
                         <div>
                           <input type="number" placeholder="Stock" value={form.stock} onChange={(e) => setForm({ ...form, stock: e.target.value })}
@@ -1431,13 +1434,22 @@ export default function AdminDashboard() {
               <textarea placeholder="Descripción" value={editForm.description} onChange={(e) => setEditForm({ ...editForm, description: e.target.value })} rows={2}
                 className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <input type="number" step="0.01" placeholder="Precio Minorista *" value={editForm.precioBase} onChange={(e) => setEditForm({ ...editForm, precioBase: e.target.value })} required
-                  className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
-                <input type="number" step="0.01" placeholder="Precio Mayorista *" value={editForm.precioMayorista} onChange={(e) => setEditForm({ ...editForm, precioMayorista: e.target.value })} required
-                  className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                <div className="relative">
+                  <input type="number" step="0.01" placeholder="Precio Minorista *" value={editForm.precioBase} onChange={(e) => setEditForm({ ...editForm, precioBase: e.target.value })} required
+                    className="w-full px-4 py-2.5 pr-20 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                  <span className="absolute inset-y-0 right-3 flex items-center text-xs text-gray-400 dark:text-gray-500 pointer-events-none">Minorista</span>
+                </div>
+                <div className="relative">
+                  <input type="number" step="0.01" placeholder="Precio Mayorista *" value={editForm.precioMayorista} onChange={(e) => setEditForm({ ...editForm, precioMayorista: e.target.value })} required
+                    className="w-full px-4 py-2.5 pr-24 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                  <span className="absolute inset-y-0 right-3 flex items-center text-xs text-gray-400 dark:text-gray-500 pointer-events-none">Mayorista</span>
+                </div>
               </div>
-              <input type="number" step="0.01" placeholder="Precio Costo *" value={editForm.precioCosto} onChange={(e) => setEditForm({ ...editForm, precioCosto: e.target.value })} required
-                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+              <div className="relative">
+                <input type="number" step="0.01" placeholder="Precio Costo *" value={editForm.precioCosto} onChange={(e) => setEditForm({ ...editForm, precioCosto: e.target.value })} required
+                  className="w-full px-4 py-2.5 pr-20 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                <span className="absolute inset-y-0 right-3 flex items-center text-xs text-gray-400 dark:text-gray-500 pointer-events-none">Costo</span>
+              </div>
               <input type="number" placeholder="Stock" value={editForm.stock} onChange={(e) => setEditForm({ ...editForm, stock: e.target.value })}
                 className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
