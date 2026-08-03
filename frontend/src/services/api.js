@@ -155,8 +155,13 @@ export function bulkUploadProducts(file) {
   return api.post('/products/bulk-upload', formData).then((res) => { invalidateProducts(); return res.data })
 }
 
-export async function exportProducts() {
-  const res = await api.get('/products/export', { responseType: 'blob' })
+export async function exportProducts(params = {}) {
+  const qs = new URLSearchParams()
+  Object.entries(params).forEach(([k, v]) => {
+    if (v !== undefined && v !== null && v !== '') qs.set(k, v)
+  })
+  const suffix = qs.toString() ? `?${qs.toString()}` : ''
+  const res = await api.get(`/products/export${suffix}`, { responseType: 'blob' })
   const url = URL.createObjectURL(res.data)
   const a = document.createElement('a')
   a.href = url

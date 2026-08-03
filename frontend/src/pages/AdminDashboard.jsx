@@ -167,7 +167,11 @@ export default function AdminDashboard() {
 
   async function handleExport() {
     try {
-      await exportProducts()
+      await exportProducts({
+        categoryId: categoryFilter || undefined,
+        proveedor: proveedorFilter || undefined,
+        search: searchQuery || undefined,
+      })
     } catch {
       showMsg('Error al exportar productos', true)
     }

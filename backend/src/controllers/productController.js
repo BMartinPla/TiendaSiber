@@ -302,7 +302,26 @@ async function bulkUpdateStock(req, res) {
 
 async function exportProducts(req, res) {
   try {
+    const where = {}
+
+    if (req.query.categoryId) {
+      if (Array.isArray(req.query.categoryId)) {
+        where.categoryId = { in: req.query.categoryId.map(Number) }
+      } else {
+        where.categoryId = Number(req.query.categoryId)
+      }
+    }
+
+    if (req.query.search) {
+      where.name = { contains: req.query.search, mode: 'insensitive' }
+    }
+
+    if (req.query.proveedor) {
+      where.proveedor = { contains: req.query.proveedor, mode: 'insensitive' }
+    }
+
     const products = await prisma.product.findMany({
+      where,
       include: { category: { select: { name: true } } },
       orderBy: { name: 'asc' },
     })
