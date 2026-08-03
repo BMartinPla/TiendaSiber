@@ -249,6 +249,55 @@ async function bulkUpdatePrices(req, res) {
   }
 }
 
+async function bulkUpdateStock(req, res) {
+  try {
+    const { productIds, mode, value } = req.body
+
+    if (!productIds || !Array.isArray(productIds) || productIds.length === 0) {
+      return res.status(400).json({ error: 'Debes enviar un array productIds no vacío' })
+    }
+
+    if (!['set', 'add'].includes(mode)) {
+      return res.status(400).json({ error: 'mode debe ser "set" o "add"' })
+    }
+
+    const num = Number(value)
+    if (value == null || isNaN(num)) {
+      return res.status(400).json({ error: 'Debes enviar un value numérico válido' })
+    }
+
+    let data
+    if (mode === 'set') {
+      data = { stock: Math.max(0, Math.round(num)) }
+    } else {
+      data = { stock: { increment: Math.round(num) } }
+    }
+
+    const result = await prisma.product.updateMany({
+      where: { id: { in: productIds.map(Number) } },
+      data,
+    })
+
+    if (mode === 'add') {
+      await prisma.product.updateMany({
+        where: { id: { in: productIds.map(Number) }, stock: { lt: 0 } },
+        data: { stock: 0 },
+      })
+    }
+
+    invalidateProductsAndCategories()
+    res.json({
+      message: mode === 'set'
+        ? `Stock fijado en ${Math.round(num)}`
+        : `Stock ${num >= 0 ? 'incrementado' : 'decrementado'} en ${Math.abs(Math.round(num))}`,
+      affectedCount: result.count,
+    })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Error al modificar stock masivamente' })
+  }
+}
+
 async function softDelete(req, res) {
   try {
     const { id } = req.params
@@ -420,6 +469,7 @@ module.exports = {
   update,
   updatePrice,
   bulkUpdatePrices,
+  bulkUpdateStock,
   softDelete,
   restore,
   hardDelete,

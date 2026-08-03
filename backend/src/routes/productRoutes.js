@@ -31,6 +31,7 @@ router.post(
 router.put('/:id', authenticate, authorize('ADMIN'), productController.update)
 router.patch('/:id/price', authenticate, authorize('ADMIN'), productController.updatePrice)
 router.post('/bulk-update-prices', authenticate, authorize('ADMIN'), productController.bulkUpdatePrices)
+router.post('/bulk-stock', authenticate, authorize('ADMIN'), productController.bulkUpdateStock)
 router.post('/bulk-suspend', authenticate, authorize('ADMIN'), productController.bulkSuspend)
 router.post('/bulk-restore', authenticate, authorize('ADMIN'), productController.bulkRestore)
 router.post('/bulk-delete', authenticate, authorize('ADMIN'), productController.bulkDelete)

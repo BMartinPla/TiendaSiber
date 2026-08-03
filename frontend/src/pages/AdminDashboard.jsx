@@ -12,6 +12,7 @@ import {
   createProduct,
   updateProduct,
   bulkUpdatePrices,
+  bulkUpdateStock,
   bulkSuspendProducts,
   bulkRestoreProducts,
   bulkDeleteProducts,
@@ -51,6 +52,7 @@ export default function AdminDashboard() {
   const [success, setSuccess] = useState('')
   const [showCreate, setShowCreate] = useState(false)
   const [bulkPercentage, setBulkPercentage] = useState('')
+  const [bulkStockValue, setBulkStockValue] = useState('')
   const [selectedIds, setSelectedIds] = useState([])
   const [selectAll, setSelectAll] = useState(false)
   const [bulkUploading, setBulkUploading] = useState(false)
@@ -502,6 +504,22 @@ export default function AdminDashboard() {
     } catch { showMsg('Error en actualización masiva', true) }
   }
 
+  async function handleBulkStock(mode) {
+    if (selectedIds.length === 0) { showMsg('Selecciona al menos un producto', true); return }
+    const value = parseFloat(bulkStockValue)
+    if (isNaN(value)) { showMsg('Ingresa un valor de stock válido', true); return }
+    try {
+      const res = await bulkUpdateStock(selectedIds, mode, value)
+      showMsg(res.message)
+      setBulkStockValue('')
+      setSelectedIds([]); setSelectAll(false)
+      await loadProducts()
+      if (expandedCat) await loadCatProducts(expandedCat)
+    } catch (err) {
+      showMsg(err.response?.data?.error || 'Error al modificar stock', true)
+    }
+  }
+
   async function handleBulkAction(action) {
     if (selectedIds.length === 0) { showMsg('Selecciona al menos un producto', true); return }
     const label = { suspend: 'suspendido', restore: 'restaurado', delete: 'eliminado' }[action]
@@ -848,6 +866,13 @@ export default function AdminDashboard() {
                   {selectedIds.length > 0 && (
                     <div className="flex items-center gap-2 px-4 py-3 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl mb-4 flex-wrap">
                       <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">{selectedIds.length} seleccionado(s)</span>
+                      <input type="number" placeholder="Stock"
+                        value={bulkStockValue} onChange={(e) => setBulkStockValue(e.target.value)}
+                        className="w-24 px-3 py-1.5 rounded-lg text-sm border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 outline-none focus:ring-2 focus:ring-blue-500" />
+                      <button onClick={() => { handleBulkStock('set') }}
+                        className="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-green-500 hover:bg-green-600 transition-colors">Fijar</button>
+                      <button onClick={() => { handleBulkStock('add') }}
+                        className="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-teal-500 hover:bg-teal-600 transition-colors" title="Suma o resta el valor al stock actual (+/-)">+/-</button>
                       <button onClick={() => { handleBulkAction('suspend') }}
                         className="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-amber-500 hover:bg-amber-600 transition-colors">Suspender</button>
                       <button onClick={() => { handleBulkAction('restore') }}

@@ -109,6 +109,10 @@ export function bulkUpdatePrices(productIds, percentage) {
   return api.post('/products/bulk-update-prices', { productIds, percentage }).then((res) => { invalidateProducts(); return res.data })
 }
 
+export function bulkUpdateStock(productIds, mode, value) {
+  return api.post('/products/bulk-stock', { productIds, mode, value }).then((res) => { invalidateProducts(); return res.data })
+}
+
 export function bulkSuspendProducts(productIds) {
   return api.post('/products/bulk-suspend', { productIds }).then((res) => { invalidateProducts(); return res.data })
 }
