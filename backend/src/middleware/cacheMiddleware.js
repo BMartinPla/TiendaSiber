@@ -5,7 +5,7 @@ function cacheMiddleware({ ttl = DEFAULT_TTL } = {}) {
   return (req, res, next) => {
     if (req.method !== 'GET') return next()
 
-    res.set('Cache-Control', 'public, max-age=60, stale-while-revalidate=86400')
+    res.set('Cache-Control', 'no-store')
     res.set('Vary', 'Authorization')
 
     const key = cacheKeyFor(req)
