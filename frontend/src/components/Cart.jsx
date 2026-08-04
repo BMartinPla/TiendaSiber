@@ -3,6 +3,7 @@ import { X, Minus, Plus, Trash2, MessageCircle, CheckCircle, XCircle, ShoppingCa
 import { useCart } from '../contexts/CartContext'
 import { useAuth } from '../contexts/AuthContext'
 import { createOrderFromCart } from '../services/api'
+import { generateWhatsAppUrl } from '../services/whatsapp'
 
 export default function Cart({ open, onClose }) {
   const { items, loading, syncing, update, remove, clear } = useCart()
@@ -80,6 +81,17 @@ export default function Cart({ open, onClose }) {
   async function handleWhatsApp() {
     if (items.length === 0 || syncing) return
     try {
+      if (!user) {
+        window.open(
+          generateWhatsAppUrl(items, { name: 'Invitado', email: 'invitado@quincegearsn.com', role: 'RETAIL' }),
+          '_blank'
+        )
+        setOrderSuccess(true)
+        setOrderError('')
+        setTimeout(() => setOrderSuccess(false), 3000)
+        clear()
+        return
+      }
       const data = await createOrderFromCart()
       window.open(data.whatsappUrl, '_blank')
       setOrderSuccess(true)

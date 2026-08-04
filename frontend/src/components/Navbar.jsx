@@ -8,7 +8,7 @@ import ProfileModal from './ProfileModal'
 import OrdersModal from './OrdersModal'
 
 export default function Navbar({ onCartClick, search, onSearch, categories, selectedCategories, onCategoryChange }) {
-  const { logout, isAdmin } = useAuth()
+  const { user, logout, isAdmin } = useAuth()
   const { itemCount } = useCart()
   const { dark, toggleDark } = useDarkMode()
   const navigate = useNavigate()
@@ -71,34 +71,52 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
                 {dark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
               </button>
 
-              <button onClick={() => setProfileOpen(true)} className="p-1.5 sm:p-2 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" title="Perfil">
-                <User className="w-5 h-5" />
-              </button>
-
-              {!isAdmin && (
-                <button onClick={() => setOrdersOpen(true)} className="p-1.5 sm:p-2 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" title="Mis Pedidos">
-                  <ShoppingBag className="w-5 h-5" />
-                </button>
-              )}
-
-              {isAdmin ? (
-                <Link to="/admin" className="p-1.5 sm:p-2 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" title="Panel Admin">
-                  <LayoutDashboard className="w-5 h-5" />
-                </Link>
+              {!user ? (
+                <>
+                  <button onClick={onCartClick} className="relative p-1.5 sm:p-2 text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors">
+                    <ShoppingCart className="w-5 h-5" />
+                    {itemCount > 0 && (
+                      <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[10px] sm:text-xs font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">
+                        {itemCount > 99 ? '99+' : itemCount}
+                      </span>
+                    )}
+                  </button>
+                  <Link to="/login" className="px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-colors">
+                    Ingresar
+                  </Link>
+                </>
               ) : (
-                <button onClick={onCartClick} className="relative p-1.5 sm:p-2 text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors">
-                  <ShoppingCart className="w-5 h-5" />
-                  {itemCount > 0 && (
-                    <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[10px] sm:text-xs font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">
-                      {itemCount > 99 ? '99+' : itemCount}
-                    </span>
-                  )}
-                </button>
-              )}
+                <>
+                  <button onClick={() => setProfileOpen(true)} className="p-1.5 sm:p-2 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" title="Perfil">
+                    <User className="w-5 h-5" />
+                  </button>
 
-              <button onClick={handleLogout} className="p-1.5 sm:p-2 text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 transition-colors" title="Cerrar sesión">
-                <LogOut className="w-4 h-4 sm:w-5 sm:h-5" />
-              </button>
+                  {!isAdmin && (
+                    <button onClick={() => setOrdersOpen(true)} className="p-1.5 sm:p-2 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" title="Mis Pedidos">
+                      <ShoppingBag className="w-5 h-5" />
+                    </button>
+                  )}
+
+                  {isAdmin ? (
+                    <Link to="/admin" className="p-1.5 sm:p-2 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" title="Panel Admin">
+                      <LayoutDashboard className="w-5 h-5" />
+                    </Link>
+                  ) : (
+                    <button onClick={onCartClick} className="relative p-1.5 sm:p-2 text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors">
+                      <ShoppingCart className="w-5 h-5" />
+                      {itemCount > 0 && (
+                        <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[10px] sm:text-xs font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">
+                          {itemCount > 99 ? '99+' : itemCount}
+                        </span>
+                      )}
+                    </button>
+                  )}
+
+                  <button onClick={handleLogout} className="p-1.5 sm:p-2 text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 transition-colors" title="Cerrar sesión">
+                    <LogOut className="w-4 h-4 sm:w-5 sm:h-5" />
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>
