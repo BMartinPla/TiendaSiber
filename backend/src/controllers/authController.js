@@ -11,7 +11,7 @@ async function register(req, res) {
       return res.status(400).json({ errors: errors.array() })
     }
 
-    const { name, email, password, role, phone } = req.body
+    const { name, email, password, phone } = req.body
 
     const normalizedEmail = String(email || '').trim().toLowerCase()
 
@@ -29,7 +29,7 @@ async function register(req, res) {
         name,
         email: normalizedEmail,
         password: hashedPassword,
-        role: role || 'RETAIL',
+        role: 'RETAIL',
         phone,
       },
       select: { id: true, name: true, email: true, role: true, phone: true },

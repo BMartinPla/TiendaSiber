@@ -5,7 +5,7 @@ import { register } from '../services/api'
 import { useAuth } from '../contexts/AuthContext'
 
 export default function Register() {
-  const [form, setForm] = useState({ name: '', email: '', password: '', phone: '' })
+  const [form, setForm] = useState({ name: '', username: '', password: '', phone: '' })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const { loginUser } = useAuth()
@@ -20,7 +20,13 @@ export default function Register() {
     setError('')
     setLoading(true)
     try {
-      const data = await register({ ...form, role: 'RETAIL' })
+      const data = await register({
+        name: form.name,
+        email: form.username.trim() + '@quincegearsn.com',
+        password: form.password,
+        phone: form.phone,
+        role: 'RETAIL',
+      })
       loginUser(data.user, data.token)
       navigate('/')
     } catch (err) {
@@ -55,9 +61,12 @@ export default function Register() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Email</label>
-              <input name="email" type="email" value={form.email} onChange={handleChange} placeholder="usuario@quincegearsn.com" required
-                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
-              <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">Solo se permiten correos @quincegearsn.com</p>
+              <div className="flex items-center gap-2">
+                <input name="username" value={form.username} onChange={handleChange} placeholder="tu.usuario" required
+                  className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                <span className="shrink-0 text-sm text-gray-400 dark:text-gray-500">@quincegearsn.com</span>
+              </div>
+              <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">Tu correo quedará como <span className="font-medium">{form.username.trim() || 'tu.usuario'}@quincegearsn.com</span></p>
             </div>
 
             <div>

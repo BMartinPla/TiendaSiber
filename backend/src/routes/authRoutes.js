@@ -17,7 +17,7 @@ router.post(
       return true
     }),
     body('password').isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres'),
-    body('role').optional().isIn(['RETAIL', 'WHOLESALE']).withMessage('Rol inválido'),
+    body('role').optional().isIn(['RETAIL']).withMessage('Solo se permiten registros minoristas'),
   ],
   register
 )
