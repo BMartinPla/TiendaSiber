@@ -12,7 +12,7 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
   const { itemCount } = useCart()
   const { dark, toggleDark } = useDarkMode()
   const navigate = useNavigate()
-  const [catOpen, setCatOpen] = React.useState(false)
+  const [catOpen, setCatOpen] = React.useState(true)
   const [profileOpen, setProfileOpen] = React.useState(false)
   const [ordersOpen, setOrdersOpen] = React.useState(false)
   const [catOverflow, setCatOverflow] = React.useState(false)
