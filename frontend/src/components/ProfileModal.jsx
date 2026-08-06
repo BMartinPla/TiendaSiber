@@ -54,8 +54,8 @@ export default function ProfileModal({ onClose }) {
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4" onClick={onClose}>
       <div className="fixed inset-0 bg-black/40 sm:backdrop-blur-sm" />
-      <div className="animate-scaleIn relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl dark:shadow-2xl dark:shadow-black/40 border border-gray-100 dark:border-gray-700 p-4 sm:p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-        <button onClick={onClose} className="absolute top-4 right-4 p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+      <div className="animate-scaleIn relative bg-white dark:bg-gray-800 rounded-3xl shadow-2xl dark:shadow-glow border border-gray-100 dark:border-blue-500/15 p-4 sm:p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+        <button onClick={onClose} className="absolute top-4 right-4 icon-btn">
           <X className="w-5 h-5" />
         </button>
 
@@ -64,8 +64,8 @@ export default function ProfileModal({ onClose }) {
             <User className={`w-5 h-5 ${roleIconColors[user?.role] || roleIconColors.RETAIL}`} />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white">Mi Perfil</h2>
-            <p className="text-xs text-gray-500 dark:text-gray-400">Administra tus datos personales</p>
+            <h2 className="font-display text-xl font-bold text-gray-900 dark:text-white tracking-tight">Mi Perfil</h2>
+            <p className="text-xs text-gray-500 dark:text-gray-400">Administrá tus datos personales</p>
           </div>
         </div>
 

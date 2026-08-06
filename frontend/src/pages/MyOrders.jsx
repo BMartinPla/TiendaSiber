@@ -42,20 +42,20 @@ export default function MyOrders() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 pt-20 pb-12">
+    <div className="min-h-screen bg-transparent pt-20 pb-12">
       <div className="max-w-3xl mx-auto px-4">
-        <Link to="/" className="inline-flex items-center gap-1 text-sm text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors mb-4">
+        <Link to="/" className="inline-flex items-center gap-1 text-sm text-gray-400 dark:text-gray-500 hover:text-accent-600 dark:hover:text-accent-400 transition-colors mb-4">
           <ArrowLeft className="w-4 h-4" />
           Volver
         </Link>
 
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
+        <div className="surface-panel p-6 sm:p-7 animate-slideUp">
           <div className="flex items-center gap-3 mb-6">
             <div className="p-2.5 bg-accent-100 dark:bg-accent-900/30 rounded-xl">
               <ShoppingBag className="w-5 h-5 text-accent-600 dark:text-accent-400" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-gray-900 dark:text-white">Mis Pedidos</h1>
+              <h1 className="font-display text-xl font-bold text-gray-900 dark:text-white tracking-tight">Mis Pedidos</h1>
               <p className="text-xs text-gray-500 dark:text-gray-400">Historial de tus compras</p>
             </div>
           </div>
@@ -63,13 +63,16 @@ export default function MyOrders() {
           {loading ? (
             <div className="text-sm text-gray-400 dark:text-gray-500 py-8 text-center">Cargando pedidos...</div>
           ) : orders.length === 0 ? (
-            <div className="text-sm text-gray-400 dark:text-gray-500 py-8 text-center">No tienes pedidos aún</div>
+            <div className="text-sm text-gray-400 dark:text-gray-500 py-12 text-center">
+              <ShoppingBag className="w-10 h-10 mx-auto mb-3 text-accent-300" />
+              No tenés pedidos aún
+            </div>
           ) : (
             <div className="space-y-3">
               {orders.map((order) => (
-                <div key={order.id} className="border border-gray-100 dark:border-gray-700 rounded-xl overflow-hidden">
+                <div key={order.id} className="border border-gray-100 dark:border-blue-500/15 rounded-2xl overflow-hidden">
                   <div
-                    className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 px-4 py-3 bg-gray-50 dark:bg-gray-800/50 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                    className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 px-4 py-3 bg-gray-50/80 dark:bg-gray-800/50 cursor-pointer hover:bg-accent-50/50 dark:hover:bg-accent-500/5 transition-colors"
                     onClick={() => setExpandedOrder(expandedOrder === order.id ? null : order.id)}
                   >
                     <div className="flex items-center gap-3 flex-wrap">
@@ -92,7 +95,7 @@ export default function MyOrders() {
                   </div>
 
                   {expandedOrder === order.id && (
-                    <div className="border-t border-gray-100 dark:border-gray-700">
+                    <div className="border-t border-gray-100 dark:border-blue-500/15">
                       <div className="px-4 py-3 bg-gray-50/50 dark:bg-gray-800/30 text-xs text-gray-500 dark:text-gray-400">
                         <p><span className="font-semibold">Fecha:</span> {new Date(order.createdAt).toLocaleString('es-AR')}</p>
                         <p><span className="font-semibold">Estado:</span> {order.status === 'APPROVED' ? 'Aprobado' : 'Pendiente de aprobación'}</p>

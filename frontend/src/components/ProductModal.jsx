@@ -27,28 +27,28 @@ export default function ProductModal({ product, onClose }) {
 
   return (
     <>
-      <div className="fixed inset-0 z-50 bg-black/60 sm:backdrop-blur-sm flex items-center justify-center p-4" onClick={onClose}>
-        <div className="animate-scaleIn relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl dark:shadow-2xl dark:shadow-black/40 w-full max-w-lg max-h-[90vh] flex flex-col overflow-hidden" onClick={(e) => e.stopPropagation()}>
-          <button onClick={onClose} className="absolute top-4 right-4 z-10 p-2 text-gray-400 dark:text-gray-300 hover:text-gray-600 dark:hover:text-gray-100 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors bg-white/80 dark:bg-gray-900/80">
+      <div className="fixed inset-0 z-50 bg-slate-950/55 sm:backdrop-blur-sm flex items-center justify-center p-4" onClick={onClose}>
+        <div className="animate-scaleIn relative bg-white dark:bg-gray-800 rounded-3xl shadow-2xl dark:shadow-glow border border-gray-100 dark:border-blue-500/15 w-full max-w-lg max-h-[90vh] flex flex-col overflow-hidden" onClick={(e) => e.stopPropagation()}>
+          <button onClick={onClose} className="absolute top-4 right-4 z-10 icon-btn bg-white/90 dark:bg-gray-900/80 shadow-sm">
             <X className="w-5 h-5" />
           </button>
 
-          <div className="relative h-64 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 flex items-center justify-center shrink-0">
+          <div className="relative h-64 bg-gradient-to-br from-gray-50 via-blue-50/50 to-accent-50 dark:from-gray-800 dark:via-blue-950/40 dark:to-gray-700 flex items-center justify-center shrink-0">
             {product.imageUrl ? (
-              <img src={product.imageUrl} alt={product.name} className="w-full h-full object-contain p-6 rounded-2xl" />
+              <img src={product.imageUrl} alt={product.name} className="w-full h-full object-contain p-6" />
             ) : (
               <Package className="w-24 h-24 text-gray-300 dark:text-gray-600" />
             )}
             {product.category && (
-              <span className="absolute top-4 left-4 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm text-xs font-medium text-gray-600 dark:text-gray-300 px-3 py-1.5 rounded-full shadow-sm">
+              <span className="absolute top-4 left-4 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm text-xs font-semibold text-gray-600 dark:text-gray-300 px-3 py-1.5 rounded-full shadow-sm border border-gray-100 dark:border-blue-500/15">
                 {product.category.name}
               </span>
             )}
           </div>
 
-          <div className="flex-1 overflow-y-auto p-4 sm:p-6 flex flex-col">
+          <div className="flex-1 overflow-y-auto p-5 sm:p-6 flex flex-col">
             <div>
-              <h2 className="font-display text-xl font-bold text-gray-900 dark:text-white">{product.name}</h2>
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-gray-900 dark:text-white tracking-tight">{product.name}</h2>
               {product.description && (
                 <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 leading-relaxed">{product.description}</p>
               )}
@@ -56,7 +56,7 @@ export default function ProductModal({ product, onClose }) {
 
             <div className="mt-auto pt-6 space-y-3">
               <div className="space-y-1">
-                <div className="flex items-baseline gap-2">
+                <div className="flex items-baseline gap-2 flex-wrap">
                   {isAdmin ? (
                     <>
                       {costoPrice != null && (
@@ -73,7 +73,7 @@ export default function ProductModal({ product, onClose }) {
                     </>
                   ) : (
                     <>
-                      <span className="text-2xl font-bold text-gray-900 dark:text-white">${displayPrice.toLocaleString('es-CL')}</span>
+                      <span className="font-display text-2xl font-bold text-gray-900 dark:text-white tracking-tight">${displayPrice.toLocaleString('es-CL')}</span>
                       {isWholesale && basePrice > wholesalePrice && (
                         <span className="text-sm text-gray-400 dark:text-gray-500 line-through">${basePrice.toLocaleString('es-CL')}</span>
                       )}
@@ -82,16 +82,16 @@ export default function ProductModal({ product, onClose }) {
                 </div>
 
                 {!isAdmin && isWholesale && savings > 0 && (
-                <span className="inline-block bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 text-xs font-semibold px-2 py-0.5 rounded-full">
-                  Ahorras ${savings.toLocaleString('es-CL')}
-                </span>
+                  <span className="inline-block bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 text-xs font-semibold px-2 py-0.5 rounded-full">
+                    Ahorras ${savings.toLocaleString('es-CL')}
+                  </span>
                 )}
               </div>
 
-                <div className="flex items-center gap-1.5">
-                  <span className={`text-sm ${(product.stock ?? 0) > 0 ? 'text-green-600 dark:text-green-400' : 'text-red-500 dark:text-red-400'}`}>
-                    {(product.stock ?? 0) > 0 ? `En stock (${product.stock})` : 'Agotado'}
-                  </span>
+              <div className="flex items-center gap-1.5">
+                <span className={`text-sm font-medium ${(product.stock ?? 0) > 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-500 dark:text-red-400'}`}>
+                  {(product.stock ?? 0) > 0 ? `En stock (${product.stock})` : 'Agotado'}
+                </span>
               </div>
 
               {!isAdmin && (
@@ -103,7 +103,7 @@ export default function ProductModal({ product, onClose }) {
                       ? 'bg-gray-100 dark:bg-gray-700 text-gray-400 cursor-not-allowed'
                       : added
                       ? 'bg-accent-600 text-white'
-                      : 'text-white bg-gradient-to-r from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 shadow-lg shadow-accent-500/25 active:scale-[0.98]'
+                      : 'btn-accent py-3 shadow-accent-500/25'
                   }`}
                 >
                   {product.stock <= 0 ? (

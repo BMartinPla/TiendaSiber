@@ -25,17 +25,27 @@ export default function ProductCard({ product, onView, index = 0 }) {
   }
 
   return (
-    <div onClick={onView} className="card-hover animate-fadeIn bg-white dark:bg-gray-950/20 dark:backdrop-blur-md rounded-2xl border border-gray-100 dark:border-blue-400/15 overflow-hidden flex flex-col cursor-pointer group dark:shadow-2xl" style={{ animationDelay: `${staggerMs[index % 8]}ms` }}>
-      {/* Image */}
-      <div className="relative aspect-square bg-gray-50 dark:bg-gray-800/70 border border-gray-100 dark:border-blue-500/10 flex items-center justify-center overflow-hidden m-2 rounded-2xl">
+    <article
+      onClick={onView}
+      className="card-hover animate-fadeIn group relative flex flex-col overflow-hidden rounded-2xl border border-gray-200/80 dark:border-blue-400/15 bg-white dark:bg-gray-950/25 dark:backdrop-blur-md shadow-soft dark:shadow-2xl cursor-pointer"
+      style={{ animationDelay: `${staggerMs[index % 8]}ms` }}
+    >
+      <div className="relative aspect-square m-2 overflow-hidden rounded-xl bg-gradient-to-br from-gray-50 to-blue-50/40 dark:from-gray-800/80 dark:to-blue-950/40 border border-gray-100/80 dark:border-blue-500/10">
         {product.imageUrl ? (
-          <img src={product.imageUrl} alt={product.name} loading="lazy" className="w-full h-full object-contain p-3 group-hover:scale-110 transition-transform duration-500 rounded-2xl" />
+          <img
+            src={product.imageUrl}
+            alt={product.name}
+            loading="lazy"
+            className="w-full h-full object-contain p-3 transition-transform duration-500 group-hover:scale-110"
+          />
         ) : (
-          <Package className="w-12 h-12 text-gray-300 dark:text-gray-600" />
+          <div className="w-full h-full flex items-center justify-center">
+            <Package className="w-12 h-12 text-gray-300 dark:text-gray-600" />
+          </div>
         )}
         {product.stock <= 0 && (
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] flex items-center justify-center">
-            <span className="bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">Agotado</span>
+          <div className="absolute inset-0 bg-slate-950/45 backdrop-blur-[2px] flex items-center justify-center">
+            <span className="bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">Agotado</span>
           </div>
         )}
         {product.stock > 0 && product.stock <= 5 && (
@@ -45,36 +55,36 @@ export default function ProductCard({ product, onView, index = 0 }) {
         )}
       </div>
 
-      {/* Info */}
-      <div className="px-3 pb-3 flex flex-col flex-1 gap-1">
+      <div className="px-3.5 pb-3.5 flex flex-col flex-1 gap-1">
         {product.category && (
-          <p className="text-[10px] text-accent-600/80 dark:text-accent-400/80 uppercase tracking-wider font-semibold">{product.category.name}</p>
+          <p className="text-[10px] text-accent-600 dark:text-accent-400 uppercase tracking-[0.12em] font-semibold">
+            {product.category.name}
+          </p>
         )}
 
-        <h3 className="text-sm font-medium text-gray-800 dark:text-gray-100 leading-snug line-clamp-2">
+        <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 leading-snug line-clamp-2 group-hover:text-accent-700 dark:group-hover:text-accent-300 transition-colors">
           {product.name}
         </h3>
 
-        <div className="mt-auto space-y-1">
-          {/* Admin prices */}
+        <div className="mt-auto space-y-1.5 pt-2">
           {isAdmin ? (
             <div className="flex flex-wrap gap-1">
               {costoPrice != null && (
-                <span className="text-[10px] bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 px-1.5 py-0.5 rounded font-medium">
+                <span className="text-[10px] bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 px-1.5 py-0.5 rounded-md font-medium">
                   Costo: ${costoPrice.toLocaleString('es-CL')}
                 </span>
               )}
-              <span className="text-[10px] bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 px-1.5 py-0.5 rounded font-medium">
+              <span className="text-[10px] bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 px-1.5 py-0.5 rounded-md font-medium">
                 May: ${wholesalePrice.toLocaleString('es-CL')}
               </span>
-              <span className="text-[10px] bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 px-1.5 py-0.5 rounded font-medium">
+              <span className="text-[10px] bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 px-1.5 py-0.5 rounded-md font-medium">
                 Minorista: ${basePrice.toLocaleString('es-CL')}
               </span>
             </div>
           ) : (
             <>
               <div className="flex items-baseline gap-1.5">
-                <span className="text-lg font-bold text-gray-900 dark:text-white">
+                <span className="font-display text-lg font-bold text-gray-900 dark:text-white tracking-tight">
                   ${displayPrice.toLocaleString('es-CL')}
                 </span>
                 {isWholesale && basePrice > wholesalePrice && (
@@ -91,23 +101,21 @@ export default function ProductCard({ product, onView, index = 0 }) {
             </>
           )}
 
-          {/* Stock */}
-          <p className={`text-[11px] ${product.stock > 0 ? 'text-accent-600 dark:text-accent-400' : 'text-red-500 dark:text-red-400'}`}>
-            {product.stock > 0 ? `En stock (${product.stock})` : 'Sin stock'}
+          <p className={`text-[11px] font-medium ${product.stock > 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-500 dark:text-red-400'}`}>
+            {product.stock > 0 ? `En stock · ${product.stock}` : 'Sin stock'}
           </p>
         </div>
 
-        {/* Add to cart button */}
         {!isAdmin && (
           <button
             onClick={handleAdd}
             disabled={product.stock <= 0}
-            className={`mt-2 w-full flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold transition-all duration-200 ${
+            className={`mt-2.5 w-full flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold transition-all duration-200 ${
               product.stock <= 0
                 ? 'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed'
                 : added
                 ? 'bg-accent-600 text-white'
-                : 'text-white bg-gradient-to-r from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 shadow-sm shadow-accent-500/25 active:scale-[0.97]'
+                : 'btn-accent py-2.5 text-xs shadow-accent-500/20'
             }`}
           >
             {product.stock <= 0 ? (
@@ -124,6 +132,6 @@ export default function ProductCard({ product, onView, index = 0 }) {
           </button>
         )}
       </div>
-    </div>
+    </article>
   )
 }

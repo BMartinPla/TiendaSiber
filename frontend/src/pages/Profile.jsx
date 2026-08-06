@@ -48,10 +48,10 @@ export default function Profile() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 pt-20 pb-12">
+    <div className="min-h-screen bg-transparent pt-20 pb-12">
       <div className="max-w-lg mx-auto px-4">
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
-          <Link to="/" className="inline-flex items-center gap-1 text-sm text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors mb-4">
+        <div className="surface-panel p-6 sm:p-7 animate-slideUp">
+          <Link to="/" className="inline-flex items-center gap-1 text-sm text-gray-400 dark:text-gray-500 hover:text-accent-600 dark:hover:text-accent-400 transition-colors mb-5">
             <ArrowLeft className="w-4 h-4" />
             Volver
           </Link>
@@ -60,8 +60,8 @@ export default function Profile() {
               <User className={`w-5 h-5 ${roleIconColors[user?.role] || roleIconColors.RETAIL}`} />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-gray-900 dark:text-white">Mi Perfil</h1>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Administra tus datos personales</p>
+              <h1 className="font-display text-xl font-bold text-gray-900 dark:text-white tracking-tight">Mi Perfil</h1>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Administrá tus datos personales</p>
             </div>
           </div>
 
@@ -91,7 +91,7 @@ export default function Profile() {
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                className="input-field bg-gray-50/80 dark:bg-gray-700"
               />
             </div>
 
@@ -104,7 +104,7 @@ export default function Profile() {
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="+54 9 11 1234-5678"
-                  className="w-full pl-10 pr-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                  className="input-field pl-10 bg-gray-50/80 dark:bg-gray-700"
                 />
               </div>
             </div>
@@ -117,13 +117,9 @@ export default function Profile() {
               </span>
             </div>
 
-            <button
-              type="submit"
-              disabled={saving}
-              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold text-white bg-gray-900 dark:bg-accent-600 hover:bg-gray-800 dark:hover:bg-accent-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            >
+            <button type="submit" disabled={saving} className="btn-accent w-full py-3">
               <Save className="w-4 h-4" />
-              {saving ? 'Guardando...' : 'Guardar Cambios'}
+              {saving ? 'Guardando...' : 'Guardar cambios'}
             </button>
           </form>
         </div>

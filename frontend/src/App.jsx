@@ -13,7 +13,7 @@ import AdminDashboard from './pages/AdminDashboard'
 function ProtectedRoute({ children, adminOnly = false, notForAdmin = false }) {
   const { user, loading } = useAuth()
 
-  if (loading) return <div className="flex items-center justify-center h-screen text-gray-500 dark:text-gray-400 text-sm">Cargando...</div>
+  if (loading) return <div className="flex items-center justify-center h-screen text-gray-500 dark:text-gray-400 text-sm font-medium">Cargando...</div>
   if (!user) return <Navigate to="/login" replace />
   if (adminOnly && user.role !== 'ADMIN') return <Navigate to="/" replace />
   if (notForAdmin && user.role === 'ADMIN') return <Navigate to="/" replace />
@@ -24,7 +24,7 @@ function ProtectedRoute({ children, adminOnly = false, notForAdmin = false }) {
 function AppRoutes() {
   const { user, loading } = useAuth()
 
-  if (loading) return <div className="flex items-center justify-center h-screen text-gray-500 dark:text-gray-400 text-sm">Cargando...</div>
+  if (loading) return <div className="flex items-center justify-center h-screen text-gray-500 dark:text-gray-400 text-sm font-medium">Cargando...</div>
 
   return (
     <Routes>

@@ -16,7 +16,7 @@ export function DarkModeProvider({ children }) {
       document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#060a14')
     } else {
       root.classList.remove('dark')
-      document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#fafaf9')
+      document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#f4f7fb')
     }
     localStorage.setItem('darkMode', dark)
   }, [dark])

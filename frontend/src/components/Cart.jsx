@@ -106,26 +106,26 @@ export default function Cart({ open, onClose }) {
   return (
     <>
       {open && (
-        <div className="fixed inset-0 z-50 bg-black/40 sm:backdrop-blur-sm transition-opacity" onClick={onClose} />
+        <div className="fixed inset-0 z-50 bg-slate-950/45 sm:backdrop-blur-sm transition-opacity" onClick={onClose} />
       )}
 
       <div
-        className={`fixed top-0 right-0 z-50 h-full w-full max-w-md bg-white dark:bg-gray-900 shadow-2xl dark:shadow-2xl dark:shadow-black/40 transition-transform duration-300 ease-in-out flex flex-col ${
+        className={`fixed top-0 right-0 z-50 h-full w-full max-w-md bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl shadow-2xl dark:shadow-glow border-l border-gray-200/80 dark:border-blue-500/15 transition-transform duration-300 ease-in-out flex flex-col ${
           open ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
-        <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100 dark:border-gray-700">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100 dark:border-blue-500/15">
           <div>
-            <h2 className="font-display text-lg font-bold text-gray-900 dark:text-white">Carrito</h2>
+            <h2 className="font-display text-lg font-bold text-gray-900 dark:text-white tracking-tight">Carrito</h2>
             <p className="text-sm text-gray-500 dark:text-gray-400">{localCount} producto(s)</p>
           </div>
           <div className="flex items-center gap-2">
             {items.length > 0 && (
-              <button onClick={clear} className="text-xs text-red-500 dark:text-red-400 hover:text-red-600 dark:hover:text-red-400 font-medium px-3 py-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+              <button onClick={clear} className="text-xs text-red-500 dark:text-red-400 hover:text-red-600 font-medium px-3 py-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
                 Vaciar
               </button>
             )}
-            <button onClick={onClose} className="p-2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+            <button onClick={onClose} className="icon-btn">
               <X className="w-5 h-5" />
             </button>
           </div>
@@ -135,31 +135,33 @@ export default function Cart({ open, onClose }) {
           {loading && items.length === 0 ? (
             <div className="flex items-center justify-center h-full text-gray-400 dark:text-gray-500 text-sm">
               <div className="flex flex-col items-center gap-2">
-                <div className="w-8 h-8 rounded-full border-2 border-gray-300 dark:border-gray-600 border-t-transparent animate-spin" />
+                <div className="w-8 h-8 rounded-full border-2 border-accent-300 border-t-transparent animate-spin" />
                 <span>Cargando...</span>
               </div>
             </div>
           ) : items.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-gray-400 dark:text-gray-500 gap-3">
-              <ShoppingCart className="w-14 h-14 text-gray-300 dark:text-gray-600" />
+              <div className="w-16 h-16 rounded-2xl bg-accent-50 dark:bg-accent-500/10 flex items-center justify-center">
+                <ShoppingCart className="w-8 h-8 text-accent-400" />
+              </div>
               <div className="text-center">
-                <p className="text-sm font-medium">Tu carrito está vacío</p>
+                <p className="text-sm font-semibold text-gray-700 dark:text-gray-200">Tu carrito está vacío</p>
                 <p className="text-xs mt-1">Agregá productos para empezar</p>
               </div>
             </div>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-3">
               {items.map((item) => {
                 const qty = getQty(item.id)
                 const unitPrice = item.product.pricing?.unitPrice || item.product.precioBase || 0
                 return (
-                  <div key={item.id} className="flex items-center gap-2 sm:gap-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                  <div key={item.id} className="flex items-center gap-2 sm:gap-3 p-3 bg-gray-50/90 dark:bg-gray-800/80 rounded-2xl border border-gray-100 dark:border-blue-500/10">
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">{item.product.name}</p>
                       <p className="text-sm text-gray-500 dark:text-gray-400">${unitPrice.toLocaleString('es-CL')} c/u</p>
-                  <p className={`text-xs ${item.product.stock > 0 ? 'text-green-500' : 'text-red-400'}`}>
-                    {item.product.stock > 0 ? `En stock (${item.product.stock})` : 'Sin stock'}
-                  </p>
+                      <p className={`text-xs font-medium ${item.product.stock > 0 ? 'text-emerald-500' : 'text-red-400'}`}>
+                        {item.product.stock > 0 ? `En stock (${item.product.stock})` : 'Sin stock'}
+                      </p>
                     </div>
 
                     <div className="flex items-center gap-1">
@@ -197,10 +199,10 @@ export default function Cart({ open, onClose }) {
         </div>
 
         {items.length > 0 && (
-          <div className="border-t border-gray-100 dark:border-gray-700 px-5 py-4 space-y-3 bg-white dark:bg-gray-900">
+          <div className="border-t border-gray-100 dark:border-blue-500/15 px-5 py-4 space-y-3 bg-white/90 dark:bg-gray-900/90">
             <div className="flex items-center justify-between">
               <span className="text-sm text-gray-600 dark:text-gray-400">Total</span>
-              <span className="text-xl font-bold text-gray-900 dark:text-white">${localTotal.toLocaleString('es-CL')}</span>
+              <span className="font-display text-xl font-bold text-gray-900 dark:text-white tracking-tight">${localTotal.toLocaleString('es-CL')}</span>
             </div>
 
             {isWholesale && totalSavings > 0 && (
@@ -213,7 +215,7 @@ export default function Cart({ open, onClose }) {
             <button
               onClick={handleWhatsApp}
               disabled={syncing}
-              className="w-full flex items-center justify-center gap-3 py-3.5 rounded-xl text-sm font-bold text-white bg-[#25d366] hover:bg-[#20bd5a] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100 transition-all duration-200 shadow-lg shadow-[#25d366]/25"
+              className="w-full flex items-center justify-center gap-3 py-3.5 rounded-xl text-sm font-bold text-white bg-[#25d366] hover:bg-[#20bd5a] hover:-translate-y-0.5 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:translate-y-0 transition-all duration-200 shadow-lg shadow-[#25d366]/25"
             >
               <MessageCircle className={`w-5 h-5 ${syncing ? 'animate-pulse' : ''}`} />
               {syncing ? 'Sincronizando...' : 'Enviar pedido por WhatsApp'}
@@ -222,7 +224,7 @@ export default function Cart({ open, onClose }) {
         )}
 
         {orderSuccess && (
-          <div className="border-t border-gray-100 dark:border-gray-700 px-5 py-4 bg-white dark:bg-gray-900">
+          <div className="border-t border-gray-100 dark:border-blue-500/15 px-5 py-4 bg-white dark:bg-gray-900">
             <div className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 px-4 py-2.5 rounded-xl">
               <CheckCircle className="w-4 h-4 shrink-0" />
               Pedido registrado. Revisa WhatsApp para enviarlo.
@@ -231,7 +233,7 @@ export default function Cart({ open, onClose }) {
         )}
 
         {orderError && (
-          <div className="border-t border-gray-100 dark:border-gray-700 px-5 py-4 bg-white dark:bg-gray-900">
+          <div className="border-t border-gray-100 dark:border-blue-500/15 px-5 py-4 bg-white dark:bg-gray-900">
             <div className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 px-4 py-2.5 rounded-xl">
               <XCircle className="w-4 h-4 shrink-0" />
               {orderError}
