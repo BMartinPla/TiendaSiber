@@ -166,4 +166,37 @@ async function adminCreateUser(req, res) {
   }
 }
 
-module.exports = { register, login, profile, updateProfile, adminCreateUser }
+async function changePassword(req, res) {
+  try {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() })
+    }
+
+    const { currentPassword, newPassword } = req.body
+
+    const user = await prisma.user.findUnique({ where: { id: req.user.id } })
+    if (!user) {
+      return res.status(404).json({ error: 'Usuario no encontrado' })
+    }
+
+    const valid = await bcrypt.compare(currentPassword, user.password)
+    if (!valid) {
+      return res.status(401).json({ error: 'La contraseña actual es incorrecta' })
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10)
+
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { password: hashedPassword },
+    })
+
+    res.json({ message: 'Contraseña actualizada correctamente' })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Error al cambiar la contraseña' })
+  }
+}
+
+module.exports = { register, login, profile, updateProfile, adminCreateUser, changePassword }

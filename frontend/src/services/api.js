@@ -262,6 +262,10 @@ export function updateProfile(data) {
   return api.patch('/auth/profile', data).then((res) => res.data)
 }
 
+export function changePassword(data) {
+  return api.post('/auth/change-password', data).then((res) => res.data)
+}
+
 export function createOrderFromCart() {
   return api.post('/orders/from-cart').then((res) => res.data)
 }

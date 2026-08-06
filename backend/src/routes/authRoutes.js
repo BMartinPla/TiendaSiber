@@ -1,7 +1,7 @@
 const { Router } = require('express')
 const { body } = require('express-validator')
 const rateLimit = require('express-rate-limit')
-const { register, login, profile, updateProfile, adminCreateUser } = require('../controllers/authController')
+const { register, login, profile, updateProfile, adminCreateUser, changePassword } = require('../controllers/authController')
 const authenticate = require('../middleware/authMiddleware')
 const authorize = require('../middleware/roleMiddleware')
 
@@ -47,6 +47,16 @@ router.patch(
   authenticate,
   [body('name').optional().notEmpty().withMessage('El nombre no puede estar vacío')],
   updateProfile
+)
+
+router.post(
+  '/change-password',
+  authenticate,
+  [
+    body('currentPassword').notEmpty().withMessage('La contraseña actual es obligatoria'),
+    body('newPassword').isLength({ min: 6 }).withMessage('La nueva contraseña debe tener al menos 6 caracteres'),
+  ],
+  changePassword
 )
 
 router.post(

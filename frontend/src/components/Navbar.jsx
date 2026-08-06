@@ -1,11 +1,12 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { ShoppingCart, Search, LogOut, User, Moon, Sun, LayoutDashboard, ShoppingBag, ChevronLeft, ChevronRight } from 'lucide-react'
+import { ShoppingCart, Search, LogOut, User, Moon, Sun, LayoutDashboard, ShoppingBag, ChevronLeft, ChevronRight, KeyRound } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import { useCart } from '../contexts/CartContext'
 import { useDarkMode } from '../contexts/DarkModeContext'
 import ProfileModal from './ProfileModal'
 import OrdersModal from './OrdersModal'
+import ChangePasswordModal from './ChangePasswordModal'
 
 export default function Navbar({ onCartClick, search, onSearch, categories, selectedCategories, onCategoryChange }) {
   const { user, logout, isAdmin } = useAuth()
@@ -14,6 +15,8 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
   const navigate = useNavigate()
   const [profileOpen, setProfileOpen] = React.useState(false)
   const [ordersOpen, setOrdersOpen] = React.useState(false)
+  const [passwordOpen, setPasswordOpen] = React.useState(false)
+  const [userMenuOpen, setUserMenuOpen] = React.useState(false)
   const [catOverflow, setCatOverflow] = React.useState(false)
   const [catDir, setCatDir] = React.useState(null)
   const catRef = React.useRef(null)
@@ -108,9 +111,30 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
                   </>
                 ) : (
                   <>
-                    <button onClick={() => setProfileOpen(true)} className="icon-btn" title="Perfil">
-                      <User className="w-5 h-5" />
-                    </button>
+                    <div className="relative">
+                      <button onClick={() => setUserMenuOpen((v) => !v)} className={`icon-btn ${userMenuOpen ? 'bg-accent-100 dark:bg-accent-500/20 text-accent-600 dark:text-accent-300' : ''}`} title="Perfil">
+                        <User className="w-5 h-5" />
+                      </button>
+                      {userMenuOpen && (
+                        <>
+                          <div className="fixed inset-0 z-40" onClick={() => setUserMenuOpen(false)} />
+                          <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-2xl shadow-xl dark:shadow-glow border border-gray-100 dark:border-blue-500/15 overflow-hidden z-50 animate-scaleIn">
+                            <div className="px-4 py-3 border-b border-gray-100 dark:border-blue-500/10">
+                              <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">{user?.name}</p>
+                              <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user?.email}</p>
+                            </div>
+                            <button onClick={() => { setUserMenuOpen(false); setProfileOpen(true) }} className="w-full flex items-center gap-2.5 px-4 py-3 text-sm text-gray-700 dark:text-gray-200 hover:bg-accent-50 dark:hover:bg-accent-500/10 hover:text-accent-600 dark:hover:text-accent-300 transition-colors">
+                              <User className="w-4 h-4 shrink-0" />
+                              Mi Perfil
+                            </button>
+                            <button onClick={() => { setUserMenuOpen(false); setPasswordOpen(true) }} className="w-full flex items-center gap-2.5 px-4 py-3 text-sm text-gray-700 dark:text-gray-200 hover:bg-accent-50 dark:hover:bg-accent-500/10 hover:text-accent-600 dark:hover:text-accent-300 transition-colors">
+                              <KeyRound className="w-4 h-4 shrink-0" />
+                              Cambiar Contraseña
+                            </button>
+                          </div>
+                        </>
+                      )}
+                    </div>
 
                     {!isAdmin && (
                       <button onClick={() => setOrdersOpen(true)} className="icon-btn" title="Mis Pedidos">
@@ -182,6 +206,7 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
       )}
       {profileOpen && <ProfileModal onClose={() => setProfileOpen(false)} />}
       {ordersOpen && <OrdersModal onClose={() => setOrdersOpen(false)} />}
+      {passwordOpen && <ChangePasswordModal onClose={() => setPasswordOpen(false)} />}
     </>
   )
 }
