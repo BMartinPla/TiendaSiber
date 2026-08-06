@@ -118,16 +118,16 @@ export default function Home() {
 
       <main className="pt-6 pb-12 animate-fadeIn">
         {/* Brand hero */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-white via-blue-50 to-accent-100 text-gray-900 px-6 sm:px-10 py-10 sm:py-14 border border-gray-200/60 dark:border-0 dark:bg-gradient-to-br dark:from-zinc-900 dark:via-zinc-900 dark:to-blue-950 dark:text-white">
-            <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-accent-200/50 dark:bg-accent-600/20 blur-3xl" />
-            <div className="absolute -bottom-32 -left-16 w-80 h-80 rounded-full bg-accent-100/60 dark:bg-accent-500/10 blur-3xl" />
+        <div className="relative overflow-hidden rounded-none sm:rounded-none bg-gradient-to-br from-white via-blue-50 to-accent-100 dark:bg-gradient-to-br dark:from-zinc-900 dark:via-zinc-900 dark:to-blue-950 border-y border-gray-200/60 dark:border-y dark:border-zinc-800">
+          <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-accent-200/50 dark:bg-accent-600/20 blur-3xl" />
+          <div className="absolute -bottom-32 -left-16 w-80 h-80 rounded-full bg-accent-100/60 dark:bg-accent-500/10 blur-3xl" />
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
             <div className="relative">
               <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-accent-600 dark:text-accent-400 mb-3">
                 <span className="w-1.5 h-1.5 rounded-full bg-accent-500 dark:bg-accent-400 animate-pulse" />
                 Catálogo mayorista y minorista
               </span>
-              <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
+              <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-gray-900 dark:text-white">
                 Quince <span className="text-red-500">Gear</span> SN
               </h1>
               <p className="mt-3 text-sm sm:text-base text-gray-500 dark:text-zinc-300 max-w-xl">
