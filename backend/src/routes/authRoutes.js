@@ -1,13 +1,21 @@
 const { Router } = require('express')
 const { body } = require('express-validator')
+const rateLimit = require('express-rate-limit')
 const { register, login, profile, updateProfile, adminCreateUser } = require('../controllers/authController')
 const authenticate = require('../middleware/authMiddleware')
 const authorize = require('../middleware/roleMiddleware')
 
 const router = Router()
 
-router.post(
-  '/register',
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Demasiados intentos. Intenta de nuevo en 15 minutos.' },
+})
+
+router.post('/register', authLimiter,
   [
     body('name').notEmpty().withMessage('El nombre es obligatorio'),
     body('email').isEmail().withMessage('Email inválido').custom((value) => {
@@ -24,6 +32,7 @@ router.post(
 
 router.post(
   '/login',
+  authLimiter,
   [
     body('email').isEmail().withMessage('Email inválido'),
     body('password').notEmpty().withMessage('La contraseña es obligatoria'),

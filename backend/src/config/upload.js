@@ -2,11 +2,11 @@ const multer = require('multer')
 const path = require('path')
 
 const fileFilter = (req, file, cb) => {
-  const allowed = /\.(jpg|jpeg|jfif|png|gif|webp|svg)$/i
+  const allowed = /\.(jpg|jpeg|jfif|png|gif|webp)$/i
   if (allowed.test(path.extname(file.originalname))) {
     cb(null, true)
   } else {
-    cb(new Error('Solo se permiten imágenes (jpg, jpeg, png, gif, webp, svg)'), false)
+    cb(new Error('Solo se permiten imágenes (jpg, jpeg, png, gif, webp)'), false)
   }
 }
 

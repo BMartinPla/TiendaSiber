@@ -3,6 +3,7 @@ const { body } = require('express-validator')
 const authenticate = require('../middleware/authMiddleware')
 const { optionalAuth } = require('../middleware/authMiddleware')
 const authorize = require('../middleware/roleMiddleware')
+const validateId = require('../middleware/validateId')
 const { cacheMiddleware } = require('../middleware/cacheMiddleware')
 const productController = require('../controllers/productController')
 const bulkProductController = require('../controllers/bulkProductController')
@@ -14,7 +15,7 @@ router.get('/proveedores', authenticate, cacheMiddleware(), productController.ge
 router.get('/', optionalAuth, cacheMiddleware(), productController.list)
 router.get('/export', authenticate, authorize('ADMIN'), productController.exportProducts)
 router.post('/bulk-upload', authenticate, authorize('ADMIN'), bulkProductController.upload.single('file'), bulkProductController.bulkUpload)
-router.get('/:id', optionalAuth, cacheMiddleware(), productController.getById)
+router.get('/:id', optionalAuth, cacheMiddleware(), validateId, productController.getById)
 
 router.post(
   '/',
@@ -29,16 +30,16 @@ router.post(
   productController.create
 )
 
-router.put('/:id', authenticate, authorize('ADMIN'), productController.update)
-router.patch('/:id/price', authenticate, authorize('ADMIN'), productController.updatePrice)
+router.put('/:id', authenticate, authorize('ADMIN'), validateId, productController.update)
+router.patch('/:id/price', authenticate, authorize('ADMIN'), validateId, productController.updatePrice)
 router.post('/bulk-update-prices', authenticate, authorize('ADMIN'), productController.bulkUpdatePrices)
 router.post('/bulk-stock', authenticate, authorize('ADMIN'), productController.bulkUpdateStock)
 router.post('/bulk-suspend', authenticate, authorize('ADMIN'), productController.bulkSuspend)
 router.post('/bulk-restore', authenticate, authorize('ADMIN'), productController.bulkRestore)
 router.post('/bulk-delete', authenticate, authorize('ADMIN'), productController.bulkDelete)
-router.patch('/:id/suspend', authenticate, authorize('ADMIN'), productController.softDelete)
-router.patch('/:id/restore', authenticate, authorize('ADMIN'), productController.restore)
-router.patch('/:id/featured', authenticate, authorize('ADMIN'), productController.toggleFeatured)
-router.delete('/:id', authenticate, authorize('ADMIN'), productController.hardDelete)
+router.patch('/:id/suspend', authenticate, authorize('ADMIN'), validateId, productController.softDelete)
+router.patch('/:id/restore', authenticate, authorize('ADMIN'), validateId, productController.restore)
+router.patch('/:id/featured', authenticate, authorize('ADMIN'), validateId, productController.toggleFeatured)
+router.delete('/:id', authenticate, authorize('ADMIN'), validateId, productController.hardDelete)
 
 module.exports = router

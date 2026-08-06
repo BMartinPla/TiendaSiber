@@ -50,6 +50,13 @@ async function updateRole(req, res) {
       return res.status(404).json({ error: 'Usuario no encontrado' })
     }
 
+    if (user.role === 'ADMIN' && role !== 'ADMIN') {
+      const adminCount = await prisma.user.count({ where: { role: 'ADMIN', active: true } })
+      if (adminCount <= 1) {
+        return res.status(400).json({ error: 'No puedes cambiar el rol del último administrador activo' })
+      }
+    }
+
     const updated = await prisma.user.update({
       where: { id: Number(id) },
       data: { role },
@@ -106,6 +113,13 @@ async function suspend(req, res) {
       return res.status(404).json({ error: 'Usuario no encontrado' })
     }
 
+    if (user.role === 'ADMIN') {
+      const adminCount = await prisma.user.count({ where: { role: 'ADMIN', active: true } })
+      if (adminCount <= 1) {
+        return res.status(400).json({ error: 'No puedes suspender el último administrador activo' })
+      }
+    }
+
     if (!user.active) {
       return res.status(400).json({ error: 'El usuario ya está suspendido' })
     }
@@ -160,6 +174,13 @@ async function remove(req, res) {
     const user = await prisma.user.findUnique({ where: { id: Number(id) } })
     if (!user) {
       return res.status(404).json({ error: 'Usuario no encontrado' })
+    }
+
+    if (user.role === 'ADMIN') {
+      const adminCount = await prisma.user.count({ where: { role: 'ADMIN', active: true } })
+      if (adminCount <= 1) {
+        return res.status(400).json({ error: 'No se puede eliminar el último administrador activo' })
+      }
     }
 
     await prisma.user.delete({ where: { id: Number(id) } })
