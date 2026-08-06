@@ -118,19 +118,20 @@ export default function Home() {
 
       <main className="pt-6 pb-12 animate-fadeIn">
         {/* Brand hero */}
-        <div className="relative overflow-hidden rounded-none sm:rounded-none bg-gradient-to-br from-white via-blue-50 to-accent-100 dark:bg-transparent dark:bg-none border-y border-gray-200/60 dark:border-transparent dark:border-y mb-8 sm:mb-10">
-          <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-accent-200/50 dark:bg-accent-600/20 blur-3xl" />
-          <div className="absolute -bottom-32 -left-16 w-80 h-80 rounded-full bg-accent-100/60 dark:bg-accent-500/10 blur-3xl" />
+        <div className="relative overflow-hidden bg-gradient-to-br from-white via-blue-50 to-accent-100 dark:from-[#07101f] dark:via-[#0c1a38] dark:to-[#1e3a8a]/55 border-y border-gray-200/60 dark:border-blue-500/15 mb-8 sm:mb-10">
+          <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-accent-200/50 dark:bg-accent-500/25 blur-3xl animate-hero-float" />
+          <div className="absolute -bottom-32 -left-16 w-80 h-80 rounded-full bg-accent-100/60 dark:bg-blue-600/20 blur-3xl animate-hero-float-delayed" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[28rem] h-[28rem] rounded-full bg-accent-400/0 dark:bg-accent-400/5 blur-3xl pointer-events-none" />
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
             <div className="relative">
-              <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-accent-600 dark:text-accent-400 mb-3">
-                <span className="w-1.5 h-1.5 rounded-full bg-accent-500 dark:bg-accent-400 animate-pulse" />
+              <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-accent-600 dark:text-accent-300 mb-3">
+                <span className="w-1.5 h-1.5 rounded-full bg-accent-500 dark:bg-accent-400 animate-pulse shadow-[0_0_8px_rgba(96,165,250,0.8)]" />
                 Catálogo mayorista y minorista
               </span>
               <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-gray-900 dark:text-white">
                 Quince <span className="text-red-500">Gear</span> SN
               </h1>
-              <p className="mt-3 text-sm sm:text-base text-gray-500 dark:text-zinc-300 max-w-xl">
+              <p className="mt-3 text-sm sm:text-base text-gray-500 dark:text-blue-100/70 max-w-xl leading-relaxed">
                 Tecnología, accesorios y gadgets con precios pensados para revender o regalar.
                 Elegí tu categoría, armá tu pedido y envialo por WhatsApp.
               </p>
@@ -141,7 +142,7 @@ export default function Home() {
         {/* Featured Banner Carousel */}
         {visibleFeatured.length > 0 && (
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
-            <div className="relative rounded-2xl overflow-hidden bg-white dark:bg-gray-950/20 dark:backdrop-blur-sm shadow-sm dark:shadow-2xl border border-gray-100 dark:border-blue-900/30">
+            <div className="relative rounded-2xl overflow-hidden bg-white dark:bg-gray-950/20 dark:backdrop-blur-md shadow-sm dark:shadow-2xl border border-gray-100 dark:border-blue-400/15">
               {(() => {
                 const product = visibleFeatured[currentSlide]
                 if (!product) return null
@@ -229,7 +230,7 @@ export default function Home() {
           {loading ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
               {Array.from({ length: 10 }).map((_, i) => (
-                <div key={i} className="bg-white dark:bg-gray-950/20 dark:backdrop-blur-sm rounded-xl overflow-hidden border border-gray-100 dark:border-blue-900/30">
+                <div key={i} className="bg-white dark:bg-gray-950/20 dark:backdrop-blur-md rounded-xl overflow-hidden border border-gray-100 dark:border-blue-400/15">
                   <div className="h-36 animate-shimmer" />
                   <div className="p-3 space-y-2">
                     <div className="h-3 animate-shimmer rounded w-3/4" />

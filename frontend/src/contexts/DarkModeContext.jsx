@@ -13,8 +13,10 @@ export function DarkModeProvider({ children }) {
     const root = document.documentElement
     if (dark) {
       root.classList.add('dark')
+      document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#060a14')
     } else {
       root.classList.remove('dark')
+      document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#fafaf9')
     }
     localStorage.setItem('darkMode', dark)
   }, [dark])
