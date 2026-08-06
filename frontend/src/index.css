@@ -9,7 +9,7 @@ body {
 
 .dark body {
   background-color: #172554;
-  background-image: linear-gradient(180deg, #1d2b5c 0%, #141f4d 45%, #172554 100%);
+  background-image: linear-gradient(180deg, #04060d 0%, #0a1122 40%, #172554 100%);
 }
 
 .dark {
@@ -89,7 +89,7 @@ body {
 
 .dark .dark\:bg-gray-950 {
   background-color: #172554 !important;
-  background-image: linear-gradient(180deg, #1d2b5c 0%, #172554 100%) !important;
+  background-image: linear-gradient(180deg, #04060d 0%, #0a1122 40%, #172554 100%) !important;
 }
 .dark .dark\:bg-gray-900 {
   background-color: #1e2b60 !important;
