@@ -15,7 +15,9 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
   const [profileOpen, setProfileOpen] = React.useState(false)
   const [ordersOpen, setOrdersOpen] = React.useState(false)
   const [catOverflow, setCatOverflow] = React.useState(false)
+  const [catDir, setCatDir] = React.useState(null)
   const catRef = React.useRef(null)
+  const catLastScroll = React.useRef(0)
 
   React.useEffect(() => {
     const el = catRef.current
@@ -25,6 +27,21 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
     ro.observe(el)
     check()
     return () => ro.disconnect()
+  }, [categories])
+
+  React.useEffect(() => {
+    const el = catRef.current
+    if (!el) return
+    catLastScroll.current = el.scrollLeft
+    const onScroll = () => {
+      const delta = el.scrollLeft - catLastScroll.current
+      if (delta !== 0) {
+        setCatDir(delta > 0 ? 'right' : 'left')
+        catLastScroll.current = el.scrollLeft
+      }
+    }
+    el.addEventListener('scroll', onScroll, { passive: true })
+    return () => el.removeEventListener('scroll', onScroll)
   }, [categories])
 
   function handleLogout() {
@@ -129,7 +146,7 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
                 <ChevronLeft className="w-3.5 h-3.5" />
               </button>
             )}
-            <div ref={catRef} className={`flex items-center gap-1 overflow-x-auto py-2 scroll-smooth scrollbar-none ${catOverflow ? 'sm:mx-10' : 'justify-center'}`} style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+            <div ref={catRef} className={`flex items-center gap-1 overflow-x-auto py-2 scroll-smooth scrollbar-none ${catOverflow ? 'sm:mx-10' : 'justify-center'} ${catDir === 'right' ? 'animate-catRight' : catDir === 'left' ? 'animate-catLeft' : ''}`} style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
               {categories.map((cat) => (
                 <button
                   key={cat.id}
