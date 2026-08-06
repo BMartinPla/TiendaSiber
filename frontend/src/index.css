@@ -8,8 +8,8 @@ body {
 }
 
 .dark body {
-  background-color: #0a0f1e;
-  background-image: linear-gradient(180deg, #131b38 0%, #0c1226 45%, #0a0f1e 100%);
+  background-color: #172554;
+  background-image: linear-gradient(180deg, #1d2b5c 0%, #141f4d 45%, #172554 100%);
 }
 
 .dark {
@@ -88,52 +88,52 @@ body {
 }
 
 .dark .dark\:bg-gray-950 {
-  background-color: #0a0f1e !important;
-  background-image: linear-gradient(180deg, #131b38 0%, #0a0f1e 100%) !important;
+  background-color: #172554 !important;
+  background-image: linear-gradient(180deg, #1d2b5c 0%, #172554 100%) !important;
 }
 .dark .dark\:bg-gray-900 {
-  background-color: #111a33 !important;
-  background-image: linear-gradient(180deg, #1e2b50 0%, #131c36 55%, #111a33 100%) !important;
+  background-color: #1e2b60 !important;
+  background-image: linear-gradient(180deg, #26346e 0%, #1d2958 55%, #1e2b60 100%) !important;
 }
 .dark .dark\:bg-gray-900\/90 {
-  background-color: rgba(17, 26, 51, 0.9) !important;
-  background-image: linear-gradient(180deg, rgba(30, 43, 80, 0.9), rgba(17, 26, 51, 0.9)) !important;
+  background-color: rgba(30, 43, 96, 0.9) !important;
+  background-image: linear-gradient(180deg, rgba(38, 52, 110, 0.9), rgba(30, 43, 96, 0.9)) !important;
 }
 .dark .dark\:bg-gray-900\/80 {
-  background-color: rgba(17, 26, 51, 0.8) !important;
-  background-image: linear-gradient(180deg, rgba(30, 43, 80, 0.8), rgba(17, 26, 51, 0.8)) !important;
+  background-color: rgba(30, 43, 96, 0.8) !important;
+  background-image: linear-gradient(180deg, rgba(38, 52, 110, 0.8), rgba(30, 43, 96, 0.8)) !important;
 }
 .dark .dark\:bg-gray-900\/50 {
-  background-color: rgba(17, 26, 51, 0.5) !important;
-  background-image: linear-gradient(180deg, rgba(30, 43, 80, 0.5), rgba(17, 26, 51, 0.5)) !important;
+  background-color: rgba(30, 43, 96, 0.5) !important;
+  background-image: linear-gradient(180deg, rgba(38, 52, 110, 0.5), rgba(30, 43, 96, 0.5)) !important;
 }
 .dark .dark\:bg-gray-800 {
-  background-color: #1a2444 !important;
-  background-image: linear-gradient(180deg, #2a3a66 0%, #1f2c4e 55%, #1a2444 100%) !important;
+  background-color: #27366e !important;
+  background-image: linear-gradient(180deg, #324182 0%, #28366e 55%, #27366e 100%) !important;
 }
 .dark .dark\:bg-gray-800\/50 {
-  background-color: rgba(26, 36, 68, 0.5) !important;
-  background-image: linear-gradient(180deg, rgba(42, 58, 102, 0.5), rgba(26, 36, 68, 0.5)) !important;
+  background-color: rgba(39, 54, 110, 0.5) !important;
+  background-image: linear-gradient(180deg, rgba(50, 65, 130, 0.5), rgba(39, 54, 110, 0.5)) !important;
 }
 .dark .dark\:bg-gray-800\/30 {
-  background-color: rgba(26, 36, 68, 0.3) !important;
-  background-image: linear-gradient(180deg, rgba(42, 58, 102, 0.3), rgba(26, 36, 68, 0.3)) !important;
+  background-color: rgba(39, 54, 110, 0.3) !important;
+  background-image: linear-gradient(180deg, rgba(50, 65, 130, 0.3), rgba(39, 54, 110, 0.3)) !important;
 }
 .dark .dark\:bg-gray-700 {
-  background-color: #24335c !important;
-  background-image: linear-gradient(180deg, #3a4f82 0%, #2b3d68 55%, #24335c 100%) !important;
+  background-color: #324384 !important;
+  background-image: linear-gradient(180deg, #3e519a 0%, #34457f 55%, #324384 100%) !important;
 }
 .dark .dark\:bg-gray-700\/50 {
-  background-color: rgba(36, 51, 92, 0.5) !important;
-  background-image: linear-gradient(180deg, rgba(58, 79, 130, 0.5), rgba(36, 51, 92, 0.5)) !important;
+  background-color: rgba(50, 67, 132, 0.5) !important;
+  background-image: linear-gradient(180deg, rgba(62, 81, 154, 0.5), rgba(50, 67, 132, 0.5)) !important;
 }
 .dark .dark\:bg-gray-700\/30 {
-  background-color: rgba(36, 51, 92, 0.3) !important;
-  background-image: linear-gradient(180deg, rgba(58, 79, 130, 0.3), rgba(36, 51, 92, 0.3)) !important;
+  background-color: rgba(50, 67, 132, 0.3) !important;
+  background-image: linear-gradient(180deg, rgba(62, 81, 154, 0.3), rgba(50, 67, 132, 0.3)) !important;
 }
 .dark .dark\:bg-gray-600 {
-  background-color: #31437a !important;
-  background-image: linear-gradient(180deg, #4d63a0 0%, #3a4f82 55%, #31437a 100%) !important;
+  background-color: #41549e !important;
+  background-image: linear-gradient(180deg, #5166b8 0%, #435598 55%, #41549e 100%) !important;
 }
 
 .dark .dark\:text-gray-900 { color: #0f172a; }
@@ -141,7 +141,7 @@ body {
 .dark .dark\:text-gray-200 { color: #e2e8f0; }
 .dark .dark\:text-gray-300 { color: #cbd5e1; }
 .dark .dark\:text-gray-400 { color: #94a3b8; }
-.dark .dark\:text-gray-500 { color: #64748b; }
+.dark .dark\:text-gray-500 { color: #a9b6d4; }
 .dark .dark\:text-gray-600 { color: #475569; }
 .dark .dark\:text-white { color: #f8fafc; }
 
@@ -150,24 +150,24 @@ body {
 .dark .dark\:border-gray-600 { border-color: #334155; }
 
 .dark .dark\:hover\:bg-gray-900:hover {
-  background-color: #111a33;
-  background-image: linear-gradient(180deg, #26375f 0%, #131c36 100%);
+  background-color: #1e2b60 !important;
+  background-image: linear-gradient(180deg, #2c3b7c 0%, #1d2958 100%) !important;
 }
 .dark .dark\:hover\:bg-gray-800:hover {
-  background-color: #1a2444;
-  background-image: linear-gradient(180deg, #32436f 0%, #1f2c4e 100%);
+  background-color: #27366e !important;
+  background-image: linear-gradient(180deg, #36468e 0%, #28366e 100%) !important;
 }
 .dark .dark\:hover\:bg-gray-800\/50:hover {
-  background-color: rgba(26, 36, 68, 0.5);
-  background-image: linear-gradient(180deg, rgba(50, 67, 111, 0.5), rgba(26, 36, 68, 0.5));
+  background-color: rgba(39, 54, 110, 0.5) !important;
+  background-image: linear-gradient(180deg, rgba(54, 70, 142, 0.5), rgba(39, 54, 110, 0.5)) !important;
 }
 .dark .dark\:hover\:bg-gray-700:hover {
-  background-color: #24335c;
-  background-image: linear-gradient(180deg, #475c96 0%, #2b3d68 100%);
+  background-color: #324384 !important;
+  background-image: linear-gradient(180deg, #42569e 0%, #34457f 100%) !important;
 }
 .dark .dark\:hover\:bg-gray-600:hover {
-  background-color: #31437a;
-  background-image: linear-gradient(180deg, #5b73b4 0%, #3a4f82 100%);
+  background-color: #41549e !important;
+  background-image: linear-gradient(180deg, #5468ba 0%, #435598 100%) !important;
 }
 .dark .dark\:hover\:text-white:hover { color: #f8fafc; }
 .dark .dark\:hover\:text-gray-300:hover { color: #cbd5e1; }
@@ -200,12 +200,12 @@ body {
 }
 
 @keyframes catDrop {
-  from { opacity: 0; transform: translateY(-100%); }
+  from { opacity: 0; transform: translateY(-12px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
 .animate-catDrop {
-  animation: catDrop 0.35s ease-out both;
+  animation: catDrop 0.5s ease-out both;
 }
 
 @keyframes slideUp {
