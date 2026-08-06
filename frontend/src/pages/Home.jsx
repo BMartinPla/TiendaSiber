@@ -118,7 +118,7 @@ export default function Home() {
 
       <main className="pt-6 pb-12 animate-fadeIn">
         {/* Brand hero */}
-        <div className="relative overflow-hidden rounded-none sm:rounded-none bg-gradient-to-br from-white via-blue-50 to-accent-100 dark:bg-gradient-to-br dark:from-zinc-900 dark:via-zinc-900 dark:to-blue-950 border-y border-gray-200/60 dark:border-y dark:border-zinc-800 mb-8 sm:mb-10">
+        <div className="relative overflow-hidden rounded-none sm:rounded-none bg-gradient-to-br from-white via-blue-50 to-accent-100 dark:bg-transparent dark:bg-none border-y border-gray-200/60 dark:border-transparent dark:border-y mb-8 sm:mb-10">
           <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-accent-200/50 dark:bg-accent-600/20 blur-3xl" />
           <div className="absolute -bottom-32 -left-16 w-80 h-80 rounded-full bg-accent-100/60 dark:bg-accent-500/10 blur-3xl" />
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
@@ -141,7 +141,7 @@ export default function Home() {
         {/* Featured Banner Carousel */}
         {visibleFeatured.length > 0 && (
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
-            <div className="relative rounded-2xl overflow-hidden bg-white dark:bg-gray-800 shadow-sm border border-gray-100 dark:border-gray-700">
+            <div className="relative rounded-2xl overflow-hidden bg-white dark:bg-gray-950/20 dark:backdrop-blur-sm shadow-sm dark:shadow-2xl border border-gray-100 dark:border-blue-900/30">
               {(() => {
                 const product = visibleFeatured[currentSlide]
                 if (!product) return null
@@ -229,7 +229,7 @@ export default function Home() {
           {loading ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
               {Array.from({ length: 10 }).map((_, i) => (
-                <div key={i} className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden border border-gray-100 dark:border-gray-700">
+                <div key={i} className="bg-white dark:bg-gray-950/20 dark:backdrop-blur-sm rounded-xl overflow-hidden border border-gray-100 dark:border-blue-900/30">
                   <div className="h-36 animate-shimmer" />
                   <div className="p-3 space-y-2">
                     <div className="h-3 animate-shimmer rounded w-3/4" />
