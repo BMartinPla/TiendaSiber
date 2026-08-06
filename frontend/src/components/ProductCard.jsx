@@ -48,7 +48,7 @@ export default function ProductCard({ product, onView, index = 0 }) {
       {/* Info */}
       <div className="px-3 pb-3 flex flex-col flex-1 gap-1">
         {product.category && (
-          <p className="text-[10px] text-orange-600/80 dark:text-orange-400/80 uppercase tracking-wider font-semibold">{product.category.name}</p>
+          <p className="text-[10px] text-accent-600/80 dark:text-accent-400/80 uppercase tracking-wider font-semibold">{product.category.name}</p>
         )}
 
         <h3 className="text-sm font-medium text-gray-800 dark:text-gray-100 leading-snug line-clamp-2">
@@ -107,7 +107,7 @@ export default function ProductCard({ product, onView, index = 0 }) {
                 ? 'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed'
                 : added
                 ? 'bg-accent-600 text-white'
-                : 'text-white bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 shadow-sm shadow-amber-500/25 active:scale-[0.97]'
+                : 'text-white bg-gradient-to-r from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 shadow-sm shadow-accent-500/25 active:scale-[0.97]'
             }`}
           >
             {product.stock <= 0 ? (

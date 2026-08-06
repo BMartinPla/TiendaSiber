@@ -119,16 +119,16 @@ export default function Home() {
       <main className="pt-6 pb-12 animate-fadeIn">
         {/* Brand hero */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-zinc-900 via-zinc-900 to-orange-950 text-white px-6 sm:px-10 py-10 sm:py-14">
-            <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-orange-600/20 blur-3xl" />
-            <div className="absolute -bottom-32 -left-16 w-80 h-80 rounded-full bg-amber-500/10 blur-3xl" />
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-zinc-900 via-zinc-900 to-blue-950 text-white px-6 sm:px-10 py-10 sm:py-14">
+            <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-accent-600/20 blur-3xl" />
+            <div className="absolute -bottom-32 -left-16 w-80 h-80 rounded-full bg-accent-500/10 blur-3xl" />
             <div className="relative">
-              <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-amber-400 mb-3">
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+              <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-accent-400 mb-3">
+                <span className="w-1.5 h-1.5 rounded-full bg-accent-400 animate-pulse" />
                 Catálogo mayorista y minorista
               </span>
               <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
-                Quince <span className="text-amber-400">Gear</span> SN
+                Quince <span className="text-red-500">Gear</span> SN
               </h1>
               <p className="mt-3 text-sm sm:text-base text-zinc-300 max-w-xl">
                 Tecnología, accesorios y gadgets con precios pensados para revender o regalar.
@@ -152,7 +152,7 @@ export default function Home() {
                           <img src={product.featuredImageUrl || product.imageUrl} alt={product.name} loading="lazy" className="w-full h-full object-contain" />
                       ) : (
                         <div className="w-full h-full flex flex-col items-center justify-center gap-2 text-gray-300 dark:text-gray-600">
-                          <Star className="w-12 h-12 text-amber-300 fill-amber-300" />
+                          <Star className="w-12 h-12 text-accent-300 fill-accent-300" />
                           <span className="text-lg font-semibold text-gray-400">{product.name}</span>
                         </div>
                       )}

@@ -36,7 +36,7 @@ export default function OrdersModal({ onClose }) {
   function statusBadge(status) {
     if (status === 'APPROVED') return 'bg-accent-50 dark:bg-accent-900/30 text-accent-700 dark:text-accent-300'
     if (status === 'CANCELLED') return 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300'
-    return 'bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300'
+    return 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
   }
 
   function statusLabel(status) {
@@ -54,8 +54,8 @@ export default function OrdersModal({ onClose }) {
         </button>
 
         <div className="flex items-center gap-3 mb-6">
-          <div className="p-2.5 bg-amber-100 dark:bg-amber-900/30 rounded-xl">
-            <ShoppingBag className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+          <div className="p-2.5 bg-accent-100 dark:bg-accent-900/30 rounded-xl">
+            <ShoppingBag className="w-5 h-5 text-accent-600 dark:text-accent-400" />
           </div>
           <div>
             <h2 className="text-xl font-bold text-gray-900 dark:text-white">Mis Pedidos</h2>

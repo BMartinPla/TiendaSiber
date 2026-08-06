@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { ShoppingCart, Search, LogOut, User, Moon, Sun, LayoutDashboard, ShoppingBag, Menu, X, ChevronLeft, ChevronRight } from 'lucide-react'
+import { ShoppingCart, Search, LogOut, User, Moon, Sun, LayoutDashboard, ShoppingBag, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import { useCart } from '../contexts/CartContext'
 import { useDarkMode } from '../contexts/DarkModeContext'
@@ -12,7 +12,6 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
   const { itemCount } = useCart()
   const { dark, toggleDark } = useDarkMode()
   const navigate = useNavigate()
-  const [catOpen, setCatOpen] = React.useState(true)
   const [profileOpen, setProfileOpen] = React.useState(false)
   const [ordersOpen, setOrdersOpen] = React.useState(false)
   const [catOverflow, setCatOverflow] = React.useState(false)
@@ -40,15 +39,10 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
       <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-sm dark:shadow-md dark:shadow-black/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-14 sm:h-16 gap-2 sm:gap-4">
-            {/* Categories toggle */}
-            <button onClick={() => setCatOpen(!catOpen)} className="p-1.5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
-              {catOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
-
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2 shrink-0 group">
               <img src="/logo.png" alt="Logo" className="h-7 sm:h-8 w-auto transition-transform duration-300 group-hover:scale-105" />
-              <span className="font-display text-base sm:text-lg font-bold text-gray-900 dark:text-white hidden sm:block">Quince <span className="text-orange-500">Gear</span> SN</span>
+              <span className="font-display text-base sm:text-lg font-bold text-gray-900 dark:text-white hidden sm:block">Quince <span className="text-red-500">Gear</span> SN</span>
             </Link>
 
             {/* Search bar */}
@@ -67,7 +61,7 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
 
             {/* Actions */}
             <div className="flex items-center gap-1 sm:gap-2">
-              <button onClick={toggleDark} className="p-1.5 sm:p-2 text-gray-500 dark:text-gray-400 hover:text-amber-500 dark:hover:text-amber-400 transition-colors" title={dark ? 'Modo claro' : 'Modo oscuro'}>
+              <button onClick={toggleDark} className="p-1.5 sm:p-2 text-gray-500 dark:text-gray-400 hover:text-accent-500 dark:hover:text-accent-400 transition-colors" title={dark ? 'Modo claro' : 'Modo oscuro'}>
                 {dark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
               </button>
 
@@ -81,7 +75,7 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
                       </span>
                     )}
                   </button>
-                  <Link to="/login" className="px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-semibold text-white bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 shadow-sm hover:shadow-md shadow-amber-500/25 transition-all duration-200">
+                  <Link to="/login" className="px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-semibold text-white bg-gradient-to-r from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 shadow-sm hover:shadow-md shadow-accent-500/25 transition-all duration-200">
                     Ingresar
                   </Link>
                 </>
@@ -127,8 +121,7 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
 
       {/* Categories nav bar - in normal flow, pushes page content */}
       {categories && categories.length > 0 && (
-        <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-sm transition-[max-height] duration-300 overflow-hidden"
-          style={{ maxHeight: catOpen ? '300px' : '0' }}>
+        <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-sm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             {catOverflow && (
               <button onClick={() => { catRef.current?.scrollBy({ left: -200, behavior: 'smooth' }) }}
@@ -143,8 +136,8 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
                   onClick={() => onCategoryChange(cat.id)}
                   className={`shrink-0 px-3.5 py-1.5 text-xs sm:text-sm font-semibold rounded-full whitespace-nowrap transition-all duration-200 ${
                     selectedCategories.includes(cat.id)
-                      ? 'bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-md shadow-amber-500/30 scale-105'
-                      : 'text-gray-600 dark:text-gray-300 hover:bg-orange-50 dark:hover:bg-gray-800 hover:text-orange-600 dark:hover:text-orange-400'
+                      ? 'bg-gradient-to-r from-accent-500 to-accent-600 text-white shadow-md shadow-accent-500/30 scale-105'
+                      : 'text-gray-600 dark:text-gray-300 hover:bg-accent-50 dark:hover:bg-gray-800 hover:text-accent-600 dark:hover:text-accent-400'
                   }`}
                 >
                   {cat.name}

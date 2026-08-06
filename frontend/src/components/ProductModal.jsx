@@ -103,7 +103,7 @@ export default function ProductModal({ product, onClose }) {
                       ? 'bg-gray-100 dark:bg-gray-700 text-gray-400 cursor-not-allowed'
                       : added
                       ? 'bg-accent-600 text-white'
-                      : 'text-white bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 shadow-lg shadow-amber-500/25 active:scale-[0.98]'
+                      : 'text-white bg-gradient-to-r from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 shadow-lg shadow-accent-500/25 active:scale-[0.98]'
                   }`}
                 >
                   {product.stock <= 0 ? (

@@ -147,7 +147,7 @@ export default function ImageCropper({ imageUrl, onCrop, onCancel, aspect = 1 })
                   step={0.1}
                   value={zoom}
                   onChange={(e) => setZoom(Number(e.target.value))}
-                  className="w-full accent-orange-500"
+                  className="w-full accent-accent-500"
                 />
               </div>
             )}

@@ -38,7 +38,7 @@ body {
 @layer components {
   /* Primary action button */
   .btn-accent {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 active:scale-[0.98] transition-all duration-200 shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 active:scale-[0.98] transition-all duration-200 shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed;
   }
   /* Soft ghost button */
   .btn-ghost {
@@ -46,7 +46,7 @@ body {
   }
   /* Card with hover lift */
   .card-hover {
-    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-amber-500/10 dark:hover:shadow-black/40;
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-accent-500/10 dark:hover:shadow-black/40;
   }
 }
 

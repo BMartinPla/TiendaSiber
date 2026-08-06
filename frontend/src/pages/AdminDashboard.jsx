@@ -591,7 +591,7 @@ export default function AdminDashboard() {
 
   const statsCards = [
     { label: 'Productos totales', value: products.length, icon: Package, color: 'bg-accent-500' },
-    { label: 'Pedidos totales', value: orders.length, icon: ShoppingBag, color: 'bg-amber-500' },
+    { label: 'Pedidos totales', value: orders.length, icon: ShoppingBag, color: 'bg-blue-500' },
     { label: 'Usuarios', value: users.length, icon: User, color: 'bg-purple-500' },
     { label: 'Categorías', value: categories.length, icon: Settings, color: 'bg-red-500' },
   ]
@@ -630,7 +630,7 @@ export default function AdminDashboard() {
                 onClick={() => setActiveSection(item.key)}
                 className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
                   activeSection === item.key
-                    ? 'bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-md shadow-amber-500/25'
+                    ? 'bg-gradient-to-r from-accent-500 to-accent-600 text-white shadow-md shadow-accent-500/25'
                     : 'text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-gray-900 dark:hover:text-white'
                 }`}
               >
@@ -827,7 +827,7 @@ export default function AdminDashboard() {
                   {productSectionOpen && (<>
                   {/* Bulk upload result */}
                   {bulkResult && (
-                    <div className={`mb-4 rounded-xl border p-4 text-sm ${bulkResult.errors?.length > 0 ? 'bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-300' : 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 text-green-700 dark:text-green-300'}`}>
+                    <div className={`mb-4 rounded-xl border p-4 text-sm ${bulkResult.errors?.length > 0 ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-700 dark:text-red-300' : 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 text-green-700 dark:text-green-300'}`}>
                       <p className="font-semibold mb-1">{bulkResult.message}</p>
                       <p className="text-xs">
                         Creados: {bulkResult.created} · Actualizados: {bulkResult.updated} · Errores: {bulkResult.errors?.length || 0}
@@ -936,7 +936,7 @@ export default function AdminDashboard() {
                       <button onClick={() => { handleBulkStock('add') }}
                         className="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-teal-500 hover:bg-teal-600 transition-colors" title="Suma o resta el valor al stock actual (+/-)">+/-</button>
                       <button onClick={() => { handleBulkAction('suspend') }}
-                        className="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-amber-500 hover:bg-amber-600 transition-colors">Suspender</button>
+                        className="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-red-500 hover:bg-red-600 transition-colors">Suspender</button>
                       <button onClick={() => { handleBulkAction('restore') }}
                         className="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-accent-500 hover:bg-accent-600 transition-colors">Restaurar</button>
                       <button onClick={() => { handleBulkAction('delete') }}
@@ -1003,7 +1003,7 @@ export default function AdminDashboard() {
                               </td>
                               <td className="px-4 py-3 text-center text-sm text-gray-700 dark:text-gray-200">{p.stock}</td>
                               <td className="px-4 py-3 text-center">
-                                {p.featured ? <Star className="w-4 h-4 text-amber-400 fill-amber-400 inline" /> : <span className="text-gray-300 dark:text-gray-600">-</span>}
+                                {p.featured ? <Star className="w-4 h-4 text-red-400 fill-red-400 inline" /> : <span className="text-gray-300 dark:text-gray-600">-</span>}
                               </td>
                               <td className="px-4 py-3 text-center">
                                 <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${p.active ? 'bg-accent-50 dark:bg-accent-900/30 text-accent-700 dark:text-accent-300' : 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300'}`}>
@@ -1015,11 +1015,11 @@ export default function AdminDashboard() {
                                   <button onClick={() => openEdit(p)}
                                     className="px-2.5 py-1.5 rounded-lg text-xs font-medium text-white bg-accent-600 hover:bg-accent-700 transition-colors">Editar</button>
                                   <button onClick={() => handleToggleFeatured(p)}
-                                    className={`px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors ${p.featured ? 'bg-amber-400 hover:bg-amber-500 text-white' : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-500 dark:text-gray-300'}`}>
+                                    className={`px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors ${p.featured ? 'bg-red-400 hover:bg-red-500 text-white' : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-500 dark:text-gray-300'}`}>
                                     <Star className={`w-3.5 h-3.5 ${p.featured ? 'fill-white' : ''}`} />
                                   </button>
                                   <button onClick={() => handleToggleSuspend(p)}
-                                    className={`px-2.5 py-1.5 rounded-lg text-xs font-medium text-white ${p.active ? 'bg-amber-500 hover:bg-amber-600' : 'bg-accent-500 hover:bg-accent-600'} transition-colors`}>
+                                    className={`px-2.5 py-1.5 rounded-lg text-xs font-medium text-white ${p.active ? 'bg-red-500 hover:bg-red-600' : 'bg-accent-500 hover:bg-accent-600'} transition-colors`}>
                                     {p.active ? 'Susp' : 'Act'}
                                   </button>
                                   <button onClick={() => handleHardDelete(p)}
@@ -1072,7 +1072,7 @@ export default function AdminDashboard() {
                             </div>
                             <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
                               <button onClick={() => handleCatToggleSuspend(cat)}
-                                className={`px-2.5 py-1 rounded-lg text-xs font-medium text-white ${cat.active ? 'bg-amber-500 hover:bg-amber-600' : 'bg-accent-500 hover:bg-accent-600'} transition-colors`}>
+                                className={`px-2.5 py-1 rounded-lg text-xs font-medium text-white ${cat.active ? 'bg-red-500 hover:bg-red-600' : 'bg-accent-500 hover:bg-accent-600'} transition-colors`}>
                                 {cat.active ? 'Suspender' : 'Restaurar'}
                               </button>
                               <button onClick={() => handleCatDelete(cat)} disabled={!cat.active}
@@ -1108,7 +1108,7 @@ export default function AdminDashboard() {
                                         <td className="px-4 py-2 text-gray-600 dark:text-gray-400">${p.precioMayorista.toLocaleString('es-CL')}</td>
                                         <td className="px-4 py-2 text-gray-600 dark:text-gray-400">{p.stock}</td>
                                         <td className="px-4 py-2 text-center">
-                                          {p.featured ? <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400 inline" /> : <span className="text-gray-300 dark:text-gray-600">-</span>}
+                                          {p.featured ? <Star className="w-3.5 h-3.5 text-red-400 fill-red-400 inline" /> : <span className="text-gray-300 dark:text-gray-600">-</span>}
                                         </td>
                                         <td className="px-4 py-2">
                                           <span className={`text-xs font-medium ${p.active ? 'text-accent-600' : 'text-red-500'}`}>
@@ -1120,11 +1120,11 @@ export default function AdminDashboard() {
                                             <button onClick={() => openEdit(p)}
                                               className="px-2 py-1 rounded-lg text-xs font-medium text-white bg-accent-600 hover:bg-accent-700 transition-colors">Editar</button>
                                             <button onClick={() => handleToggleFeatured(p)}
-                                              className={`px-2 py-1 rounded-lg text-xs font-medium transition-colors ${p.featured ? 'bg-amber-400 hover:bg-amber-500 text-white' : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-500 dark:text-gray-300'}`}>
+                                              className={`px-2 py-1 rounded-lg text-xs font-medium transition-colors ${p.featured ? 'bg-red-400 hover:bg-red-500 text-white' : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-500 dark:text-gray-300'}`}>
                                               <Star className={`w-3 h-3 ${p.featured ? 'fill-white' : ''}`} />
                                             </button>
                                             <button onClick={() => handleToggleSuspend(p)}
-                                              className={`px-2 py-1 rounded-lg text-xs font-medium text-white ${p.active ? 'bg-amber-500 hover:bg-amber-600' : 'bg-accent-500 hover:bg-accent-600'} transition-colors`}>
+                                              className={`px-2 py-1 rounded-lg text-xs font-medium text-white ${p.active ? 'bg-red-500 hover:bg-red-600' : 'bg-accent-500 hover:bg-accent-600'} transition-colors`}>
                                               {p.active ? 'Suspender' : 'Restaurar'}
                                             </button>
                                             <button onClick={() => handleHardDelete(p)}
@@ -1277,7 +1277,7 @@ export default function AdminDashboard() {
                                 <div className="flex gap-1 flex-wrap">
                                   {u.active ? (
                                     <button onClick={() => handleUserSuspend(u.id)}
-                                      className="px-2 py-1 rounded-lg text-xs font-medium text-white bg-amber-500 hover:bg-amber-600 transition-colors">Suspender</button>
+                                      className="px-2 py-1 rounded-lg text-xs font-medium text-white bg-red-500 hover:bg-red-600 transition-colors">Suspender</button>
                                   ) : (
                                     <button onClick={() => handleUserActivate(u.id)}
                                       className="px-2 py-1 rounded-lg text-xs font-medium text-white bg-accent-500 hover:bg-accent-600 transition-colors">Activar</button>
@@ -1349,7 +1349,7 @@ export default function AdminDashboard() {
                             <span className="text-sm font-semibold text-gray-900 dark:text-white">#{order.id}</span>
                             <span className="text-sm text-gray-500 dark:text-gray-400">{order.user?.name}</span>
                             <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
-                              order.status === 'APPROVED' ? 'bg-accent-50 dark:bg-accent-900/30 text-accent-700 dark:text-accent-300' : 'bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300'
+                              order.status === 'APPROVED' ? 'bg-accent-50 dark:bg-accent-900/30 text-accent-700 dark:text-accent-300' : 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
                             }`}>
                               {order.status === 'APPROVED' ? 'Aprobado' : 'Pendiente'}
                             </span>
