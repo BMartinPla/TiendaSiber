@@ -1316,7 +1316,7 @@ export default function AdminDashboard() {
                     <option value="APPROVED">Aprobados</option>
                   </select>
                   <button onClick={() => setShowManualOrder(true)}
-                    className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white bg-accent-600 hover:bg-accent-700 transition-colors shrink-0">
+                    className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white bg-accent-600 hover:bg-accent-700 transition-colors shrink-0 ml-auto">
                     <Plus className="w-4 h-4" /> Pedido Manual
                   </button>
                 </div>

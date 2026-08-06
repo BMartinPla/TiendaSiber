@@ -118,7 +118,7 @@ export default function Home() {
 
       <main className="pt-6 pb-12 animate-fadeIn">
         {/* Brand hero */}
-        <div className="relative overflow-hidden rounded-none sm:rounded-none bg-gradient-to-br from-white via-blue-50 to-accent-100 dark:bg-gradient-to-br dark:from-zinc-900 dark:via-zinc-900 dark:to-blue-950 border-y border-gray-200/60 dark:border-y dark:border-zinc-800">
+        <div className="relative overflow-hidden rounded-none sm:rounded-none bg-gradient-to-br from-white via-blue-50 to-accent-100 dark:bg-gradient-to-br dark:from-zinc-900 dark:via-zinc-900 dark:to-blue-950 border-y border-gray-200/60 dark:border-y dark:border-zinc-800 mb-8 sm:mb-10">
           <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-accent-200/50 dark:bg-accent-600/20 blur-3xl" />
           <div className="absolute -bottom-32 -left-16 w-80 h-80 rounded-full bg-accent-100/60 dark:bg-accent-500/10 blur-3xl" />
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
