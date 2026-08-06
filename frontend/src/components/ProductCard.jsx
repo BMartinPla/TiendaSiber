@@ -29,7 +29,7 @@ export default function ProductCard({ product, onView, index = 0 }) {
       {/* Image */}
       <div className="relative aspect-square bg-gray-50 dark:bg-gray-800/70 border border-gray-100 dark:border-blue-900/30 flex items-center justify-center overflow-hidden m-2 rounded-2xl">
         {product.imageUrl ? (
-          <img src={product.imageUrl} alt={product.name} loading="lazy" className="w-full h-full object-contain p-3 group-hover:scale-110 transition-transform duration-500" />
+          <img src={product.imageUrl} alt={product.name} loading="lazy" className="w-full h-full object-contain p-3 group-hover:scale-110 transition-transform duration-500 rounded-2xl" />
         ) : (
           <Package className="w-12 h-12 text-gray-300 dark:text-gray-600" />
         )}
