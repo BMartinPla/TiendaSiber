@@ -40,7 +40,7 @@ export default function ProveedorSelect({ value, onChange, proveedores, placehol
           value={query}
           onChange={(e) => { setQuery(e.target.value); onChange(e.target.value); setOpen(true) }}
           onFocus={() => setOpen(true)}
-          className="w-full px-4 py-2.5 pr-9 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+          className="w-full px-4 py-2.5 pr-9 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
         />
         {query ? (
           <button type="button" onClick={handleClear}
@@ -60,7 +60,7 @@ export default function ProveedorSelect({ value, onChange, proveedores, placehol
               <button key={String(p)} type="button"
                 onMouseDown={(e) => e.preventDefault()}
                 onClick={() => handleSelect(String(p))}
-                className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${String(p).toLowerCase() === q ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300' : 'text-gray-700 dark:text-gray-200'}`}>
+                className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${String(p).toLowerCase() === q ? 'bg-accent-50 dark:bg-accent-900/30 text-accent-700 dark:text-accent-300' : 'text-gray-700 dark:text-gray-200'}`}>
                 {String(p)}
               </button>
             ))

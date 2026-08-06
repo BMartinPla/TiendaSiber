@@ -116,7 +116,7 @@ export default function Cart({ open, onClose }) {
       >
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100 dark:border-gray-700">
           <div>
-            <h2 className="text-lg font-bold text-gray-900 dark:text-white">Carrito</h2>
+            <h2 className="font-display text-lg font-bold text-gray-900 dark:text-white">Carrito</h2>
             <p className="text-sm text-gray-500 dark:text-gray-400">{localCount} producto(s)</p>
           </div>
           <div className="flex items-center gap-2">

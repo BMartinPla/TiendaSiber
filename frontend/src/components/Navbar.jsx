@@ -46,9 +46,9 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
             </button>
 
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-2 shrink-0">
-              <img src="/logo.png" alt="Logo" className="h-7 sm:h-8 w-auto" />
-              <span className="text-base sm:text-lg font-bold text-gray-900 dark:text-white hidden sm:block">Quince Gear SN</span>
+            <Link to="/" className="flex items-center gap-2 shrink-0 group">
+              <img src="/logo.png" alt="Logo" className="h-7 sm:h-8 w-auto transition-transform duration-300 group-hover:scale-105" />
+              <span className="font-display text-base sm:text-lg font-bold text-gray-900 dark:text-white hidden sm:block">Quince <span className="text-orange-500">Gear</span> SN</span>
             </Link>
 
             {/* Search bar */}
@@ -60,7 +60,7 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
                   placeholder="Buscar..."
                   value={search}
                   onChange={(e) => onSearch(e.target.value)}
-                  className="w-full pl-8 sm:pl-10 pr-2 sm:pr-4 py-1.5 sm:py-2.5 text-xs sm:text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400"
+                  className="w-full pl-8 sm:pl-10 pr-2 sm:pr-4 py-1.5 sm:py-2.5 text-xs sm:text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400"
                 />
               </div>
             </div>
@@ -81,24 +81,24 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
                       </span>
                     )}
                   </button>
-                  <Link to="/login" className="px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-colors">
+                  <Link to="/login" className="px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-semibold text-white bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 shadow-sm hover:shadow-md shadow-amber-500/25 transition-all duration-200">
                     Ingresar
                   </Link>
                 </>
               ) : (
                 <>
-                  <button onClick={() => setProfileOpen(true)} className="p-1.5 sm:p-2 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" title="Perfil">
+                  <button onClick={() => setProfileOpen(true)} className="p-1.5 sm:p-2 text-gray-500 dark:text-gray-400 hover:text-accent-600 dark:hover:text-accent-400 transition-colors" title="Perfil">
                     <User className="w-5 h-5" />
                   </button>
 
                   {!isAdmin && (
-                    <button onClick={() => setOrdersOpen(true)} className="p-1.5 sm:p-2 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" title="Mis Pedidos">
+                    <button onClick={() => setOrdersOpen(true)} className="p-1.5 sm:p-2 text-gray-500 dark:text-gray-400 hover:text-accent-600 dark:hover:text-accent-400 transition-colors" title="Mis Pedidos">
                       <ShoppingBag className="w-5 h-5" />
                     </button>
                   )}
 
                   {isAdmin ? (
-                    <Link to="/admin" className="p-1.5 sm:p-2 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" title="Panel Admin">
+                    <Link to="/admin" className="p-1.5 sm:p-2 text-gray-500 dark:text-gray-400 hover:text-accent-600 dark:hover:text-accent-400 transition-colors" title="Panel Admin">
                       <LayoutDashboard className="w-5 h-5" />
                     </Link>
                   ) : (
@@ -141,10 +141,10 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
                 <button
                   key={cat.id}
                   onClick={() => onCategoryChange(cat.id)}
-                  className={`shrink-0 px-3 py-1.5 text-xs sm:text-sm font-medium rounded-lg whitespace-nowrap transition-colors ${
+                  className={`shrink-0 px-3.5 py-1.5 text-xs sm:text-sm font-semibold rounded-full whitespace-nowrap transition-all duration-200 ${
                     selectedCategories.includes(cat.id)
-                      ? 'bg-blue-600 text-white'
-                      : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                      ? 'bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-md shadow-amber-500/30 scale-105'
+                      : 'text-gray-600 dark:text-gray-300 hover:bg-orange-50 dark:hover:bg-gray-800 hover:text-orange-600 dark:hover:text-orange-400'
                   }`}
                 >
                   {cat.name}

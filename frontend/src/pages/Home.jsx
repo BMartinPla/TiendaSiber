@@ -117,6 +117,27 @@ export default function Home() {
       />
 
       <main className="pt-6 pb-12 animate-fadeIn">
+        {/* Brand hero */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-zinc-900 via-zinc-900 to-orange-950 text-white px-6 sm:px-10 py-10 sm:py-14">
+            <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-orange-600/20 blur-3xl" />
+            <div className="absolute -bottom-32 -left-16 w-80 h-80 rounded-full bg-amber-500/10 blur-3xl" />
+            <div className="relative">
+              <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-amber-400 mb-3">
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                Catálogo mayorista y minorista
+              </span>
+              <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
+                Quince <span className="text-amber-400">Gear</span> SN
+              </h1>
+              <p className="mt-3 text-sm sm:text-base text-zinc-300 max-w-xl">
+                Tecnología, accesorios y gadgets con precios pensados para revender o regalar.
+                Elegí tu categoría, armá tu pedido y envialo por WhatsApp.
+              </p>
+            </div>
+          </div>
+        </div>
+
         {/* Featured Banner Carousel */}
         {visibleFeatured.length > 0 && (
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
@@ -181,7 +202,7 @@ export default function Home() {
           {/* Section header with sort */}
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Productos</h2>
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Productos</h2>
               <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
                 {products.length} producto{products.length !== 1 ? 's' : ''} encontrado{products.length !== 1 ? 's' : ''}
               </p>
@@ -189,7 +210,7 @@ export default function Home() {
             <select
               value={sortBy}
               onChange={(e) => handleSortChange(e.target.value)}
-              className="px-3 py-2 text-sm border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+              className="px-3 py-2 text-sm border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none"
             >
               <option value="">Ordenar</option>
               <option value="price_asc">Menor precio</option>

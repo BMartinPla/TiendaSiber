@@ -48,7 +48,7 @@ export default function ProductModal({ product, onClose }) {
 
           <div className="flex-1 overflow-y-auto p-4 sm:p-6 flex flex-col">
             <div>
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">{product.name}</h2>
+              <h2 className="font-display text-xl font-bold text-gray-900 dark:text-white">{product.name}</h2>
               {product.description && (
                 <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 leading-relaxed">{product.description}</p>
               )}
@@ -98,18 +98,18 @@ export default function ProductModal({ product, onClose }) {
                 <button
                   onClick={handleAdd}
                   disabled={product.stock <= 0}
-                  className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                  className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold transition-all duration-200 ${
                     product.stock <= 0
                       ? 'bg-gray-100 dark:bg-gray-700 text-gray-400 cursor-not-allowed'
                       : added
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-blue-600 text-white hover:bg-blue-700 active:scale-[0.98]'
+                      ? 'bg-accent-600 text-white'
+                      : 'text-white bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 shadow-lg shadow-amber-500/25 active:scale-[0.98]'
                   }`}
                 >
                   {product.stock <= 0 ? (
                     'Agotado'
                   ) : added ? (
-                    <><Check className="w-4 h-4" /> Agregado</>
+                    <span className="inline-flex items-center gap-2 animate-popIn"><Check className="w-4 h-4" /> Agregado</span>
                   ) : (
                     <><ShoppingCart className="w-4 h-4" /> Agregar al carrito</>
                   )}

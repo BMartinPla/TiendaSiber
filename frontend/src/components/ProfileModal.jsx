@@ -17,17 +17,17 @@ export default function ProfileModal({ onClose }) {
   const roleLabels = { ADMIN: 'Admin', WHOLESALE: 'Mayorista', RETAIL: 'Minorista' }
   const roleColors = {
     ADMIN: 'bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300',
-    WHOLESALE: 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300',
+    WHOLESALE: 'bg-accent-100 text-accent-700 dark:bg-accent-900/50 dark:text-accent-300',
     RETAIL: 'bg-gray-100 text-gray-700 dark:bg-gray-700/50 dark:text-gray-300',
   }
   const roleIconColors = {
     ADMIN: 'text-purple-600 dark:text-purple-400',
-    WHOLESALE: 'text-blue-600 dark:text-blue-400',
+    WHOLESALE: 'text-accent-600 dark:text-accent-400',
     RETAIL: 'text-gray-600 dark:text-gray-400',
   }
   const roleBgIcon = {
     ADMIN: 'bg-purple-100 dark:bg-purple-900/30',
-    WHOLESALE: 'bg-blue-100 dark:bg-blue-900/30',
+    WHOLESALE: 'bg-accent-100 dark:bg-accent-900/30',
     RETAIL: 'bg-gray-100 dark:bg-gray-700/30',
   }
 
@@ -95,7 +95,7 @@ export default function ProfileModal({ onClose }) {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+              className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
             />
           </div>
 
@@ -108,7 +108,7 @@ export default function ProfileModal({ onClose }) {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="+54 9 11 1234-5678"
-                className="w-full pl-10 pr-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                className="w-full pl-10 pr-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
               />
             </div>
           </div>
@@ -124,7 +124,7 @@ export default function ProfileModal({ onClose }) {
           <button
             type="submit"
             disabled={saving}
-            className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold text-white bg-gray-900 dark:bg-blue-600 hover:bg-gray-800 dark:hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold text-white bg-gray-900 dark:bg-accent-600 hover:bg-gray-800 dark:hover:bg-accent-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             <Save className="w-4 h-4" />
             {saving ? 'Guardando...' : 'Guardar Cambios'}

@@ -590,7 +590,7 @@ export default function AdminDashboard() {
   const chartData = Object.values(salesByMonth).sort((a, b) => a.month.localeCompare(b.month, 'es', { numeric: true }))
 
   const statsCards = [
-    { label: 'Productos totales', value: products.length, icon: Package, color: 'bg-blue-500' },
+    { label: 'Productos totales', value: products.length, icon: Package, color: 'bg-accent-500' },
     { label: 'Pedidos totales', value: orders.length, icon: ShoppingBag, color: 'bg-amber-500' },
     { label: 'Usuarios', value: users.length, icon: User, color: 'bg-purple-500' },
     { label: 'Categorías', value: categories.length, icon: Settings, color: 'bg-red-500' },
@@ -618,8 +618,8 @@ export default function AdminDashboard() {
       {/* SIDEBAR */}
       <aside className="hidden lg:flex lg:flex-col fixed left-0 top-0 h-full w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 z-30">
         <div className="p-6 border-b border-gray-100 dark:border-gray-800">
-          <h1 className="text-lg font-bold text-gray-900 dark:text-white">Admin</h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Panel de administración</p>
+          <h1 className="font-display text-lg font-bold text-gray-900 dark:text-white">Panel Admin</h1>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Quince Gear SN</p>
         </div>
         <nav className="flex-1 p-4 space-y-1">
           {navItems.map((item) => {
@@ -628,9 +628,9 @@ export default function AdminDashboard() {
               <button
                 key={item.key}
                 onClick={() => setActiveSection(item.key)}
-                className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-colors ${
+                className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
                   activeSection === item.key
-                    ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white'
+                    ? 'bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-md shadow-amber-500/25'
                     : 'text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-gray-900 dark:hover:text-white'
                 }`}
               >
@@ -702,7 +702,7 @@ export default function AdminDashboard() {
             <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-sm px-5 py-3 rounded-xl shadow-2xl">{error}</div>
           )}
           {success && (
-            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400 text-sm px-5 py-3 rounded-xl shadow-2xl">{success}</div>
+            <div className="bg-accent-50 dark:bg-accent-900/20 border border-accent-200 dark:border-accent-800 text-accent-600 dark:text-accent-400 text-sm px-5 py-3 rounded-xl shadow-2xl">{success}</div>
           )}
         </div>
       )}
@@ -789,14 +789,14 @@ export default function AdminDashboard() {
                         <Download className="w-4 h-4" />
                         Exportar
                       </button>
-                      <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-900/30 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors border border-blue-100 dark:border-blue-800">
+                      <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-accent-700 dark:text-accent-300 bg-accent-50 dark:bg-accent-900/30 hover:bg-accent-100 dark:hover:bg-accent-900/50 transition-colors border border-accent-100 dark:border-accent-800">
                         <FileSpreadsheet className="w-4 h-4" />
                         {bulkUploading ? 'Cargando...' : 'Carga Masiva'}
                         <input type="file" accept=".xlsx,.xls,.csv" className="hidden" disabled={bulkUploading}
                           onChange={handleBulkUpload} />
                       </label>
                       <button onClick={() => setShowCreate(!showCreate)}
-                        className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white transition-colors shadow-sm ${showCreate ? 'bg-gray-500 hover:bg-gray-600' : 'bg-gray-900 dark:bg-blue-600 hover:bg-gray-800 dark:hover:bg-blue-700'}`}>
+                        className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white transition-colors shadow-sm ${showCreate ? 'bg-gray-500 hover:bg-gray-600' : 'bg-gray-900 dark:bg-accent-600 hover:bg-gray-800 dark:hover:bg-accent-700'}`}>
                         {showCreate ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
                         {showCreate ? 'Cancelar' : 'Nuevo Producto'}
                       </button>
@@ -807,16 +807,16 @@ export default function AdminDashboard() {
                   <div className="flex flex-col sm:flex-row gap-2 mb-6">
                     <input placeholder="Buscar producto, código, proveedor o categoría..."
                       value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
-                      className="flex-1 min-w-0 px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                      className="flex-1 min-w-0 px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                     <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)}
-                      className="px-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+                      className="px-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                       <option value="">Todas las categorías</option>
                       {categories.map((c) => (
                         <option key={c.id} value={c.id}>{c.name}</option>
                       ))}
                     </select>
                     <select value={proveedorFilter} onChange={(e) => setProveedorFilter(e.target.value)}
-                      className="px-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+                      className="px-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                       <option value="">Todos los proveedores</option>
                       {proveedores.map((prov) => (
                         <option key={prov} value={prov}>{prov}</option>
@@ -849,30 +849,30 @@ export default function AdminDashboard() {
                       <form onSubmit={handleCreate} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="sm:col-span-2">
                           <input placeholder="Nombre *" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required
-                            className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                            className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                         </div>
                         <div className="sm:col-span-2">
                           <textarea placeholder="Descripción" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={2}
-                            className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                            className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                         </div>
                         <div className="relative">
                           <input type="number" step="0.01" placeholder="Precio Costo *" value={form.precioCosto} onChange={(e) => setForm({ ...form, precioCosto: e.target.value })} required
-                            className="w-full px-4 py-2.5 pr-20 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                            className="w-full px-4 py-2.5 pr-20 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                           <span className="absolute inset-y-0 right-3 flex items-center text-xs text-gray-400 dark:text-gray-500 pointer-events-none">Costo</span>
                         </div>
                         <div className="relative">
                           <input type="number" step="0.01" placeholder="Precio Mayorista *" value={form.precioMayorista} onChange={(e) => setForm({ ...form, precioMayorista: e.target.value })} required
-                            className="w-full px-4 py-2.5 pr-24 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                            className="w-full px-4 py-2.5 pr-24 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                           <span className="absolute inset-y-0 right-3 flex items-center text-xs text-gray-400 dark:text-gray-500 pointer-events-none">Mayorista</span>
                         </div>
                         <div className="relative">
                           <input type="number" step="0.01" placeholder="Precio Minorista *" value={form.precioBase} onChange={(e) => setForm({ ...form, precioBase: e.target.value })} required
-                            className="w-full px-4 py-2.5 pr-20 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                            className="w-full px-4 py-2.5 pr-20 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                           <span className="absolute inset-y-0 right-3 flex items-center text-xs text-gray-400 dark:text-gray-500 pointer-events-none">Minorista</span>
                         </div>
                         <div>
                           <input type="number" placeholder="Stock" value={form.stock} onChange={(e) => setForm({ ...form, stock: e.target.value })}
-                            className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                            className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                         </div>
                         <div>
                           <ProveedorSelect value={form.proveedor} onChange={(v) => setForm({ ...form, proveedor: v })} proveedores={proveedores} />
@@ -888,7 +888,7 @@ export default function AdminDashboard() {
                             </label>
                             <span className="text-xs text-gray-400">o</span>
                             <input placeholder="URL de imagen" value={form.imageUrl} onChange={(e) => setForm((prev) => ({ ...prev, imageUrl: e.target.value }))}
-                              className="flex-1 min-w-0 sm:min-w-[200px] px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                              className="flex-1 min-w-0 sm:min-w-[200px] px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                           </div>
                           {form.imageUrl && (
                             <img src={form.imageUrl} alt="Vista previa" className="mt-2 h-20 w-20 object-cover rounded-lg border dark:border-gray-600" />
@@ -905,7 +905,7 @@ export default function AdminDashboard() {
                             </label>
                             <span className="text-xs text-gray-400">o</span>
                             <input placeholder="URL imagen destacada" value={form.featuredImageUrl} onChange={(e) => setForm((prev) => ({ ...prev, featuredImageUrl: e.target.value }))}
-                              className="flex-1 min-w-0 sm:min-w-[200px] px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                              className="flex-1 min-w-0 sm:min-w-[200px] px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                           </div>
                           {form.featuredImageUrl && (
                             <img src={form.featuredImageUrl} alt="Vista previa destacada" className="mt-2 h-20 w-20 object-cover rounded-lg border dark:border-gray-600" />
@@ -916,7 +916,7 @@ export default function AdminDashboard() {
                         </div>
                         <div className="sm:col-span-2">
                           <button type="submit"
-                            className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold text-white bg-gray-900 dark:bg-blue-600 hover:bg-gray-800 dark:hover:bg-blue-700 transition-colors">
+                            className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold text-white bg-gray-900 dark:bg-accent-600 hover:bg-gray-800 dark:hover:bg-accent-700 transition-colors">
                             <Package className="w-4 h-4" /> Crear Producto
                           </button>
                         </div>
@@ -930,7 +930,7 @@ export default function AdminDashboard() {
                       <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">{selectedIds.length} seleccionado(s)</span>
                       <input type="number" placeholder="Stock"
                         value={bulkStockValue} onChange={(e) => setBulkStockValue(e.target.value)}
-                        className="w-24 px-3 py-1.5 rounded-lg text-sm border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 outline-none focus:ring-2 focus:ring-blue-500" />
+                        className="w-24 px-3 py-1.5 rounded-lg text-sm border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 outline-none focus:ring-2 focus:ring-accent-500" />
                       <button onClick={() => { handleBulkStock('set') }}
                         className="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-green-500 hover:bg-green-600 transition-colors">Fijar</button>
                       <button onClick={() => { handleBulkStock('add') }}
@@ -938,7 +938,7 @@ export default function AdminDashboard() {
                       <button onClick={() => { handleBulkAction('suspend') }}
                         className="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-amber-500 hover:bg-amber-600 transition-colors">Suspender</button>
                       <button onClick={() => { handleBulkAction('restore') }}
-                        className="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-blue-500 hover:bg-blue-600 transition-colors">Restaurar</button>
+                        className="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-accent-500 hover:bg-accent-600 transition-colors">Restaurar</button>
                       <button onClick={() => { handleBulkAction('delete') }}
                         className="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-red-500 hover:bg-red-600 transition-colors">Eliminar</button>
                     </div>
@@ -951,7 +951,7 @@ export default function AdminDashboard() {
                         <tr className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-700">
                           <th className="text-left px-4 py-3 w-10">
                             <input type="checkbox" checked={selectAll} onChange={() => setSelectAll(!selectAll)}
-                              className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                              className="rounded border-gray-300 text-accent-600 focus:ring-accent-500" />
                           </th>
                           <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Producto</th>
                           <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Proveedor</th>
@@ -976,7 +976,7 @@ export default function AdminDashboard() {
                             <tr key={p.id} className={`border-t border-gray-50 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors ${p.active ? '' : 'opacity-50'}`}>
                               <td className="px-4 py-3">
                                 <input type="checkbox" checked={selectedIds.includes(p.id)} onChange={() => toggleSelect(p.id)}
-                                  className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                                  className="rounded border-gray-300 text-accent-600 focus:ring-accent-500" />
                               </td>
                               <td className="px-4 py-3">
                                 <div className="flex items-center gap-3">
@@ -1006,20 +1006,20 @@ export default function AdminDashboard() {
                                 {p.featured ? <Star className="w-4 h-4 text-amber-400 fill-amber-400 inline" /> : <span className="text-gray-300 dark:text-gray-600">-</span>}
                               </td>
                               <td className="px-4 py-3 text-center">
-                                <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${p.active ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300' : 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300'}`}>
+                                <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${p.active ? 'bg-accent-50 dark:bg-accent-900/30 text-accent-700 dark:text-accent-300' : 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300'}`}>
                                   {p.active ? 'Activo' : 'Inactivo'}
                                 </span>
                               </td>
                               <td className="px-4 py-3 text-right">
                                 <div className="inline-flex gap-1">
                                   <button onClick={() => openEdit(p)}
-                                    className="px-2.5 py-1.5 rounded-lg text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors">Editar</button>
+                                    className="px-2.5 py-1.5 rounded-lg text-xs font-medium text-white bg-accent-600 hover:bg-accent-700 transition-colors">Editar</button>
                                   <button onClick={() => handleToggleFeatured(p)}
                                     className={`px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors ${p.featured ? 'bg-amber-400 hover:bg-amber-500 text-white' : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-500 dark:text-gray-300'}`}>
                                     <Star className={`w-3.5 h-3.5 ${p.featured ? 'fill-white' : ''}`} />
                                   </button>
                                   <button onClick={() => handleToggleSuspend(p)}
-                                    className={`px-2.5 py-1.5 rounded-lg text-xs font-medium text-white ${p.active ? 'bg-amber-500 hover:bg-amber-600' : 'bg-blue-500 hover:bg-blue-600'} transition-colors`}>
+                                    className={`px-2.5 py-1.5 rounded-lg text-xs font-medium text-white ${p.active ? 'bg-amber-500 hover:bg-amber-600' : 'bg-accent-500 hover:bg-accent-600'} transition-colors`}>
                                     {p.active ? 'Susp' : 'Act'}
                                   </button>
                                   <button onClick={() => handleHardDelete(p)}
@@ -1045,9 +1045,9 @@ export default function AdminDashboard() {
                       <h3 className="text-lg font-bold text-gray-900 dark:text-white">Categorías</h3>
                       <div className="flex items-center gap-2 flex-wrap">
                         <input placeholder="Nombre *" value={catForm.name} onChange={(e) => setCatForm({ ...catForm, name: e.target.value })}
-                          className="w-full sm:w-40 px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                          className="w-full sm:w-40 px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                       <button onClick={handleCatCreate}
-                        className="shrink-0 px-4 py-2 bg-gray-900 dark:bg-blue-600 text-white rounded-xl text-sm font-semibold hover:bg-gray-800 dark:hover:bg-blue-700 transition-colors">+ Categoría</button>
+                        className="shrink-0 px-4 py-2 bg-gray-900 dark:bg-accent-600 text-white rounded-xl text-sm font-semibold hover:bg-gray-800 dark:hover:bg-accent-700 transition-colors">+ Categoría</button>
                     </div>
                   </div>
                   <div className="space-y-2">
@@ -1072,7 +1072,7 @@ export default function AdminDashboard() {
                             </div>
                             <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
                               <button onClick={() => handleCatToggleSuspend(cat)}
-                                className={`px-2.5 py-1 rounded-lg text-xs font-medium text-white ${cat.active ? 'bg-amber-500 hover:bg-amber-600' : 'bg-blue-500 hover:bg-blue-600'} transition-colors`}>
+                                className={`px-2.5 py-1 rounded-lg text-xs font-medium text-white ${cat.active ? 'bg-amber-500 hover:bg-amber-600' : 'bg-accent-500 hover:bg-accent-600'} transition-colors`}>
                                 {cat.active ? 'Suspender' : 'Restaurar'}
                               </button>
                               <button onClick={() => handleCatDelete(cat)} disabled={!cat.active}
@@ -1111,20 +1111,20 @@ export default function AdminDashboard() {
                                           {p.featured ? <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400 inline" /> : <span className="text-gray-300 dark:text-gray-600">-</span>}
                                         </td>
                                         <td className="px-4 py-2">
-                                          <span className={`text-xs font-medium ${p.active ? 'text-blue-600' : 'text-red-500'}`}>
+                                          <span className={`text-xs font-medium ${p.active ? 'text-accent-600' : 'text-red-500'}`}>
                                             {p.active ? 'Activo' : 'Suspendido'}
                                           </span>
                                         </td>
                                         <td className="px-4 py-2">
                                           <div className="flex gap-1 flex-wrap">
                                             <button onClick={() => openEdit(p)}
-                                              className="px-2 py-1 rounded-lg text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors">Editar</button>
+                                              className="px-2 py-1 rounded-lg text-xs font-medium text-white bg-accent-600 hover:bg-accent-700 transition-colors">Editar</button>
                                             <button onClick={() => handleToggleFeatured(p)}
                                               className={`px-2 py-1 rounded-lg text-xs font-medium transition-colors ${p.featured ? 'bg-amber-400 hover:bg-amber-500 text-white' : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-500 dark:text-gray-300'}`}>
                                               <Star className={`w-3 h-3 ${p.featured ? 'fill-white' : ''}`} />
                                             </button>
                                             <button onClick={() => handleToggleSuspend(p)}
-                                              className={`px-2 py-1 rounded-lg text-xs font-medium text-white ${p.active ? 'bg-amber-500 hover:bg-amber-600' : 'bg-blue-500 hover:bg-blue-600'} transition-colors`}>
+                                              className={`px-2 py-1 rounded-lg text-xs font-medium text-white ${p.active ? 'bg-amber-500 hover:bg-amber-600' : 'bg-accent-500 hover:bg-accent-600'} transition-colors`}>
                                               {p.active ? 'Suspender' : 'Restaurar'}
                                             </button>
                                             <button onClick={() => handleHardDelete(p)}
@@ -1155,9 +1155,9 @@ export default function AdminDashboard() {
                   <div className="flex flex-col sm:flex-row gap-3">
                     <input type="number" placeholder="Ej: 10 para +10%, -15 para -15%"
                       value={bulkPercentage} onChange={(e) => setBulkPercentage(e.target.value)}
-                      className="flex-1 px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                      className="flex-1 px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                     <button onClick={handleBulkUpdate} disabled={selectedIds.length === 0}
-                      className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
+                      className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-accent-600 hover:bg-accent-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
                       <RefreshCw className="w-4 h-4" />
                       Aplicar a {selectedIds.length}
                     </button>
@@ -1175,12 +1175,12 @@ export default function AdminDashboard() {
                 <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
                   <input type="text" placeholder="Buscar por nombre o email..." value={userSearch}
                     onChange={(e) => handleUserSearch(e.target.value)}
-                    className="w-full sm:max-w-xs px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                    className="w-full sm:max-w-xs px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                   {selectedUserIds.length > 0 && (
                     <div className="flex items-center gap-2 flex-wrap">
                       <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">{selectedUserIds.length} seleccionado(s)</span>
                       <select value={bulkUserRole} onChange={(e) => setBulkUserRole(e.target.value)}
-                        className="px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+                        className="px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                         <option value="RETAIL">Minorista</option>
                         <option value="WHOLESALE">Mayorista</option>
                         <option value="ADMIN">Admin</option>
@@ -1190,7 +1190,7 @@ export default function AdminDashboard() {
                     </div>
                   )}
                   <button onClick={() => setShowCreateUser(true)}
-                    className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-colors shrink-0 ml-auto">
+                    className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white bg-accent-600 hover:bg-accent-700 transition-colors shrink-0 ml-auto">
                     <Plus className="w-4 h-4" /> Crear Usuario
                   </button>
                 </div>
@@ -1219,7 +1219,7 @@ export default function AdminDashboard() {
                         <tr className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-700">
                           <th className="text-left px-4 py-3">
                             <input type="checkbox" checked={selectAllUsers} onChange={() => setSelectAllUsers(!selectAllUsers)}
-                              className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                              className="rounded border-gray-300 text-accent-600 focus:ring-accent-500" />
                           </th>
                           <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Nombre</th>
                           <th className="text-left px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Email</th>
@@ -1236,21 +1236,21 @@ export default function AdminDashboard() {
                           <tr key={u.id} className={`border-t border-gray-50 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors ${u.active ? '' : 'opacity-50'}`}>
                             <td className="px-4 py-3">
                               <input type="checkbox" checked={selectedUserIds.includes(u.id)} onChange={() => toggleUserSelect(u.id)} disabled={isSelf}
-                                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 disabled:opacity-30" />
+                                className="rounded border-gray-300 text-accent-600 focus:ring-accent-500 disabled:opacity-30" />
                             </td>
                             <td className="px-4 py-3 font-medium text-gray-900 dark:text-white">{u.name}{isSelf && <span className="text-xs text-gray-400 dark:text-gray-500 ml-1">(tú)</span>}</td>
                             <td className="px-4 py-3 text-gray-600 dark:text-gray-400">{u.email}</td>
                             <td className="px-4 py-3">
                               <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                                 u.role === 'ADMIN' ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300' :
-                                u.role === 'WHOLESALE' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300' :
+                                u.role === 'WHOLESALE' ? 'bg-accent-100 text-accent-700 dark:bg-accent-900/50 dark:text-accent-300' :
                                 'bg-gray-100 text-gray-700 dark:bg-gray-700/50 dark:text-gray-300'
                               }`}>
                                 {u.role === 'ADMIN' ? 'Admin' : u.role === 'WHOLESALE' ? 'Mayorista' : 'Minorista'}
                               </span>
                             </td>
                             <td className="px-4 py-3">
-                              <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${u.active ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300' : 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300'}`}>
+                              <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${u.active ? 'bg-accent-50 dark:bg-accent-900/30 text-accent-700 dark:text-accent-300' : 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300'}`}>
                                 {u.active ? 'Activo' : 'Suspendido'}
                               </span>
                             </td>
@@ -1261,7 +1261,7 @@ export default function AdminDashboard() {
                                 </div>
                               ) : (
                                 <select value={u.role} onChange={(e) => handleRoleChange(u.id, e.target.value)}
-                                  className="px-3 py-1.5 border border-gray-200 dark:border-gray-600 rounded-lg text-xs font-medium focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+                                  className="px-3 py-1.5 border border-gray-200 dark:border-gray-600 rounded-lg text-xs font-medium focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                                   <option value="RETAIL">Minorista</option>
                                   <option value="WHOLESALE">Mayorista</option>
                                   <option value="ADMIN">Admin</option>
@@ -1280,7 +1280,7 @@ export default function AdminDashboard() {
                                       className="px-2 py-1 rounded-lg text-xs font-medium text-white bg-amber-500 hover:bg-amber-600 transition-colors">Suspender</button>
                                   ) : (
                                     <button onClick={() => handleUserActivate(u.id)}
-                                      className="px-2 py-1 rounded-lg text-xs font-medium text-white bg-blue-500 hover:bg-blue-600 transition-colors">Activar</button>
+                                      className="px-2 py-1 rounded-lg text-xs font-medium text-white bg-accent-500 hover:bg-accent-600 transition-colors">Activar</button>
                                   )}
                                   <button onClick={() => handleUserDelete(u.id)}
                                     className="px-2 py-1 rounded-lg text-xs font-medium text-white bg-red-500 hover:bg-red-600 transition-colors">
@@ -1307,16 +1307,16 @@ export default function AdminDashboard() {
                 <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
                   <input type="text" placeholder="Buscar por nombre o email..." value={orderSearch}
                     onChange={(e) => { setOrderSearch(e.target.value); loadOrders(e.target.value, orderStatusFilter) }}
-                    className="w-full sm:max-w-xs px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                    className="w-full sm:max-w-xs px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                   <select value={orderStatusFilter}
                     onChange={(e) => { setOrderStatusFilter(e.target.value); loadOrders(orderSearch, e.target.value) }}
-                    className="px-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+                    className="px-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                     <option value="">Todos</option>
                     <option value="PENDING">Pendientes</option>
                     <option value="APPROVED">Aprobados</option>
                   </select>
                   <button onClick={() => setShowManualOrder(true)}
-                    className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-colors shrink-0">
+                    className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white bg-accent-600 hover:bg-accent-700 transition-colors shrink-0">
                     <Plus className="w-4 h-4" /> Pedido Manual
                   </button>
                 </div>
@@ -1349,12 +1349,12 @@ export default function AdminDashboard() {
                             <span className="text-sm font-semibold text-gray-900 dark:text-white">#{order.id}</span>
                             <span className="text-sm text-gray-500 dark:text-gray-400">{order.user?.name}</span>
                             <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
-                              order.status === 'APPROVED' ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300' : 'bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300'
+                              order.status === 'APPROVED' ? 'bg-accent-50 dark:bg-accent-900/30 text-accent-700 dark:text-accent-300' : 'bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300'
                             }`}>
                               {order.status === 'APPROVED' ? 'Aprobado' : 'Pendiente'}
                             </span>
                             <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
-                              order.clientCondition === 'WHOLESALE' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300' : 'bg-gray-100 text-gray-700 dark:bg-gray-700/50 dark:text-gray-300'
+                              order.clientCondition === 'WHOLESALE' ? 'bg-accent-100 text-accent-700 dark:bg-accent-900/50 dark:text-accent-300' : 'bg-gray-100 text-gray-700 dark:bg-gray-700/50 dark:text-gray-300'
                             }`}>
                               {order.clientCondition === 'WHOLESALE' ? 'Mayorista' : 'Minorista'}
                             </span>
@@ -1363,10 +1363,10 @@ export default function AdminDashboard() {
                             <span className="text-sm font-bold text-gray-900 dark:text-white">${Number(order.total).toLocaleString('es-CL')}</span>
                             {order.status === 'PENDING' && (
                               <button onClick={() => handleApproveOrder(order.id)}
-                                className="px-2.5 py-1 rounded-lg text-xs font-medium text-white bg-blue-500 hover:bg-blue-600 transition-colors">Aprobar</button>
+                                className="px-2.5 py-1 rounded-lg text-xs font-medium text-white bg-accent-500 hover:bg-accent-600 transition-colors">Aprobar</button>
                             )}
                             <button onClick={() => downloadOrderPdf(order.id)}
-                              className="px-2.5 py-1 rounded-lg text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors">PDF</button>
+                              className="px-2.5 py-1 rounded-lg text-xs font-medium text-white bg-accent-600 hover:bg-accent-700 transition-colors">PDF</button>
                             <button onClick={() => handleDeleteOrder(order.id)}
                               className="px-2.5 py-1 rounded-lg text-xs font-medium text-white bg-red-500 hover:bg-red-600 transition-colors">
                               <Trash2 className="w-3 h-3" />
@@ -1427,31 +1427,31 @@ export default function AdminDashboard() {
                 <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl">{error}</div>
               )}
               {success && (
-                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400 text-sm px-4 py-3 rounded-xl">{success}</div>
+                <div className="bg-accent-50 dark:bg-accent-900/20 border border-accent-200 dark:border-accent-800 text-accent-600 dark:text-accent-400 text-sm px-4 py-3 rounded-xl">{success}</div>
               )}
               <input placeholder="Nombre *" value={editForm.name} onChange={(e) => setEditForm({ ...editForm, name: e.target.value })} required
-                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
               <textarea placeholder="Descripción" value={editForm.description} onChange={(e) => setEditForm({ ...editForm, description: e.target.value })} rows={2}
-                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="relative">
                   <input type="number" step="0.01" placeholder="Precio Minorista *" value={editForm.precioBase} onChange={(e) => setEditForm({ ...editForm, precioBase: e.target.value })} required
-                    className="w-full px-4 py-2.5 pr-20 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                    className="w-full px-4 py-2.5 pr-20 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                   <span className="absolute inset-y-0 right-3 flex items-center text-xs text-gray-400 dark:text-gray-500 pointer-events-none">Minorista</span>
                 </div>
                 <div className="relative">
                   <input type="number" step="0.01" placeholder="Precio Mayorista *" value={editForm.precioMayorista} onChange={(e) => setEditForm({ ...editForm, precioMayorista: e.target.value })} required
-                    className="w-full px-4 py-2.5 pr-24 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                    className="w-full px-4 py-2.5 pr-24 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                   <span className="absolute inset-y-0 right-3 flex items-center text-xs text-gray-400 dark:text-gray-500 pointer-events-none">Mayorista</span>
                 </div>
               </div>
               <div className="relative">
                 <input type="number" step="0.01" placeholder="Precio Costo *" value={editForm.precioCosto} onChange={(e) => setEditForm({ ...editForm, precioCosto: e.target.value })} required
-                  className="w-full px-4 py-2.5 pr-20 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                  className="w-full px-4 py-2.5 pr-20 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                 <span className="absolute inset-y-0 right-3 flex items-center text-xs text-gray-400 dark:text-gray-500 pointer-events-none">Costo</span>
               </div>
               <input type="number" placeholder="Stock" value={editForm.stock} onChange={(e) => setEditForm({ ...editForm, stock: e.target.value })}
-                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <ProveedorSelect value={editForm.proveedor} onChange={(v) => setEditForm({ ...editForm, proveedor: v })} proveedores={proveedores} />
                 <CategorySelect value={editForm.categoryId} onChange={(id) => setEditForm({ ...editForm, categoryId: id })} categories={categories} />
@@ -1467,7 +1467,7 @@ export default function AdminDashboard() {
                   </label>
                   <span className="text-xs text-gray-400">o</span>
                   <input placeholder="URL de imagen" value={editForm.imageUrl} onChange={(e) => setEditForm((prev) => ({ ...prev, imageUrl: e.target.value }))}
-                    className="flex-1 min-w-0 sm:min-w-[200px] px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                    className="flex-1 min-w-0 sm:min-w-[200px] px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                 </div>
                 {editForm.imageUrl && (
                   <img src={editForm.imageUrl} alt="Vista previa" className="mt-2 h-20 w-20 object-cover rounded-lg border dark:border-gray-600" />
@@ -1484,7 +1484,7 @@ export default function AdminDashboard() {
                   </label>
                   <span className="text-xs text-gray-400">o</span>
                   <input placeholder="URL imagen destacada" value={editForm.featuredImageUrl} onChange={(e) => setEditForm((prev) => ({ ...prev, featuredImageUrl: e.target.value }))}
-                    className="flex-1 min-w-0 sm:min-w-[200px] px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                    className="flex-1 min-w-0 sm:min-w-[200px] px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                 </div>
                 {editForm.featuredImageUrl && (
                   <img src={editForm.featuredImageUrl} alt="Vista previa destacada" className="mt-2 h-20 w-20 object-cover rounded-lg border dark:border-gray-600" />
@@ -1524,7 +1524,7 @@ export default function AdminDashboard() {
                   onChange={(e) => { setManualOrderSearchUser(e.target.value); if (!e.target.value) setManualOrderUser(''); setManualOrderUserOpen(true) }}
                   onFocus={() => { if (manualOrderUser) { setManualOrderUser(''); setManualOrderSearchUser('') }; setManualOrderUserOpen(true) }}
                   onBlur={() => setTimeout(() => setManualOrderUserOpen(false), 200)}
-                  className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                  className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                 {manualOrderUser && (
                   <button onClick={() => { setManualOrderUser(''); setManualOrderSearchUser('') }}
                     className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
@@ -1553,11 +1553,11 @@ export default function AdminDashboard() {
               <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1.5">Condición de precio *</label>
               <div className="flex gap-2">
                 <button type="button" onClick={() => setManualOrderCondition('RETAIL')}
-                  className={`flex-1 py-2.5 rounded-xl text-sm font-semibold transition-colors ${manualOrderCondition === 'RETAIL' ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'}`}>
+                  className={`flex-1 py-2.5 rounded-xl text-sm font-semibold transition-colors ${manualOrderCondition === 'RETAIL' ? 'bg-accent-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'}`}>
                   Minorista
                 </button>
                 <button type="button" onClick={() => setManualOrderCondition('WHOLESALE')}
-                  className={`flex-1 py-2.5 rounded-xl text-sm font-semibold transition-colors ${manualOrderCondition === 'WHOLESALE' ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'}`}>
+                  className={`flex-1 py-2.5 rounded-xl text-sm font-semibold transition-colors ${manualOrderCondition === 'WHOLESALE' ? 'bg-accent-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'}`}>
                   Mayorista
                 </button>
               </div>
@@ -1587,7 +1587,7 @@ export default function AdminDashboard() {
                           setManualOrderProductOpen(idx)
                         }}
                         onBlur={() => setTimeout(() => setManualOrderProductOpen(null), 200)}
-                        className="w-full px-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                        className="w-full px-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                       {item.productId && (
                         <button onClick={() => {
                           const newItems = [...manualOrderItems]
@@ -1631,7 +1631,7 @@ export default function AdminDashboard() {
                       newItems[idx] = { ...newItems[idx], quantity: Math.max(1, parseInt(e.target.value) || 1) }
                       setManualOrderItems(newItems)
                     }} required
-                      className="w-20 px-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-center" />
+                      className="w-20 px-3 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-center" />
                     {manualOrderItems.length > 1 && (
                       <button onClick={() => setManualOrderItems(manualOrderItems.filter((_, i) => i !== idx))}
                         className="p-2.5 text-red-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors">
@@ -1642,7 +1642,7 @@ export default function AdminDashboard() {
                 ))}
               </div>
               <button onClick={() => setManualOrderItems([...manualOrderItems, { productId: '', quantity: 1, search: '' }])}
-                className="mt-2 flex items-center gap-1.5 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 font-medium">
+                className="mt-2 flex items-center gap-1.5 text-sm text-accent-600 dark:text-accent-400 hover:text-accent-700 font-medium">
                 <Plus className="w-4 h-4" /> Agregar producto
               </button>
             </div>
@@ -1664,7 +1664,7 @@ export default function AdminDashboard() {
             )}
 
             <button onClick={handleCreateManualOrder} disabled={!manualOrderUser || manualOrderItems.every((i) => !i.productId) || manualOrderSubmitting}
-              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold text-white bg-gray-900 dark:bg-blue-600 hover:bg-gray-800 dark:hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
+              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold text-white bg-gray-900 dark:bg-accent-600 hover:bg-gray-800 dark:hover:bg-accent-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
               {manualOrderSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
               {manualOrderSubmitting ? 'Creando...' : 'Crear Pedido'}
             </button>
@@ -1684,21 +1684,21 @@ export default function AdminDashboard() {
 
             <form onSubmit={handleCreateUser} className="space-y-4">
               <input placeholder="Nombre *" value={createUserForm.name} onChange={(e) => setCreateUserForm({ ...createUserForm, name: e.target.value })} required
-                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
               <input type="email" placeholder="Email *" value={createUserForm.email} onChange={(e) => setCreateUserForm({ ...createUserForm, email: e.target.value })} required
-                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
               <input type="password" placeholder="Contraseña * (mín. 6 caracteres)" value={createUserForm.password} onChange={(e) => setCreateUserForm({ ...createUserForm, password: e.target.value })} required minLength={6}
-                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
               <input placeholder="Teléfono (opcional)" value={createUserForm.phone} onChange={(e) => setCreateUserForm({ ...createUserForm, phone: e.target.value })}
-                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
               <select value={createUserForm.role} onChange={(e) => setCreateUserForm({ ...createUserForm, role: e.target.value })}
-                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                 <option value="RETAIL">Minorista</option>
                 <option value="WHOLESALE">Mayorista</option>
                 <option value="ADMIN">Admin</option>
               </select>
               <button type="submit" disabled={createUserSubmitting}
-                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold text-white bg-gray-900 dark:bg-blue-600 hover:bg-gray-800 dark:hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
+                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold text-white bg-gray-900 dark:bg-accent-600 hover:bg-gray-800 dark:hover:bg-accent-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
                 {createUserSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <UserPlus className="w-4 h-4" />}
                 {createUserSubmitting ? 'Creando...' : 'Crear Usuario'}
               </button>

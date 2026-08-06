@@ -92,11 +92,11 @@ export default function ImageCropper({ imageUrl, onCrop, onCancel, aspect = 1 })
 
           <div className="flex items-center gap-1 px-5 pt-4">
             <button onClick={() => setMode('crop')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${mode === 'crop' ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'}`}>
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${mode === 'crop' ? 'bg-accent-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'}`}>
               <Crop className="w-3.5 h-3.5" /> Recortar
             </button>
             <button onClick={() => setMode('fit')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${mode === 'fit' ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'}`}>
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${mode === 'fit' ? 'bg-accent-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'}`}>
               <ImageIcon className="w-3.5 h-3.5" /> Completa
             </button>
           </div>
@@ -105,10 +105,10 @@ export default function ImageCropper({ imageUrl, onCrop, onCancel, aspect = 1 })
             <div className="flex items-center gap-3 px-5 pt-3">
               <span className="text-xs text-gray-500 dark:text-gray-400">Fondo:</span>
               <button onClick={() => setBg('white')}
-                className={`w-7 h-7 rounded-full border-2 ${bg === 'white' ? 'border-blue-500 ring-2 ring-blue-500/30' : 'border-gray-300 dark:border-gray-600'}`}
+                className={`w-7 h-7 rounded-full border-2 ${bg === 'white' ? 'border-accent-500 ring-2 ring-accent-500/30' : 'border-gray-300 dark:border-gray-600'}`}
                 style={{ backgroundColor: '#ffffff' }} title="Fondo blanco" />
               <button onClick={() => setBg('black')}
-                className={`w-7 h-7 rounded-full border-2 ${bg === 'black' ? 'border-blue-500 ring-2 ring-blue-500/30' : 'border-gray-300 dark:border-gray-600'}`}
+                className={`w-7 h-7 rounded-full border-2 ${bg === 'black' ? 'border-accent-500 ring-2 ring-accent-500/30' : 'border-gray-300 dark:border-gray-600'}`}
                 style={{ backgroundColor: '#000000' }} title="Fondo negro" />
               <span className="text-xs text-gray-400 dark:text-gray-500 ml-1">La foto se muestra completa sin recortar</span>
             </div>
@@ -147,7 +147,7 @@ export default function ImageCropper({ imageUrl, onCrop, onCancel, aspect = 1 })
                   step={0.1}
                   value={zoom}
                   onChange={(e) => setZoom(Number(e.target.value))}
-                  className="w-full accent-blue-500"
+                  className="w-full accent-orange-500"
                 />
               </div>
             )}
@@ -157,7 +157,7 @@ export default function ImageCropper({ imageUrl, onCrop, onCancel, aspect = 1 })
                 Cancelar
               </button>
               <button onClick={handleConfirm}
-                className="flex-1 py-3 rounded-xl text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-colors">
+                className="flex-1 py-3 rounded-xl text-sm font-semibold text-white bg-accent-600 hover:bg-accent-700 transition-colors">
                 Aplicar
               </button>
             </div>
