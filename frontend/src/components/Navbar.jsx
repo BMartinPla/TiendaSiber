@@ -19,6 +19,22 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
   const catRef = React.useRef(null)
   const catLastScroll = React.useRef(0)
 
+  const getScrollAmount = () => Math.max(200, Math.floor((catRef.current?.clientWidth || 400) * 0.75))
+
+  function scrollCategories(direction) {
+    const el = catRef.current
+    if (!el) return
+    el.scrollLeft += direction * getScrollAmount()
+  }
+
+  function handleCatScrollLeft() {
+    scrollCategories(-1)
+  }
+
+  function handleCatScrollRight() {
+    scrollCategories(1)
+  }
+
   React.useEffect(() => {
     const el = catRef.current
     if (!el) return
@@ -141,12 +157,12 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
         <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-sm animate-catDrop">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             {catOverflow && (
-              <button onClick={() => { catRef.current?.scrollBy({ left: -200, behavior: 'smooth' }) }}
+              <button onClick={handleCatScrollLeft}
                 className="hidden sm:flex absolute left-1 top-1/2 -translate-y-1/2 z-10 p-0.5 rounded-full bg-white/80 dark:bg-gray-800/80 text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white">
                 <ChevronLeft className="w-3.5 h-3.5" />
               </button>
             )}
-            <div ref={catRef} className={`flex items-center gap-1 overflow-x-auto py-2 scroll-smooth scrollbar-none ${catOverflow ? 'sm:mx-10' : 'justify-center'} ${catDir === 'right' ? 'animate-catRight' : catDir === 'left' ? 'animate-catLeft' : ''}`} style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+            <div ref={catRef} className={`category-scroll-container flex items-center gap-1 overflow-x-auto py-2 scroll-smooth scrollbar-hide ${catOverflow ? 'sm:mx-10' : 'justify-center'} ${catDir === 'right' ? 'animate-catRight' : catDir === 'left' ? 'animate-catLeft' : ''}`} style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
               {categories.map((cat) => (
                 <button
                   key={cat.id}
@@ -162,7 +178,7 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
               ))}
             </div>
             {catOverflow && (
-              <button onClick={() => { catRef.current?.scrollBy({ left: 200, behavior: 'smooth' }) }}
+              <button onClick={handleCatScrollRight}
                 className="hidden sm:flex absolute right-1 top-1/2 -translate-y-1/2 z-10 p-0.5 rounded-full bg-white/80 dark:bg-gray-800/80 text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white">
                 <ChevronRight className="w-3.5 h-3.5" />
               </button>
