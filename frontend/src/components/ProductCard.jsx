@@ -27,7 +27,7 @@ export default function ProductCard({ product, onView, index = 0 }) {
   return (
     <div onClick={onView} className="card-hover animate-fadeIn bg-white dark:bg-gray-950/20 dark:backdrop-blur-sm rounded-2xl border border-gray-100 dark:border-blue-900/30 overflow-hidden flex flex-col cursor-pointer group dark:shadow-2xl" style={{ animationDelay: `${staggerMs[index % 8]}ms` }}>
       {/* Image */}
-      <div className="relative aspect-square bg-gray-50 dark:bg-gray-700/30 flex items-center justify-center overflow-hidden m-2 rounded-2xl">
+      <div className="relative aspect-square bg-gray-50 dark:bg-gray-900/40 flex items-center justify-center overflow-hidden m-2 rounded-2xl">
         {product.imageUrl ? (
           <img src={product.imageUrl} alt={product.name} loading="lazy" className="w-full h-full object-contain p-3 group-hover:scale-110 transition-transform duration-500" />
         ) : (

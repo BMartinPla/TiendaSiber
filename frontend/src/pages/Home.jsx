@@ -147,7 +147,7 @@ export default function Home() {
                 if (!product) return null
                 return (
                   <div key={product.id} onClick={() => openProduct(product)} className="cursor-pointer relative">
-                    <div className="aspect-[2/1] sm:aspect-[21/9] bg-gray-100 dark:bg-gray-700/50">
+                    <div className="aspect-[2/1] sm:aspect-[21/9] bg-gray-100 dark:bg-gray-900/40">
                       {product.featuredImageUrl || product.imageUrl ? (
                           <img src={product.featuredImageUrl || product.imageUrl} alt={product.name} loading="lazy" className="w-full h-full object-contain rounded-2xl" />
                       ) : (
