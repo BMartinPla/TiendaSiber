@@ -35,7 +35,7 @@ export default function ProductModal({ product, onClose }) {
 
           <div className="relative h-64 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 flex items-center justify-center shrink-0">
             {product.imageUrl ? (
-              <img src={product.imageUrl} alt={product.name} className="w-full h-full object-contain p-6" />
+              <img src={product.imageUrl} alt={product.name} className="w-full h-full object-contain p-6 rounded-2xl" />
             ) : (
               <Package className="w-24 h-24 text-gray-300 dark:text-gray-600" />
             )}

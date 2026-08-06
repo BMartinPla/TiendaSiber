@@ -121,7 +121,7 @@ export default function Navbar({ onCartClick, search, onSearch, categories, sele
 
       {/* Categories nav bar - in normal flow, pushes page content */}
       {categories && categories.length > 0 && (
-        <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-sm">
+        <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-sm animate-catDrop">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             {catOverflow && (
               <button onClick={() => { catRef.current?.scrollBy({ left: -200, behavior: 'smooth' }) }}

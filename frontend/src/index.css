@@ -88,52 +88,52 @@ body {
 }
 
 .dark .dark\:bg-gray-950 {
-  background-color: #0a0f1e;
-  background-image: linear-gradient(180deg, #131b38 0%, #0a0f1e 100%);
+  background-color: #0a0f1e !important;
+  background-image: linear-gradient(180deg, #131b38 0%, #0a0f1e 100%) !important;
 }
 .dark .dark\:bg-gray-900 {
-  background-color: #111a33;
-  background-image: linear-gradient(180deg, #1e2b50 0%, #131c36 55%, #111a33 100%);
+  background-color: #111a33 !important;
+  background-image: linear-gradient(180deg, #1e2b50 0%, #131c36 55%, #111a33 100%) !important;
 }
 .dark .dark\:bg-gray-900\/90 {
-  background-color: rgba(17, 26, 51, 0.9);
-  background-image: linear-gradient(180deg, rgba(30, 43, 80, 0.9), rgba(17, 26, 51, 0.9));
+  background-color: rgba(17, 26, 51, 0.9) !important;
+  background-image: linear-gradient(180deg, rgba(30, 43, 80, 0.9), rgba(17, 26, 51, 0.9)) !important;
 }
 .dark .dark\:bg-gray-900\/80 {
-  background-color: rgba(17, 26, 51, 0.8);
-  background-image: linear-gradient(180deg, rgba(30, 43, 80, 0.8), rgba(17, 26, 51, 0.8));
+  background-color: rgba(17, 26, 51, 0.8) !important;
+  background-image: linear-gradient(180deg, rgba(30, 43, 80, 0.8), rgba(17, 26, 51, 0.8)) !important;
 }
 .dark .dark\:bg-gray-900\/50 {
-  background-color: rgba(17, 26, 51, 0.5);
-  background-image: linear-gradient(180deg, rgba(30, 43, 80, 0.5), rgba(17, 26, 51, 0.5));
+  background-color: rgba(17, 26, 51, 0.5) !important;
+  background-image: linear-gradient(180deg, rgba(30, 43, 80, 0.5), rgba(17, 26, 51, 0.5)) !important;
 }
 .dark .dark\:bg-gray-800 {
-  background-color: #1a2444;
-  background-image: linear-gradient(180deg, #2a3a66 0%, #1f2c4e 55%, #1a2444 100%);
+  background-color: #1a2444 !important;
+  background-image: linear-gradient(180deg, #2a3a66 0%, #1f2c4e 55%, #1a2444 100%) !important;
 }
 .dark .dark\:bg-gray-800\/50 {
-  background-color: rgba(26, 36, 68, 0.5);
-  background-image: linear-gradient(180deg, rgba(42, 58, 102, 0.5), rgba(26, 36, 68, 0.5));
+  background-color: rgba(26, 36, 68, 0.5) !important;
+  background-image: linear-gradient(180deg, rgba(42, 58, 102, 0.5), rgba(26, 36, 68, 0.5)) !important;
 }
 .dark .dark\:bg-gray-800\/30 {
-  background-color: rgba(26, 36, 68, 0.3);
-  background-image: linear-gradient(180deg, rgba(42, 58, 102, 0.3), rgba(26, 36, 68, 0.3));
+  background-color: rgba(26, 36, 68, 0.3) !important;
+  background-image: linear-gradient(180deg, rgba(42, 58, 102, 0.3), rgba(26, 36, 68, 0.3)) !important;
 }
 .dark .dark\:bg-gray-700 {
-  background-color: #24335c;
-  background-image: linear-gradient(180deg, #3a4f82 0%, #2b3d68 55%, #24335c 100%);
+  background-color: #24335c !important;
+  background-image: linear-gradient(180deg, #3a4f82 0%, #2b3d68 55%, #24335c 100%) !important;
 }
 .dark .dark\:bg-gray-700\/50 {
-  background-color: rgba(36, 51, 92, 0.5);
-  background-image: linear-gradient(180deg, rgba(58, 79, 130, 0.5), rgba(36, 51, 92, 0.5));
+  background-color: rgba(36, 51, 92, 0.5) !important;
+  background-image: linear-gradient(180deg, rgba(58, 79, 130, 0.5), rgba(36, 51, 92, 0.5)) !important;
 }
 .dark .dark\:bg-gray-700\/30 {
-  background-color: rgba(36, 51, 92, 0.3);
-  background-image: linear-gradient(180deg, rgba(58, 79, 130, 0.3), rgba(36, 51, 92, 0.3));
+  background-color: rgba(36, 51, 92, 0.3) !important;
+  background-image: linear-gradient(180deg, rgba(58, 79, 130, 0.3), rgba(36, 51, 92, 0.3)) !important;
 }
 .dark .dark\:bg-gray-600 {
-  background-color: #31437a;
-  background-image: linear-gradient(180deg, #4d63a0 0%, #3a4f82 55%, #31437a 100%);
+  background-color: #31437a !important;
+  background-image: linear-gradient(180deg, #4d63a0 0%, #3a4f82 55%, #31437a 100%) !important;
 }
 
 .dark .dark\:text-gray-900 { color: #0f172a; }
