@@ -32,7 +32,7 @@ export default function Login() {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <img src="/logo.png" alt="Logo" className="w-24 sm:w-36 h-24 sm:h-36 mx-auto" />
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mt-3">Quince Gear SN</h1>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mt-3">Quince <span className="text-red-500">Gear</span> SN</h1>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Inicia sesión para continuar</p>
         </div>
 

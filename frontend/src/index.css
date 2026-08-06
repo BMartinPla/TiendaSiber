@@ -126,6 +126,15 @@ body {
 .dark .dark\:shadow-2xl { box-shadow: 0 25px 50px -12px rgba(2, 6, 23, 0.5); }
 .dark .dark\:shadow-md { box-shadow: 0 4px 6px -1px rgba(2, 6, 23, 0.3), 0 2px 4px -2px rgba(2, 6, 23, 0.2); }
 
+/* Shadows más marcadas en modo claro para diferenciar tarjetas del fondo */
+.shadow-sm {
+  box-shadow: 0 1px 2px 0 rgb(2 6 23 / 0.06), 0 4px 12px -2px rgb(2 6 23 / 0.12);
+}
+
+.shadow-md {
+  box-shadow: 0 4px 6px -1px rgb(2 6 23 / 0.10), 0 8px 20px -4px rgb(2 6 23 / 0.14);
+}
+
 .dark .dark\:from-gray-800 { --tw-gradient-from: #1e293b; }
 .dark .dark\:to-gray-700 { --tw-gradient-to: #334155; }
 

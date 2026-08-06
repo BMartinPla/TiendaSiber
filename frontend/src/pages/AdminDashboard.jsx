@@ -619,7 +619,7 @@ export default function AdminDashboard() {
       <aside className="hidden lg:flex lg:flex-col fixed left-0 top-0 h-full w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 z-30">
         <div className="p-6 border-b border-gray-100 dark:border-gray-800">
           <h1 className="font-display text-lg font-bold text-gray-900 dark:text-white">Panel Admin</h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Quince Gear SN</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Quince <span className="text-red-500">Gear</span> SN</p>
         </div>
         <nav className="flex-1 p-4 space-y-1">
           {navItems.map((item) => {
